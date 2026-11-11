@@ -12,7 +12,7 @@ GitHub 仓库：[Chalwyn/moyu-shenqi](https://github.com/Chalwyn/moyu-shenqi)。
 2. 使用 Mac Chrome 或 Edge 打开，点击“+”导入 TXT，也可以拖入文件或粘贴正文。
 3. 打开“聊天人物与回复”，设置联系人姓名和自己的预设回复，点击“保存并应用”。
 
-无需账号、油猴、网络或安装依赖。发行附件提供可直接打开的 `摸鱼神器.html`，以及打包下载的 `摸鱼神器-v1.0.0.zip`。
+无需账号、油猴、网络或安装依赖。发行附件提供可直接打开的 `moyu-shenqi.html`，以及打包下载的 `moyu-shenqi-v1.0.0.zip`；ZIP 解压后为 `摸鱼神器.html`。
 
 完整操作与限制见 **[使用说明](./使用说明.md)**。
 
