@@ -1,0 +1,254 @@
+/* Feishu geometry and colors follow BiliShu v0.6.1, CSS_FS + CSS_CORE_EXTRA.
+   Every rule is scoped to this theme; the accepted DingTalk stylesheet is unchanged. */
+:root[data-theme="feishu"] {
+  --brand: #3370ff;
+  --brand-hover: #245bdb;
+  --brand-soft: #e8f0ff;
+  --ink: #1f2329;
+  --muted: #8f959e;
+  --line: #e8e9eb;
+  --chrome: #d2e0f1;
+  --rail-width: 230px;
+  --sidebar-width: 360px;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
+}
+[data-theme="feishu"] body { background: #fff; }
+[data-theme="feishu"] .app-shell { grid-template-columns: var(--rail-width) var(--sidebar-width) minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); gap: 0; padding: 0; background: #fff; }
+[data-theme="feishu"] .topbar,
+[data-theme="feishu"] .rail { display: none; }
+
+/* Full-height text navigation, with the original source's independent search. */
+[data-theme="feishu"] .feishu-nav { grid-column: 1; grid-row: 1; display: flex; flex-direction: column; min-width: 0; min-height: 0; padding: 26px 12px 14px; border-right: 1px solid #dfe5ec; background: #d2e0f1; color: #1f2329; }
+[data-theme="feishu"] .feishu-rail-head { display: flex; align-items: center; justify-content: space-between; min-height: 54px; flex-shrink: 0; padding: 2px 4px 12px; }
+[data-theme="feishu"] .feishu-profile { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; flex-shrink: 0; overflow: hidden; border-radius: 50%; background: #b7d8c2; color: #fff; font-size: 25px; font-weight: 600; }
+[data-theme="feishu"] .feishu-create { display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; flex-shrink: 0; padding: 0; border: 2px solid #5b6068; border-radius: 50%; background: transparent; color: #454a52; font: 26px/22px Arial, sans-serif; transition: background .15s; }
+[data-theme="feishu"] .feishu-create .icon { width: 18px; height: 18px; stroke-width: 1.8; }
+[data-theme="feishu"] .feishu-create:hover { background: #c7d0df; }
+[data-theme="feishu"] .feishu-search { display: flex; align-items: center; gap: 9px; width: calc(100% - 24px); min-height: 40px; flex-shrink: 0; margin: 2px 12px 14px; padding: 9px 12px; border: 1px solid #bcc5d2; border-radius: 10px; background: rgb(108 126 152 / 16%); box-shadow: inset 0 1px 2px #00000006; color: #24272d; font-family: inherit; font-size: 14px; line-height: 20px; text-align: left; white-space: nowrap; transition: background .15s; }
+[data-theme="feishu"] .feishu-search:hover { background: rgb(108 126 152 / 23%); }
+[data-theme="feishu"] .feishu-search .icon { width: 20px; height: 20px; }
+[data-theme="feishu"] .feishu-search span { overflow: hidden; text-overflow: ellipsis; }
+[data-theme="feishu"] .feishu-nav-items { display: flex; flex: 1; flex-direction: column; gap: 4px; min-height: 0; overflow-x: hidden; overflow-y: auto; scrollbar-width: none; }
+[data-theme="feishu"] .feishu-nav-items::-webkit-scrollbar { display: none; }
+[data-theme="feishu"] .feishu-nav-item { display: flex; align-items: center; justify-content: flex-start; gap: 12px; width: 100%; height: 44px; min-height: 44px; flex-shrink: 0; padding: 0 12px; border-radius: 10px; background: transparent; color: #1f2329; font-family: inherit; font-size: 15px; font-weight: 400; line-height: 1.4; text-align: left; transition: background .15s; }
+[data-theme="feishu"] .feishu-nav-item .icon { width: 20px; height: 20px; color: #646a73; stroke-width: 1.7; }
+[data-theme="feishu"] .feishu-nav-item > span { display: inline; }
+[data-theme="feishu"] .feishu-nav-item:hover { background: rgb(255 255 255 / 55%); }
+[data-theme="feishu"] .feishu-nav-item.active,
+[data-theme="feishu"] .feishu-nav-item[aria-current="page"] { background: #fff; box-shadow: 0 1px 2px #0000000d; font-weight: 600; }
+[data-theme="feishu"] .feishu-nav-item.active .icon,
+[data-theme="feishu"] .feishu-nav-item[aria-current="page"] .icon { color: #3370ff; }
+[data-theme="feishu"] .feishu-nav-bottom { display: flex; flex-direction: column; gap: 4px; flex-shrink: 0; margin-top: auto; padding-top: 8px; }
+
+/* The source uses a flat white list rather than the DingTalk banner and cards. */
+[data-theme="feishu"] .conversations { grid-column: 2; grid-row: 1; border-right: 1px solid #e8e9eb; border-radius: 0; background: #fff; }
+[data-theme="feishu"] .office-banner,
+[data-theme="feishu"] .current-file,
+[data-theme="feishu"] .chapter-search,
+[data-theme="feishu"] .sidebar-footer { display: none; }
+[data-theme="feishu"] .sidebar-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 6px; height: 56px; min-height: 56px; padding: 14px 16px 8px; background: #fff; }
+[data-theme="feishu"] .sidebar-toolbar > .icon-btn:first-child,
+[data-theme="feishu"] #savedTab { display: none; }
+[data-theme="feishu"] .list-tabs { display: inline-flex; align-items: center; gap: 2px; height: 28px; padding: 2px; border-radius: 14px; background: #e7eaf1; }
+[data-theme="feishu"] .list-tabs button { height: 24px; min-width: 0; padding: 0 12px; border-radius: 12px; background: transparent; color: #646a73; font-size: 13px; font-weight: 400; }
+[data-theme="feishu"] .list-tabs button.selected,
+[data-theme="feishu"] .list-tabs button[aria-selected="true"] { background: #fff; color: #1f2329; box-shadow: 0 1px 3px rgb(31 35 41 / 12%); font-weight: 600; }
+[data-theme="feishu"] .list-tabs button:hover { color: #1f2329; }
+[data-theme="feishu"] .list-tabs button > span { display: none; }
+[data-theme="feishu"] .feishu-list-actions { display: flex; align-items: center; gap: 2px; min-width: 0; margin-left: auto; }
+[data-theme="feishu"] .feishu-list-actions .icon-btn { width: 25px; height: 27px; padding: 4px; border-radius: 5px; color: #646a73; }
+[data-theme="feishu"] .feishu-list-actions .icon { width: 17px; height: 17px; }
+[data-theme="feishu"] .sidebar-toolbar > #importPlus { width: 25px; height: 27px; margin-left: 0; padding: 3px; color: #646a73; opacity: 1; }
+[data-theme="feishu"] .sidebar-toolbar > #importPlus .icon { width: 18px; height: 18px; }
+[data-theme="feishu"] .pinned-conversations { padding: 0; border-bottom: 0; background: #fff; }
+[data-theme="feishu"] .chapter-list { padding: 0 0 12px; background: #fff; }
+[data-theme="feishu"] .chapter-item { display: flex; align-items: center; gap: 12px; min-height: 74px; padding: 12px 16px; border: 0; border-radius: 0; background: transparent; }
+[data-theme="feishu"] .chapter-item:hover { background: #f5f6f7; }
+[data-theme="feishu"] .chapter-item.active { background: #e4edfb; }
+[data-theme="feishu"] .chapter-avatar { width: 44px; height: 44px; flex-shrink: 0; overflow: hidden; border-radius: 50%; color: #fff; font-size: 13px; font-weight: 600; line-height: 1.15; }
+[data-theme="feishu"] .chapter-copy { gap: 5px; }
+[data-theme="feishu"] .conversation-title { gap: 5px; }
+[data-theme="feishu"] .chapter-copy strong { color: #1f2329; font-size: 14px; font-weight: 500; line-height: 1.4; }
+[data-theme="feishu"] .chapter-copy small { color: #8f959e; font-size: 13px; line-height: 1.4; }
+[data-theme="feishu"] .group-badge { display: none; }
+[data-theme="feishu"] .chapter-side { gap: 9px; min-width: 28px; padding-top: 3px; color: #8f959e; }
+[data-theme="feishu"] .chapter-side time { font-size: 11px; color: #8f959e; }
+[data-theme="feishu"] .chapter-item.active .chapter-side time { color: #8f959e; }
+[data-theme="feishu"] .chapter-item.saved .chapter-dot { background: #e6ac36; }
+[data-theme="feishu"] .list-pager { padding: 10px 12px; color: #8f959e; }
+
+/* 56px header, round avatars and square-cornered gray message bubbles. */
+[data-theme="feishu"] .reader-main { grid-column: 3; grid-row: 1; border-radius: 0; background: #fff; }
+[data-theme="feishu"] .chat-header { gap: 10px; height: 56px; min-height: 56px; padding: 0 20px; border-bottom: 1px solid #e8e9eb; background: #fff; }
+[data-theme="feishu"] .chat-avatar { width: 38px; height: 38px; padding: 2px 4px; overflow: hidden; border-radius: 50%; font-size: 13px; font-weight: 600; }
+[data-theme="feishu"] .chat-title-line { gap: 7px; }
+[data-theme="feishu"] .chat-title h2 { color: #1f2329; font-size: 16px; font-weight: 600; line-height: 1.4; }
+[data-theme="feishu"] .chat-title p { margin-top: 1px; color: #8f959e; font-size: 12px; line-height: 1.4; }
+[data-theme="feishu"] .chat-actions { gap: 4px; padding-left: 8px; }
+[data-theme="feishu"] .chat-actions .icon-btn { width: 28px; height: 28px; padding: 5px; border-radius: 5px; color: #646a73; }
+[data-theme="feishu"] .chat-actions .icon { width: 18px; height: 18px; }
+[data-theme="feishu"] .chat-actions > button:nth-child(1),
+[data-theme="feishu"] .chat-actions > button:nth-child(2),
+[data-theme="feishu"] .chat-actions > button:nth-child(6) { display: none; }
+[data-theme="feishu"] .chat-tabs { display: none; }
+[data-theme="feishu"] .message-scroll { background: #fff; scrollbar-gutter: stable; }
+[data-theme="feishu"] .messages { max-width: none; padding: 20px 24px; }
+[data-theme="feishu"] .chapter-divider { margin-bottom: 16px; color: #8f959e; font-size: 11px; }
+[data-theme="feishu"] .chapter-intro { margin-bottom: 16px; color: #8f959e; font-size: 11px; }
+[data-theme="feishu"] .message-row { gap: 10px; margin-bottom: 16px; }
+[data-theme="feishu"] .message-avatar { width: 36px; height: 36px; flex-shrink: 0; overflow: hidden; border-radius: 50%; background: #9eb9dc; color: #fff; font-size: 13px; font-weight: 600; }
+[data-theme="feishu"] .message-body { max-width: min(78%, 920px); }
+[data-theme="feishu"] .sender-name { margin-bottom: 4px; color: #8f959e; font-size: 12px; }
+[data-theme="feishu"] .message-bubble { padding: 10px 14px; border: 0; border-radius: 2px 8px 8px 8px; background: #eeefee; color: #1f2329; font-family: var(--reader-font-family); font-size: var(--reader-font-size, 14px); line-height: var(--reader-line-height, 1.6); }
+[data-theme="feishu"] .message-bubble::before { display: none; }
+[data-theme="feishu"] .message-bubble p { margin-bottom: .7em; }
+[data-theme="feishu"] .message-bubble p:last-child { margin-bottom: 0; }
+[data-theme="feishu"] .own-message { flex-direction: row-reverse; }
+[data-theme="feishu"] .own-message .message-avatar,
+[data-theme="feishu"] .own-message .sender-name { display: none; }
+[data-theme="feishu"] .own-message .message-body { align-items: flex-end; }
+[data-theme="feishu"] .own-message .message-bubble { border-radius: 8px 2px 8px 8px; background: #e8f0ff; }
+[data-theme="feishu"] .note-status { color: #8f959e; }
+[data-theme="feishu"] .chapter-end { color: #a1a7af; }
+[data-theme="feishu"] .welcome-card { margin-left: 46px; border-radius: 2px 8px 8px 8px; background: #eeefee; }
+[data-theme="feishu"] .welcome-title { color: #1f2329; }
+[data-theme="feishu"] .welcome-kicker,
+[data-theme="feishu"] .welcome-description { color: #646a73; }
+
+/* The reference composer is a compact bordered card, not a fixed 200px dock. */
+[data-theme="feishu"] .reader-footer { padding: 4px 12px 12px; border: 0; background: #fff; }
+[data-theme="feishu"] .composer-shortcuts { display: none; }
+[data-theme="feishu"] .composer-box { height: auto; min-height: 92px; border: 1px solid #e8e9eb; border-radius: 12px; background: #fff; transition: border-color .15s, box-shadow .15s; }
+[data-theme="feishu"] .composer-box:hover { border-color: #c2d4ff; box-shadow: 0 2px 10px rgb(26 135 255 / 8%); }
+[data-theme="feishu"] .composer-box:focus-within { border-color: #a8c3ff; box-shadow: 0 0 0 1px #e8f0ff; }
+[data-theme="feishu"] .composer-box textarea { display: block; width: 100%; height: 52px; min-height: 44px; max-height: 160px; flex: none; padding: 8px 14px 10px; overflow-y: auto; border: 0; border-radius: 12px 12px 0 0; background: transparent; color: #1f2329; font-size: 14px; line-height: 1.6; resize: none; }
+[data-theme="feishu"] .composer-box textarea::placeholder { color: #8f959e; }
+[data-theme="feishu"] .composer-toolbar { gap: 8px; min-height: 38px; padding: 4px 10px 8px; }
+[data-theme="feishu"] .composer-tools { gap: 0; }
+[data-theme="feishu"] .composer-tools .icon-btn { width: 28px; height: 26px; padding: 4px; border-radius: 5px; color: #646a73; }
+[data-theme="feishu"] .composer-tools .icon { width: 18px; height: 18px; }
+[data-theme="feishu"] .composer-tools .type-tool { font-size: 16px; }
+[data-theme="feishu"] .reader-controls { gap: 3px; }
+[data-theme="feishu"] .reader-controls > .icon-btn { width: 26px; height: 26px; padding: 4px; color: #646a73; }
+[data-theme="feishu"] .send-note { height: 26px; margin-left: 4px; padding: 0 14px; border: 0; border-radius: 5px; background: #3370ff; color: #fff; font-size: 12px; font-weight: 400; }
+[data-theme="feishu"] .send-note > span { display: none; }
+[data-theme="feishu"] .send-note:disabled { background: #c5c9d0; color: #fff; opacity: 1; }
+[data-theme="feishu"] .send-note:hover:not(:disabled) { background: #245bdb; color: #fff; }
+[data-theme="feishu"] .composer-status { height: 18px; padding-top: 3px; }
+[data-theme="feishu"] .reading-progress,
+[data-theme="feishu"] #saveStatus,
+[data-theme="feishu"] .keyboard-hint { color: #a2a8b0; }
+[data-theme="feishu"] .progress-track { background: #f6f7f9; }
+[data-theme="feishu"] .progress-track > span { background: #c7d7fa; }
+[data-theme="feishu"] .icon-btn:hover { background: #f5f6f7; color: #1f2329; }
+[data-theme="feishu"] .icon-btn[aria-pressed="true"] { background: #e8f0ff; color: #3370ff; }
+[data-theme="feishu"] .theme-option.active { border-color: #8db1ff; background: #f6f9ff; }
+
+/* Source minimums are 180px navigation and 280px conversation list. */
+@media (max-width: 1100px) {
+  :root[data-theme="feishu"] { --rail-width: 190px; --sidebar-width: 300px; }
+  [data-theme="feishu"] .feishu-nav { padding-right: 10px; padding-left: 10px; }
+  [data-theme="feishu"] .feishu-search { width: calc(100% - 8px); margin-right: 4px; margin-left: 4px; padding-right: 10px; padding-left: 10px; font-size: 12px; }
+  [data-theme="feishu"] .feishu-nav-item { gap: 10px; padding-right: 10px; padding-left: 10px; font-size: 14px; }
+  [data-theme="feishu"] .sidebar-toolbar { gap: 4px; padding-right: 12px; padding-left: 12px; }
+  [data-theme="feishu"] .feishu-list-actions { gap: 0; }
+  [data-theme="feishu"] .feishu-list-actions .icon-btn { width: 22px; }
+  [data-theme="feishu"] .sidebar-toolbar > #importPlus { width: 22px; }
+  [data-theme="feishu"] .chapter-item { gap: 10px; padding-right: 12px; padding-left: 12px; }
+  [data-theme="feishu"] .chapter-avatar { width: 40px; height: 40px; font-size: 12px; }
+  [data-theme="feishu"] .chapter-copy small { font-size: 12px; }
+  [data-theme="feishu"] .chat-header { gap: 8px; padding-right: 14px; padding-left: 14px; }
+  [data-theme="feishu"] .chat-title h2 { font-size: 15px; }
+  [data-theme="feishu"] .chat-actions { gap: 2px; padding-left: 4px; }
+  [data-theme="feishu"] .chat-actions .icon-btn { width: 26px; }
+  [data-theme="feishu"] .chat-actions > button:nth-child(3) { display: none; }
+  [data-theme="feishu"] .messages { padding-right: 18px; padding-left: 18px; }
+  [data-theme="feishu"] .message-body { max-width: calc(100% - 46px); }
+  [data-theme="feishu"] .composer-tools > button:nth-child(2),
+  [data-theme="feishu"] .composer-tools > button:nth-child(5),
+  [data-theme="feishu"] .composer-tools > button:nth-child(7) { display: none; }
+}
+@media (max-width: 900px) {
+  :root[data-theme="feishu"] { --rail-width: 180px; --sidebar-width: 280px; }
+  [data-theme="feishu"] .feishu-nav { padding-right: 8px; padding-left: 8px; }
+  [data-theme="feishu"] .feishu-search { gap: 7px; font-size: 12px; }
+  [data-theme="feishu"] .sidebar-toolbar { gap: 3px; padding-right: 10px; padding-left: 10px; }
+  [data-theme="feishu"] .list-tabs button { padding-right: 11px; padding-left: 11px; }
+  [data-theme="feishu"] .chapter-item { gap: 10px; padding-right: 10px; padding-left: 12px; }
+  [data-theme="feishu"] .chapter-side { min-width: 24px; }
+  [data-theme="feishu"] .chapter-side time { font-size: 10px; }
+  [data-theme="feishu"] .chat-header { gap: 7px; padding-right: 10px; padding-left: 12px; }
+  [data-theme="feishu"] .chat-avatar { width: 34px; height: 34px; }
+  [data-theme="feishu"] .chat-title h2 { font-size: 14px; }
+  [data-theme="feishu"] .chat-title p { font-size: 10px; }
+  [data-theme="feishu"] .chat-actions #searchBtn { display: none; }
+  [data-theme="feishu"] .messages { padding: 18px 13px; }
+  [data-theme="feishu"] .message-bubble { padding: 10px 12px; }
+  [data-theme="feishu"] .composer-tools > button:nth-child(3) { display: none; }
+  [data-theme="feishu"] .composer-toolbar { gap: 5px; padding-right: 8px; padding-left: 8px; }
+  [data-theme="feishu"] .composer-tools .icon-btn { width: 26px; }
+  [data-theme="feishu"] .send-note { padding-right: 11px; padding-left: 11px; }
+  [data-theme="feishu"] .keyboard-hint { display: none; }
+}
+@media (max-width: 760px) {
+  [data-theme="feishu"] .app-shell { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); }
+  [data-theme="feishu"] .feishu-nav { display: none; }
+  [data-theme="feishu"] .conversations { position: fixed; inset: 0 auto 0 0; z-index: 10; width: min(340px, 91vw); border-radius: 0; box-shadow: 10px 0 30px #1f232920; }
+  [data-theme="feishu"] .sidebar-backdrop { inset: 0; }
+  [data-theme="feishu"] .sidebar-toolbar { height: 58px; min-height: 58px; padding: 14px 12px 10px; }
+  [data-theme="feishu"] .sidebar-toolbar > #closeSidebar { width: 27px; height: 28px; padding: 4px; }
+  [data-theme="feishu"] .feishu-list-actions { gap: 1px; }
+  [data-theme="feishu"] .feishu-list-actions .icon-btn { width: 22px; }
+  [data-theme="feishu"] .chapter-item { min-height: 74px; padding: 12px 16px; }
+  [data-theme="feishu"] .chapter-avatar { width: 42px; height: 42px; }
+  [data-theme="feishu"] .chapter-copy strong { font-size: 14px; }
+  [data-theme="feishu"] .chapter-copy small { font-size: 12px; }
+  [data-theme="feishu"] .reader-main { grid-column: 1; grid-row: 1; }
+  [data-theme="feishu"] .chat-header { height: 56px; min-height: 56px; padding: 0 9px 0 7px; }
+  [data-theme="feishu"] .chat-header > .mobile-only { width: 28px; height: 30px; }
+  [data-theme="feishu"] .chat-avatar { width: 34px; height: 34px; }
+  [data-theme="feishu"] .chat-title h2 { font-size: 14px; }
+  [data-theme="feishu"] .chat-title p { font-size: 10px; }
+  [data-theme="feishu"] .chat-actions { gap: 1px; padding-left: 2px; }
+  [data-theme="feishu"] .chat-actions #addBookmark,
+  [data-theme="feishu"] .chat-actions #readingSettings { display: inline-flex; }
+  [data-theme="feishu"] .chat-actions .icon-btn { width: 27px; height: 29px; }
+  [data-theme="feishu"] .messages { padding: 18px 14px 18px 12px; }
+  [data-theme="feishu"] .message-row { gap: 9px; margin-bottom: 16px; }
+  [data-theme="feishu"] .message-avatar { width: 32px; height: 32px; font-size: 11px; }
+  [data-theme="feishu"] .message-body { max-width: calc(100% - 41px); }
+  [data-theme="feishu"] .own-message .message-body { max-width: 86%; }
+  [data-theme="feishu"] .sender-name { margin-bottom: 4px; font-size: 11px; }
+  [data-theme="feishu"] .message-bubble { padding: 9px 12px; }
+  [data-theme="feishu"] .reader-footer { padding: 4px 10px max(9px, env(safe-area-inset-bottom)); }
+  [data-theme="feishu"] .composer-box { min-height: 88px; }
+  [data-theme="feishu"] .composer-box textarea { height: 48px; min-height: 44px; padding: 8px 12px; font-size: 13px; }
+  [data-theme="feishu"] .composer-toolbar { min-height: 38px; padding: 4px 8px 8px; }
+  [data-theme="feishu"] .composer-tools > button:nth-child(6) { display: inline-flex; }
+  [data-theme="feishu"] .reader-controls { gap: 1px; }
+  [data-theme="feishu"] .send-note { height: 26px; padding-right: 12px; padding-left: 12px; font-size: 12px; }
+  [data-theme="feishu"] .composer-status { height: 16px; }
+  [data-theme="feishu"] .welcome-card { margin-left: 41px; padding: 17px; }
+}
+@media (max-width: 380px) {
+  [data-theme="feishu"] .sidebar-toolbar { gap: 2px; padding-right: 9px; padding-left: 9px; }
+  [data-theme="feishu"] .list-tabs button { padding-right: 10px; padding-left: 10px; }
+  [data-theme="feishu"] .feishu-list-actions .icon-btn { width: 20px; }
+  [data-theme="feishu"] .chapter-item { gap: 9px; padding-right: 12px; padding-left: 12px; }
+  [data-theme="feishu"] .chat-header { gap: 6px; }
+  [data-theme="feishu"] .chat-title h2 { font-size: 13px; }
+  [data-theme="feishu"] .messages { padding-right: 10px; padding-left: 10px; }
+  [data-theme="feishu"] .composer-tools > button:nth-child(4) { display: none; }
+}
+@media (max-height: 650px) and (min-width: 761px) {
+  [data-theme="feishu"] .feishu-nav { padding-top: 16px; padding-bottom: 10px; }
+  [data-theme="feishu"] .feishu-rail-head { min-height: 48px; padding-bottom: 8px; }
+  [data-theme="feishu"] .feishu-search { margin-bottom: 10px; }
+  [data-theme="feishu"] .feishu-nav-items,
+  [data-theme="feishu"] .feishu-nav-bottom { gap: 2px; }
+  [data-theme="feishu"] .feishu-nav-item { height: 39px; min-height: 39px; }
+  [data-theme="feishu"] .feishu-nav-bottom { padding-top: 6px; }
+  [data-theme="feishu"] .chat-header { height: 56px; min-height: 56px; }
+  [data-theme="feishu"] .composer-box { height: auto; min-height: 88px; }
+  [data-theme="feishu"] .composer-box textarea { height: 48px; }
+}

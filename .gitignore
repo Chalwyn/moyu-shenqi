@@ -1,0 +1,15 @@
+.DS_Store
+._*
+dist/
+node_modules/
+*.log
+.env
+.env.*
+
+# Superseded screenshots and local verification evidence.
+钉钉版效果.jpg
+飞书版效果.jpg
+回车发送效果.jpg
+
+# Keep the previous local entry point outside the renamed project release.
+讯阅.html

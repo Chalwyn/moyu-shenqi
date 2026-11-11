@@ -1,0 +1,74 @@
+/* Book-specific contact names and automatically interleaved personal messages.
+   The existing theme styles continue to own pane, bubble and avatar geometry. */
+.novel-paragraph { display: block; min-width: 0; margin: 0; padding: 0; }
+.novel-paragraph[data-paragraph] { scroll-margin-top: 25px; }
+.reply-slot:empty { display: none; }
+
+.speaker-name { display: block; width: fit-content; max-width: 100%; margin: 0 0 6px; padding: 0; overflow: hidden; border: 0; border-radius: 3px; background: transparent; color: #a5a6a9; font-family: inherit; font-size: 12px; font-weight: 400; line-height: 1.5; text-align: left; white-space: nowrap; text-overflow: ellipsis; transition: color .15s; }
+.speaker-name:hover:not(:disabled) { background: transparent; color: var(--brand, #287aff); text-decoration: underline; text-underline-offset: 3px; }
+.speaker-name:focus-visible { outline: 2px solid var(--brand, #287aff); outline-offset: 3px; }
+.speaker-name:disabled { cursor: default; opacity: 1; }
+.dialogue-message .message-avatar { background: var(--speaker-soft, #deecff); color: var(--speaker-color, #2780ff); }
+.own-message .message-avatar { display: grid; }
+.own-message .sender-name { display: block; text-align: right; }
+.own-message .speaker-name { text-align: right; }
+
+/* Selection and search feedback apply only to the original text, never replies. */
+.reply-selected .message-row:not(.own-message) > .message-body > .message-bubble,
+.message-row.reply-selected:not(.own-message) > .message-body > .message-bubble { outline: 1px solid #b9d1f3; outline-offset: 2px; }
+.novel-paragraph.search-highlight > .message-row:not(.own-message) > .message-body > .message-bubble,
+.novel-paragraph.search-highlight > .message-row:not(.own-message) > .message-body > .message-bubble::before { background: #fff3c2; }
+
+/* One native dialog configures names and personal lines for the current book. */
+#chatSetupDialog { width: min(510px, calc(100vw - 36px)); }
+.chat-setup-section { margin-top: 21px; }
+.chat-setup-section > label:not(.names-import) { display: block; margin-bottom: 9px; color: #687387; font-size: 12px; font-weight: 500; line-height: 1.6; }
+#knownNames, #selfReplies { display: block; width: 100%; min-height: 90px; max-height: 190px; margin: 0; padding: 10px 12px; overflow-x: hidden; overflow-y: auto; border: 1px solid #e2e5ea; border-radius: 6px; background: #fcfcfd; color: #525e71; font-family: inherit; font-size: 12px; line-height: 1.7; resize: vertical; }
+#selfReplies { min-height: 112px; }
+#selfDisplayName { display: block; width: 100%; min-height: 36px; margin: 0; padding: 8px 12px; border: 1px solid #e2e5ea; border-radius: 6px; background: #fcfcfd; color: #525e71; font-family: inherit; font-size: 12px; line-height: 1.6; }
+#knownNames::placeholder, #selfReplies::placeholder, #selfDisplayName::placeholder { color: #a8aeb9; }
+#knownNames:focus-visible, #selfReplies:focus-visible, #selfDisplayName:focus-visible { outline: 2px solid var(--brand, #287aff); outline-offset: 3px; }
+.names-import { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 30px; margin-top: 10px; padding: 5px 10px; overflow: hidden; border: 1px solid #e1e6ee; border-radius: 5px; background: #fff; color: #7a879a; font-size: 11px; line-height: 1.6; cursor: pointer; transition: background .15s, border-color .15s; }
+.names-import label { display: inline-flex; align-items: center; gap: 6px; margin: 0; cursor: pointer; }
+.names-import .icon { width: 14px; height: 14px; }
+.names-import input[type="file"] { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+.names-import:hover { border-color: #bfd3ee; background: #f6f9ff; }
+.names-import:focus-within { outline: 2px solid var(--brand, #287aff); outline-offset: 3px; }
+.chat-setup-actions { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 9px; margin-top: 22px; padding-top: 17px; border-top: 1px solid #edf0f4; }
+.chat-setup-actions > button { min-height: 34px; }
+#chatSetupStatus { margin-top: 13px; color: #7388a4; font-size: 11px; line-height: 1.8; overflow-wrap: anywhere; }
+#chatSetupStatus:empty { display: none; }
+#chatSetupStatus.error, #chatSetupStatus[data-state="error"] { color: #bd6767; }
+#chatSetupStatus.success, #chatSetupStatus[data-state="success"] { color: #638e77; }
+
+[data-theme="feishu"] .speaker-name { margin-bottom: 4px; color: #8f959e; font-size: 12px; }
+[data-theme="feishu"] .speaker-name:hover:not(:disabled) { color: #3370ff; }
+[data-theme="feishu"] .dialogue-message .message-avatar { background: var(--speaker-soft, #e8f0ff); color: var(--speaker-color, #3370ff); }
+[data-theme="feishu"] .own-message .message-avatar { display: grid; background: #e8f0ff; color: #3370ff; }
+[data-theme="feishu"] .own-message .sender-name { display: block; text-align: right; }
+[data-theme="feishu"] .own-message .message-body { max-width: min(78%, calc(100% - 46px)); }
+[data-theme="feishu"] .chat-setup-section > label:not(.names-import) { color: #646a73; }
+[data-theme="feishu"] #knownNames,
+[data-theme="feishu"] #selfReplies,
+[data-theme="feishu"] #selfDisplayName { border-color: #e8e9eb; background: #fff; color: #1f2329; }
+[data-theme="feishu"] .names-import { border-color: #e8e9eb; color: #646a73; }
+[data-theme="feishu"] .names-import:hover { border-color: #bdd0ff; background: #f4f7ff; color: #3370ff; }
+
+@media (min-width: 1101px) {
+  [data-theme="dingtalk"] .speaker-name { font-size: 14px; }
+}
+@media (max-width: 760px) {
+  .speaker-name { margin-bottom: 5px; font-size: 10px; }
+  [data-theme="feishu"] .speaker-name { margin-bottom: 4px; font-size: 11px; }
+  [data-theme="feishu"] .own-message .message-body { max-width: min(86%, calc(100% - 41px)); }
+  .chat-setup-section { margin-top: 18px; }
+  #knownNames { min-height: 82px; }
+  #selfReplies { min-height: 100px; }
+  .chat-setup-actions { gap: 8px; margin-top: 19px; padding-top: 15px; }
+}
+@media (max-width: 380px) {
+  #chatSetupDialog { width: calc(100vw - 24px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .speaker-name, .names-import { transition: none; }
+}

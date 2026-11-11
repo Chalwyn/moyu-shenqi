@@ -1,0 +1,2338 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dingtalk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'self'; style-src 'unsafe-inline' 'self'; img-src data:; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>钉钉 · 工作台</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%231a87ff'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-family='sans-serif' font-size='36' fill='white'%3E钉%3C/text%3E%3C/svg%3E">
+  <style>
+:root {
+  color-scheme: light;
+  --brand: #287aff;
+  --brand-hover: #176bea;
+  --brand-soft: #e7f0ff;
+  --ink: #28292c;
+  --muted: #a1a2a5;
+  --line: #ededee;
+  --chrome: #e4e5e7;
+  --rail-width: 64px;
+  --sidebar-width: clamp(330px, calc(21.5vw + 55px), 420px);
+  --reader-font-size: 16px;
+  --reader-line-height: 1.9;
+  --reader-font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  font-size: 14px;
+  color: var(--ink);
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; }
+body { background: var(--chrome); }
+button, input, select, textarea { font: inherit; }
+button { border: 0; color: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+button, input, select, textarea { outline: none; }
+button:disabled { cursor: not-allowed; opacity: .4; }
+button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; }
+input, select, textarea { min-width: 0; color: var(--ink); }
+input::placeholder, textarea::placeholder { color: #bfc0c3; }
+input[type="range"] { accent-color: var(--brand); cursor: pointer; }
+input[type="search"]::-webkit-search-cancel-button { cursor: pointer; }
+svg { flex-shrink: 0; }
+.svg-defs { position: absolute; width: 0; height: 0; overflow: hidden; pointer-events: none; }
+.icon { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; vertical-align: middle; }
+.icon.small { width: 14px; height: 14px; }
+::selection { color: #133d72; background: #cce2ff; }
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { border-radius: 5px; background: #d8d8db; }
+::-webkit-scrollbar-thumb:hover { background: #bfc0c4; }
+
+/* The Mac window surface surrounds two separate white panes. */
+.app-shell { display: grid; grid-template-columns: var(--rail-width) var(--sidebar-width) minmax(0, 1fr); grid-template-rows: 48px minmax(0, 1fr); column-gap: 6px; width: 100%; height: 100vh; height: 100dvh; padding: 0 6px 6px 0; overflow: hidden; }
+.topbar { position: relative; grid-column: 1 / -1; grid-row: 1; z-index: 3; display: flex; align-items: center; padding: 0 17px; background: var(--chrome); user-select: none; }
+.window-controls { display: flex; align-items: center; gap: 9px; }
+.window-controls i { width: 13px; height: 13px; border: 1px solid #ed5650; border-radius: 50%; background: #ff6059; }
+.window-controls i:nth-child(2) { border-color: #e5ad29; background: #ffbd2e; }
+.window-controls i:nth-child(3) { border-color: #24ad3d; background: #28c840; }
+.topbar > .brand-lockup, .local-status, .topbar .user-avatar { display: none; }
+.brand-lockup { display: flex; align-items: center; gap: 10px; white-space: nowrap; }
+.brand-mark { display: grid; place-items: center; width: 27px; height: 27px; border-radius: 7px; background: var(--brand); color: #fff; font-size: 16px; }
+.topbar-divider { width: 1px; height: 15px; margin: 0 3px; background: #dedee1; }
+.global-search { position: absolute; top: 7px; left: 50%; display: flex; align-items: center; justify-content: center; gap: 5px; width: 58%; height: 34px; padding: 0 16px; border-radius: 20px; background: #f5f5f6; color: #65666a; transform: translateX(-50%); transition: background .15s; }
+.global-search:hover { background: #fafafa; }
+.global-search .icon { width: 19px; height: 19px; margin-right: 4px; stroke-width: 1.8; }
+.global-search > span { font-size: 15px; font-weight: 500; }
+.global-search kbd { padding: 0; border: 0; background: transparent; font: inherit; font-size: 14px; font-weight: 500; }
+.topbar-actions { display: flex; align-items: center; gap: 21px; margin-left: auto; }
+.topbar-actions .icon-btn { width: 30px; height: 30px; color: #43464a; }
+.topbar-actions .icon { width: 22px; height: 22px; }
+.topbar-actions .top-add .icon { width: 26px; height: 26px; stroke-width: 1.5; }
+.icon-btn { display: inline-flex; align-items: center; justify-content: center; width: 31px; height: 31px; padding: 5px; border-radius: 6px; flex-shrink: 0; background: transparent; color: #67696d; transition: background .15s, color .15s; }
+.icon-btn:hover { background: #ececee; color: #28292c; }
+.icon-btn.active, .icon-btn[aria-pressed="true"] { color: var(--brand); background: #eaf2ff; }
+.icon-btn[aria-pressed="true"] use[href="#i-bookmark"] { fill: #287aff18; }
+.quiet-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 6px 9px; border-radius: 5px; background: transparent; color: #76777b; }
+.quiet-btn:hover { background: #ececee; }
+
+.rail { grid-column: 1; grid-row: 2; display: flex; align-items: center; flex-direction: column; min-height: 0; padding: 9px 0 10px 5px; background: var(--chrome); user-select: none; }
+.rail-profile { position: relative; display: grid; place-items: center; width: 42px; height: 42px; flex-shrink: 0; margin-bottom: 16px; overflow: visible; border-radius: 10px; background: #d5d1c7; box-shadow: inset 0 0 0 1px #00000005; }
+.rail-profile > span { font-size: 28px; line-height: 1; }
+.rail-profile > i { position: absolute; right: -4px; bottom: -3px; width: 15px; height: 15px; border: 3px solid var(--chrome); border-radius: 50%; background: #70cf69; }
+.rail-main, .rail-bottom { display: flex; align-items: center; flex-direction: column; gap: 4px; width: 100%; }
+.rail-main { flex: 1; min-height: 0; }
+.rail-bottom { gap: 6px; margin-top: 12px; padding-top: 11px; border-top: 1px solid #ccced0; width: 38px; }
+.rail-button { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; min-height: 36px; padding: 7px; border-radius: 11px; background: transparent; color: #4b4e52; transition: background .15s, color .15s; }
+.rail-button > span:not(.theme-mark) { display: none; }
+.rail-button .icon { width: 23px; height: 23px; stroke-width: 1.75; }
+.rail-button:hover { background: #d9dade; color: #24272b; }
+.rail-button.active { background: #d6d8dc; color: #24292d; }
+.rail-button.active .icon { fill: #252a2e; stroke: #252a2e; }
+.rail-button.active use[href="#i-chat"] { fill: #252a2e; }
+.rail-separator { width: 29px; height: 1px; margin: 5px 0; background: #cacdd1; }
+.theme-mark { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: #258cee; color: #fff; font-size: 14px; }
+
+.conversations { grid-column: 2; grid-row: 2; display: flex; flex-direction: column; min-width: 0; min-height: 0; overflow: hidden; border-radius: 7px; background: #fff; }
+.office-banner { position: relative; height: 101px; flex-shrink: 0; margin: 10px 12px 0; overflow: hidden; background: linear-gradient(110deg, #dcf4f5 0%, #d3f9e8 100%); }
+.banner-copy { position: relative; z-index: 1; padding: 9px 10px; }
+.banner-copy strong { display: block; color: #13334c; font-size: 15px; font-weight: 750; line-height: 1.45; letter-spacing: -.5px; }
+.banner-copy em { color: #08a427; font-style: normal; white-space: nowrap; }
+.banner-copy p { margin: 3px 0 10px; color: #667f82; font-size: 10px; font-weight: 500; line-height: 1.4; }
+.banner-copy button { display: inline-flex; align-items: center; gap: 9px; height: 25px; padding: 0 13px; border-radius: 15px; background: linear-gradient(95deg, #00d91b, #00b6ee); box-shadow: 0 3px 6px #10bc6533; color: #fff; font-size: 12px; font-weight: 650; }
+.banner-copy button:hover { filter: brightness(1.04); }
+.banner-copy button span { font-size: 19px; line-height: 1; }
+.banner-mascots { position: absolute; right: 10px; bottom: 4px; display: flex; align-items: flex-end; gap: 5px; height: 45px; }
+.mascot { position: relative; display: flex; justify-content: center; gap: 7px; width: 35px; height: 37px; padding-top: 12px; border: 1px solid #a4cbd0; border-radius: 48% 48% 43% 43%; background: #eaf7ff; box-shadow: inset -3px -4px 0 #c4e6ed; transform: rotate(-12deg); }
+.mascot::before { position: absolute; top: -6px; left: 17px; width: 2px; height: 6px; border-radius: 2px; background: #387b79; content: ""; transform: rotate(-18deg); }
+.mascot::after { position: absolute; left: 14px; bottom: 7px; width: 7px; height: 4px; border-bottom: 2px solid #3c6772; border-radius: 50%; content: ""; }
+.mascot b { width: 5px; height: 8px; border: 1px solid #415e6b; border-radius: 50%; background: #415e6b; }
+.mascot:nth-child(2) { width: 39px; height: 44px; padding-top: 13px; border-color: #47d395; background: #50e6a4; box-shadow: inset -4px -4px 0 #37d895; transform: rotate(10deg); }
+.mascot:nth-child(2) b { height: 10px; background: #fff; }
+.sidebar-toolbar { display: flex; align-items: center; gap: 10px; height: 58px; flex-shrink: 0; padding: 0 16px; background: #fafafa; }
+.sidebar-toolbar > .icon-btn:first-child { width: 29px; height: 29px; border-radius: 50%; background: #f0f0f1; color: #929498; }
+.sidebar-toolbar > #importPlus { margin-left: auto; opacity: .68; }
+.sidebar-toolbar > #importPlus:hover { opacity: 1; }
+.list-tabs { display: flex; align-items: center; gap: 1px; height: 29px; padding: 3px; border-radius: 18px; background: #edeeef; }
+.list-tabs button { display: inline-flex; align-items: center; justify-content: center; min-width: 54px; height: 24px; padding: 0 14px; border-radius: 15px; background: transparent; color: #929497; font-size: 13px; line-height: 1; white-space: nowrap; }
+.list-tabs button:hover { color: #45474b; }
+.list-tabs button.selected { background: #fff; color: #25282c; font-weight: 600; }
+.list-tabs button > span { display: none; }
+.current-file, .chapter-search, .sidebar-heading { display: none; }
+.pinned-conversations { flex-shrink: 0; padding: 0 6px 3px; border-bottom: 1px solid #e7e7e8; background: #fafafa; }
+.chapter-list { min-height: 0; flex: 1; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; padding: 4px 6px 12px; scrollbar-width: thin; }
+.chapter-item { position: relative; display: flex; align-items: center; gap: 10px; width: 100%; min-height: 73px; padding: 11px 12px; border-radius: 13px; background: transparent; text-align: left; transition: background .15s; }
+.chapter-item:hover { background: #f5f5f6; }
+.chapter-item.active { background: #f1f2f3; }
+.chapter-avatar { display: grid; place-items: center; width: 43px; height: 43px; flex-shrink: 0; border-radius: 11px; background: #00b840; color: #fff; font-size: 13px; font-weight: 500; line-height: 1.25; text-align: center; }
+.chapter-item:nth-child(5n + 2) .chapter-avatar { background: #16a2f9; }
+.chapter-item:nth-child(5n + 3) .chapter-avatar { background: #f0a54e; }
+.chapter-item:nth-child(5n + 4) .chapter-avatar { background: #31c7ab; }
+.chapter-item:nth-child(5n) .chapter-avatar { background: #e85293; }
+.chapter-avatar.avatar-green { background: #00b83e; }
+.chapter-avatar.avatar-blue { background: #0099ff; }
+.chapter-avatar.avatar-orange { background: #f1ad48; }
+.chapter-copy { display: flex; flex: 1; flex-direction: column; gap: 7px; min-width: 0; }
+.conversation-title { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.chapter-copy strong { display: block; min-width: 0; overflow: hidden; color: #27292d; font-size: 14px; font-weight: 500; line-height: 1.35; white-space: nowrap; text-overflow: ellipsis; }
+.group-badge { display: inline-flex; align-items: center; flex-shrink: 0; height: 17px; padding: 0 5px; border: 1px solid #91b7ff; border-radius: 10px; color: #3981ff; font-size: 10px; font-weight: 500; line-height: 1; white-space: nowrap; }
+.chapter-copy small { overflow: hidden; color: #aaabae; font-size: 12px; line-height: 1.4; white-space: nowrap; text-overflow: ellipsis; }
+.chapter-side { display: flex; align-items: flex-end; flex-direction: column; gap: 11px; align-self: stretch; min-width: 27px; padding-top: 4px; color: #b6b7ba; }
+.chapter-side time { max-width: 44px; font-size: 11px; line-height: 1.3; white-space: nowrap; }
+.chapter-dot { width: 6px; height: 6px; margin-top: auto; border-radius: 50%; background: transparent; }
+.chapter-item.saved .chapter-dot { background: #e8b24c; }
+.chapter-item.active .chapter-side time { color: #a3a5a8; }
+.sidebar-footer { display: flex; align-items: center; justify-content: center; min-height: 23px; flex-shrink: 0; color: #c0c1c3; font-size: 9px; }
+.sidebar-footer .icon { width: 12px; height: 12px; }
+.list-pager { display: flex; align-items: center; justify-content: space-between; gap: 4px; padding: 10px 5px; color: #999a9e; font-size: 11px; }
+
+.reader-main { grid-column: 3; grid-row: 2; display: flex; flex-direction: column; min-width: 0; min-height: 0; overflow: hidden; border-radius: 7px; background: #fff; }
+.chat-header { display: flex; align-items: center; gap: 10px; min-height: 65px; flex-shrink: 0; padding: 10px 16px; border-bottom: 1px solid #e9e9eb; background: #fff; }
+.chat-avatar { display: grid; place-items: center; width: 37px; height: 37px; flex-shrink: 0; border-radius: 8px; background: #f7c548; color: #714a12; font-size: 14px; font-weight: 600; }
+.chat-title { min-width: 0; }
+.chat-title-line { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.chat-title h2 { overflow: hidden; margin: 0; color: #26282c; font-size: 15px; font-weight: 650; line-height: 1.4; text-overflow: ellipsis; white-space: nowrap; }
+.chat-title p { overflow: hidden; margin: 4px 0 0; color: #a5a5a9; font-size: 12px; line-height: 1.4; text-overflow: ellipsis; white-space: nowrap; }
+.chat-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; padding-left: 12px; }
+.chat-actions .icon-btn { width: 29px; height: 29px; padding: 3px; color: #626468; }
+.chat-actions .icon { width: 21px; height: 21px; stroke-width: 1.65; }
+.chat-tabs { display: none; }
+.storage-warning { flex-shrink: 0; padding: 8px 20px; border-bottom: 1px solid #f0e1c2; background: #fff8e9; color: #9c793d; font-size: 11px; line-height: 1.6; }
+.message-scroll { min-height: 0; flex: 1; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; scrollbar-gutter: stable; scroll-padding-top: 20px; background: #fff; }
+.message-scroll:focus-visible { outline-offset: -3px; }
+.messages { min-height: 100%; padding: 19px 20px 15px 16px; }
+.chapter-divider { width: fit-content; margin: 0 auto 18px; color: #b6b7ba; font-size: 11px; line-height: 1.6; text-align: center; }
+.chapter-intro { max-width: 100%; margin: 0 auto 18px; color: #b1b2b5; font-size: 11px; line-height: 1.7; text-align: center; overflow-wrap: anywhere; }
+.message-row { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 19px; }
+.message-avatar { display: grid; place-items: center; width: 37px; height: 37px; flex-shrink: 0; border-radius: 10px; background: #deecff; color: #2780ff; font-size: 12px; font-weight: 600; line-height: 1.25; text-align: center; }
+.message-body { min-width: 0; max-width: min(86%, 920px); }
+.sender-name { display: block; margin: 0 0 6px; color: #a5a6a9; font-size: 12px; line-height: 1.5; }
+.message-bubble { position: relative; width: fit-content; max-width: 100%; padding: 11px 17px; border: 0; border-radius: 17px; background: #f3f3f5; color: #28292c; font-family: var(--reader-font-family); font-size: var(--reader-font-size); line-height: var(--reader-line-height); overflow-wrap: anywhere; }
+.message-bubble::before { position: absolute; top: 12px; left: -7px; width: 15px; height: 12px; border-radius: 0 0 0 12px; background: #f3f3f5; content: ""; transform: skewX(20deg); }
+.message-bubble p { position: relative; margin: 0 0 .8em; white-space: pre-wrap; }
+.message-bubble p:last-child { margin-bottom: 0; }
+.message-bubble p[data-paragraph] { scroll-margin-top: 25px; }
+.message-bubble mark, .result-excerpt mark { padding: 1px 2px; border-radius: 2px; color: inherit; background: #ffedaa; }
+.message-bubble .search-highlight, .message-bubble p.highlighted { background: #fff4c7; }
+.message-bubble a, .message-mention { color: #257bff; text-decoration: none; }
+.message-bubble a:hover { text-decoration: underline; }
+.chapter-end { margin: 23px 0 5px; color: #bfc0c3; font-size: 10px; line-height: 1.6; text-align: center; }
+.chapter-notes { margin-top: 22px; }
+.chapter-notes:empty { display: none; }
+.own-message { flex-direction: row-reverse; }
+.own-message .message-avatar { background: #e5eefc; color: #4886df; }
+.own-message .message-body { display: flex; align-items: flex-end; flex-direction: column; }
+.own-message .message-bubble { background: #e8f1ff; }
+.own-message .message-bubble::before { right: -7px; left: auto; border-radius: 0 0 12px 0; background: #e8f1ff; transform: skewX(-20deg); }
+.note-text { white-space: pre-wrap; }
+.note-status { display: block; margin-top: 5px; color: #b3b6bd; font-size: 9px; line-height: 1.6; }
+.welcome-card { max-width: 590px; margin: 4px 0 22px 51px; padding: 22px; border-radius: 17px; background: #f3f3f5; }
+.welcome-kicker { margin-bottom: 11px; color: #9b9da2; font-size: 11px; }
+.welcome-title { margin: 0 0 10px; color: #36383b; font-size: 18px; font-weight: 600; line-height: 1.5; }
+.welcome-description { margin: 0; color: #929498; font-size: 13px; line-height: 1.8; }
+.welcome-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; margin-top: 17px; }
+
+/* The familiar conversation composer also holds the local reading controls. */
+.reader-footer { flex-shrink: 0; padding: 0 15px 7px; background: #fff; }
+.composer-shortcuts { display: flex; align-items: center; gap: 8px; min-height: 39px; padding-bottom: 7px; }
+.composer-shortcuts button { display: inline-flex; align-items: center; justify-content: center; gap: 5px; height: 30px; padding: 0 10px; border: 1px solid #e7e7e9; border-radius: 17px; background: #fff; color: #64666a; font-size: 12px; white-space: nowrap; }
+.composer-shortcuts button:hover { background: #f5f5f6; border-color: #d9dadd; }
+.composer-shortcuts .icon { width: 18px; height: 18px; stroke-width: 1.6; }
+.composer-shortcuts button:last-child { width: 32px; padding: 0; }
+.composer-box { display: flex; flex-direction: column; height: 166px; border: 1px solid #e5e5e8; border-radius: 20px; background: #fff; }
+.composer-box:focus-within { border-color: #c3d8fb; }
+.composer-box textarea { display: block; width: 100%; min-height: 0; flex: 1; padding: 13px 16px 6px; border: 0; border-radius: 20px 20px 0 0; background: transparent; color: #424348; font-size: 14px; line-height: 1.6; resize: none; }
+.composer-box textarea:focus-visible { outline: none; }
+.composer-box textarea::placeholder { color: #c2c3c6; }
+.composer-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 43px; flex-shrink: 0; padding: 3px 10px 8px; }
+.composer-tools { display: flex; align-items: center; gap: 7px; min-width: 0; }
+.composer-tools .icon-btn { width: 29px; height: 29px; padding: 4px; color: #696b6e; }
+.composer-tools .icon { width: 20px; height: 20px; stroke-width: 1.65; }
+.composer-tools .type-tool { font-size: 17px; font-weight: 300; letter-spacing: -.5px; }
+.reader-controls { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+.reader-controls > .icon-btn { width: 28px; height: 29px; color: #85878b; }
+.reader-controls > .icon-btn:hover { color: #35383e; }
+.reader-controls > .icon-btn .icon { width: 18px; height: 18px; }
+.send-note { display: inline-flex; align-items: center; justify-content: center; gap: 11px; height: 34px; margin-left: 4px; padding: 0 12px 0 16px; border-radius: 19px; background: #f3f3f4; color: #b1b2b6; font-size: 12px; font-weight: 500; }
+.send-note > span { padding-left: 9px; border-left: 1px solid #d4d4d7; color: #7a7c80; font-size: 14px; line-height: 14px; }
+.send-note:hover:not(:disabled) { background: #eaf2ff; color: var(--brand); }
+.send-note.active, .send-note.ready { background: #e7f0ff; color: var(--brand); }
+.composer-status { display: flex; align-items: center; justify-content: space-between; gap: 14px; height: 20px; padding: 3px 4px 0; }
+.reading-progress { display: flex; align-items: center; gap: 12px; color: #c4c5c7; font-size: 9px; line-height: 1.4; }
+#saveStatus { color: #c0c1c4; }
+.keyboard-hint { color: #c3c4c7; font-size: 9px; white-space: nowrap; }
+.progress-track { height: 1px; overflow: hidden; border-radius: 2px; background: #f5f5f6; }
+.progress-track > span { display: block; width: 0; height: 100%; border-radius: inherit; background: #c6d6ee; transition: width .15s linear; }
+.primary-btn, .secondary-btn { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 33px; padding: 7px 13px; border: 1px solid transparent; border-radius: 6px; font-size: 12px; font-weight: 500; line-height: 1.5; white-space: nowrap; transition: background .15s, border-color .15s; }
+.primary-btn { border-color: var(--brand); background: var(--brand); color: #fff; }
+.primary-btn:hover:not(:disabled) { border-color: var(--brand-hover); background: var(--brand-hover); }
+.secondary-btn { border-color: #e2e2e5; background: #fff; color: #77797e; }
+.secondary-btn:hover:not(:disabled) { border-color: #c7c9ce; background: #f7f7f8; color: #42454a; }
+.primary-btn .icon, .secondary-btn .icon { width: 15px; height: 15px; }
+.full-width { width: 100%; }
+.mobile-only { display: none; }
+
+/* Native dialogs preserve the existing import, search and reading features. */
+.modal { width: min(480px, calc(100vw - 36px)); max-height: min(790px, calc(100dvh - 52px)); padding: 26px; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; border: 1px solid #e3e3e6; border-radius: 12px; background: #fff; color: var(--ink); box-shadow: 0 20px 80px #20242b36; }
+.modal::backdrop { background: #25282f5e; backdrop-filter: blur(3px); }
+.modal-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.modal-heading > .icon-btn { margin: -7px -8px 0 0; }
+.modal-heading h2 { margin: 0; color: #33363b; font-size: 19px; line-height: 1.5; font-weight: 600; }
+.eyebrow { display: block; margin-bottom: 5px; color: #999ca3; font-size: 10px; line-height: 1.5; letter-spacing: .06em; }
+.modal-description { margin: 11px 0 23px; color: #90939a; font-size: 12px; line-height: 1.8; }
+.file-drop { position: relative; display: flex; align-items: center; flex-direction: column; gap: 10px; padding: 29px 15px 27px; overflow: hidden; border: 1px dashed #c6cbd3; border-radius: 9px; background: #fafbfc; text-align: center; cursor: pointer; transition: border-color .15s, background .15s; }
+.file-drop:hover, .file-drop.dragging { border-color: var(--brand); background: #f3f8ff; }
+.file-drop:focus-within { outline: 2px solid var(--brand); outline-offset: 3px; }
+.file-drop input[type="file"] { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+.upload-badge { display: grid; place-items: center; width: 46px; height: 46px; margin-bottom: 3px; border: 1px solid #e4e7ec; border-radius: 12px; background: #fff; color: #8d9cb2; }
+.upload-badge .icon { width: 23px; height: 23px; }
+.file-drop > strong { color: #748297; font-size: 12px; font-weight: 500; }
+.file-drop > span:last-of-type { color: #a4aab3; font-size: 10px; }
+.form-row { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-top: 23px; }
+.form-row > label, .setting-label { color: #747983; font-size: 12px; }
+select { height: 34px; max-width: 66%; padding: 0 26px 0 10px; border: 1px solid #e2e4e8; border-radius: 5px; background: #fff; font-size: 11px; cursor: pointer; }
+select:hover { border-color: #bfcad9; }
+.subtle-note { margin: 12px 0 0; color: #a0a3aa; font-size: 10px; line-height: 1.9; }
+.paste-section { margin-top: 20px; padding-top: 17px; border-top: 1px solid var(--line); }
+.paste-section summary { width: fit-content; color: #7b8799; font-size: 11px; cursor: pointer; }
+.paste-section summary:hover { color: var(--brand); }
+.text-input, .paste-section textarea { width: 100%; padding: 10px 12px; border: 1px solid #e2e5ea; border-radius: 6px; background: #fcfcfd; font-size: 12px; line-height: 1.6; }
+.text-input { margin-top: 15px; }
+.paste-section textarea { display: block; min-height: 140px; max-height: 270px; margin-top: 10px; resize: vertical; }
+.paste-section .primary-btn { margin-top: 12px; }
+.modal-note { display: flex; align-items: flex-start; justify-content: center; gap: 6px; margin-top: 23px; padding-top: 17px; border-top: 1px solid #ededf0; color: #a8abb2; font-size: 10px; line-height: 1.7; text-align: center; }
+.modal-note .icon { width: 13px; height: 13px; margin-top: 2px; }
+.import-status { margin-top: 14px; color: #758aa6; font-size: 11px; line-height: 1.7; overflow-wrap: anywhere; }
+.import-status:empty { display: none; }
+.import-status.error { color: #c56666; }
+.importing .file-drop { border-style: solid; background: #f1f6fd; cursor: progress; }
+.importing .upload-badge { animation: soft-pulse 1.5s ease-in-out infinite; }
+.importing .file-drop input { cursor: progress; }
+.library-modal { width: min(510px, calc(100vw - 36px)); }
+.library-list { max-height: 400px; margin: -3px 0 19px; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; }
+.library-item { display: flex; align-items: center; gap: 8px; padding: 8px 0; border-bottom: 1px solid #eef0f3; }
+.library-item:last-child { border-bottom: 0; }
+.library-open { display: flex; align-items: center; gap: 13px; min-width: 0; flex: 1; padding: 10px 9px; border-radius: 7px; background: transparent; text-align: left; }
+.library-open:hover { background: #f5f7fa; }
+.file-icon { display: grid; place-items: center; flex-shrink: 0; width: 34px; height: 39px; border-radius: 7px; background: #e9eff8; color: #839cbe; }
+.file-icon .icon { width: 22px; height: 22px; stroke-width: 1.5; }
+.file-copy, .library-copy { display: flex; flex: 1; flex-direction: column; gap: 6px; min-width: 0; }
+.file-copy strong, .library-copy strong { overflow: hidden; font-size: 12px; font-weight: 500; white-space: nowrap; text-overflow: ellipsis; }
+.file-copy small, .library-copy small { overflow: hidden; color: #9ca2ac; font-size: 10px; white-space: nowrap; text-overflow: ellipsis; }
+.library-delete { display: grid; place-items: center; width: 32px; height: 32px; flex-shrink: 0; border-radius: 6px; background: transparent; color: #b4bac4; }
+.library-delete .icon { width: 16px; height: 16px; }
+.library-delete:hover { background: #fff1f1; color: #cc7070; }
+.empty-list { padding: 36px 15px; color: #adb0b7; font-size: 11px; line-height: 1.9; text-align: center; }
+.settings-section { margin-top: 24px; }
+.setting-label { display: block; margin-bottom: 12px; }
+.theme-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.theme-option { display: flex; align-items: center; flex-direction: column; gap: 8px; min-width: 0; padding: 15px 10px; border: 1px solid #e5e7eb; border-radius: 8px; background: #fff; color: #707b8c; }
+.theme-option:hover { border-color: #bccde5; background: #fafbfc; }
+.theme-option.active, .theme-option[aria-pressed="true"] { border-color: #8fb7f0; background: #f6f9fe; }
+.theme-preview { display: grid; place-items: center; width: 35px; height: 35px; margin-bottom: 2px; border-radius: 9px; color: #fff; font-size: 20px; }
+.ding-preview { background: #258bff; }
+.feishu-preview { background: #638bf4; }
+.theme-option strong { font-size: 12px; font-weight: 500; }
+.theme-option small { color: #9ca5b3; font-size: 9px; line-height: 1.6; }
+.setting-row { margin-top: 24px; }
+.setting-row label { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; color: #768091; font-size: 12px; }
+.setting-row output { min-width: 42px; padding: 3px 7px; border-radius: 4px; background: #f2f4f8; color: #919caa; font-size: 10px; text-align: center; }
+.setting-row input[type="range"] { display: block; width: 100%; height: 16px; margin: 0; }
+.toggle-row { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-top: 25px; padding-top: 22px; border-top: 1px solid var(--line); cursor: pointer; }
+.toggle-row > span { display: flex; flex-direction: column; gap: 6px; }
+.toggle-row strong { color: #768091; font-size: 12px; font-weight: 400; }
+.toggle-row small { color: #a1a8b4; font-size: 10px; line-height: 1.7; }
+.toggle-row input { position: relative; width: 32px; height: 19px; flex-shrink: 0; margin: 0; border: 1px solid #d6dbe3; border-radius: 20px; appearance: none; background: #e3e6ec; cursor: pointer; transition: background .15s, border-color .15s; }
+.toggle-row input::after { position: absolute; top: 2px; left: 2px; width: 13px; height: 13px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px #475e8026; content: ""; transition: transform .15s; }
+.toggle-row input:checked { border-color: var(--brand); background: var(--brand); }
+.toggle-row input:checked::after { transform: translateX(13px); }
+.search-modal { width: min(590px, calc(100vw - 36px)); }
+.full-search { display: flex; align-items: center; gap: 9px; height: 41px; margin-top: 22px; padding: 0 11px; border: 1px solid #dfe5ef; border-radius: 7px; background: #fafbfe; color: #9ba9bd; }
+.full-search:focus-within { border-color: #85b8f5; box-shadow: 0 0 0 2px #e9f3ff; }
+.full-search .icon { width: 18px; height: 18px; }
+.full-search input { width: 100%; height: 100%; padding: 0; border: 0; background: transparent; font-size: 12px; }
+.full-search input:focus-visible { outline: none; }
+.search-results { max-height: 440px; margin-top: 17px; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; }
+.search-result { display: block; width: 100%; padding: 14px 11px; border-bottom: 1px solid #edf0f5; border-radius: 5px; background: transparent; text-align: left; }
+.search-result:hover { background: #f5f8fd; }
+.result-chapter { display: block; margin-bottom: 7px; color: #718aab; font-size: 11px; font-weight: 500; }
+.result-excerpt { display: block; color: #8d98a9; font-size: 12px; line-height: 1.8; overflow-wrap: anywhere; }
+.file-info { display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: 18px 14px; margin: 27px 0 5px; font-size: 12px; line-height: 1.8; }
+.file-info dt { color: #a1a8b4; }
+.file-info dd { min-width: 0; margin: 0; color: #798496; overflow-wrap: anywhere; }
+
+.sidebar-backdrop { position: fixed; inset: 48px 0 0; z-index: 8; background: #292c345e; backdrop-filter: blur(2px); }
+.drop-overlay { position: fixed; inset: 10px; z-index: 60; display: grid; place-items: center; border: 2px dashed #83a7dd; border-radius: 14px; background: #f6f9fff5; pointer-events: none; }
+.drop-overlay > div { display: flex; align-items: center; flex-direction: column; gap: 15px; padding: 25px; text-align: center; }
+.drop-overlay .icon { width: 40px; height: 40px; margin-bottom: 4px; color: #7a9bc9; stroke-width: 1.3; }
+.drop-overlay strong { color: #5c7597; font-size: 18px; font-weight: 500; }
+.drop-overlay span { color: #9ca9bd; font-size: 12px; }
+.toast { position: fixed; left: 50%; bottom: 29px; z-index: 100; display: flex; align-items: center; max-width: min(480px, calc(100vw - 32px)); padding: 11px 18px; border: 1px solid #e6e8ed; border-radius: 8px; background: #fff; box-shadow: 0 5px 25px #272f3c29; color: #6b798e; font-size: 12px; line-height: 1.6; text-align: center; overflow-wrap: anywhere; transform: translateX(-50%); }
+.toast.error { border-color: #efdbdb; color: #bd7373; background: #fffbfb; }
+.noscript { position: fixed; inset: 0; z-index: 120; display: grid; place-items: center; padding: 30px; background: #fff; color: #697b93; text-align: center; }
+.away-screen { position: fixed; inset: 0; z-index: 90; overflow: auto; background: #f6f7f9; }
+.away-header { display: flex; align-items: center; justify-content: space-between; gap: 20px; height: 62px; padding: 0 30px; border-bottom: 1px solid #e8ebf0; background: #fff; }
+.away-header .brand-lockup { color: #79869a; font-size: 13px; }
+.away-header .brand-lockup > span:last-child { color: #a5acb8; font-weight: 400; }
+.away-content { display: flex; align-items: center; flex-direction: column; max-width: 800px; margin: 0 auto; padding: clamp(50px, 12vh, 125px) 25px 40px; text-align: center; }
+.away-illustration { display: grid; place-items: center; width: 66px; height: 66px; margin-bottom: 26px; border: 1px solid #e4e9f1; border-radius: 18px; background: #eef2f8; color: #8eabcF; }
+.away-illustration .icon { width: 31px; height: 31px; stroke-width: 1.3; }
+.away-content > .eyebrow { color: #a4adbd; font-size: 9px; letter-spacing: .18em; }
+.away-content h1 { margin: 12px 0 0; color: #64748c; font-size: 26px; font-weight: 500; line-height: 1.5; letter-spacing: .05em; }
+.away-content > p { margin: 14px 0 0; color: #a2adbe; font-size: 12px; }
+.away-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; width: 100%; margin-top: 48px; }
+.away-cards > div { display: flex; align-items: flex-start; flex-direction: column; gap: 13px; padding: 23px; border: 1px solid #e6eaf0; border-radius: 9px; background: #fff; text-align: left; }
+.away-cards .icon { width: 24px; height: 24px; margin-bottom: 3px; color: #99afce; }
+.away-cards strong { color: #8391a8; font-size: 12px; font-weight: 500; }
+.away-cards span { color: #b6becc; font-size: 10px; }
+.away-date { margin-top: 42px; color: #b8c0cc; font-size: 10px; }
+
+:root[data-theme="feishu"] { --brand: #4678ec; --brand-hover: #3568d8; --brand-soft: #eaf0fe; --chrome: #e6e9f0; }
+[data-theme="feishu"] .rail-button.active { background: #dce4f6; color: #5478c6; }
+[data-theme="feishu"] .rail-button.active .icon { fill: none; stroke: currentColor; }
+[data-theme="feishu"] .office-banner { background: linear-gradient(110deg, #e8edfc, #e4f2fd); }
+[data-theme="feishu"] .banner-copy em { color: #5183df; }
+[data-theme="feishu"] .banner-copy button { background: #7196ea; box-shadow: none; }
+[data-theme="feishu"] .chapter-item.active { background: #edf0f8; }
+[data-theme="feishu"] .message-avatar { border-radius: 50%; background: #e9effc; color: #6486ce; }
+[data-theme="feishu"] .message-bubble, [data-theme="feishu"] .message-bubble::before { background: #f2f4f9; }
+[data-masked="true"] .chat-title h2 { letter-spacing: .01em; }
+@keyframes soft-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
+
+@media (min-width: 1600px) {
+  .office-banner { height: 113px; }
+  .banner-copy { padding: 11px 12px; }
+  .banner-copy strong { font-size: 18px; }
+  .banner-copy p { font-size: 12px; margin-bottom: 13px; }
+  .banner-copy button { height: 28px; font-size: 13px; }
+  .banner-mascots { right: 17px; bottom: 6px; transform: scale(1.15); transform-origin: bottom right; }
+  .sidebar-toolbar { height: 62px; }
+  .chapter-item { min-height: 82px; gap: 12px; padding-right: 14px; padding-left: 14px; }
+  .chapter-avatar { width: 48px; height: 48px; font-size: 15px; }
+  .chapter-copy strong { font-size: 15px; }
+  .chapter-copy small { font-size: 13px; }
+  .chapter-side time { font-size: 12px; }
+  .chat-header { min-height: 70px; padding-right: 20px; padding-left: 18px; }
+  .chat-title h2 { font-size: 17px; }
+  .chat-actions { gap: 12px; }
+  .messages { padding: 22px 28px 18px 18px; }
+  .message-body { max-width: min(86%, 1020px); }
+  .message-avatar { width: 40px; height: 40px; }
+  .sender-name { font-size: 13px; }
+  .composer-box { height: 185px; }
+}
+/* Desktop proportions follow the supplied Mac DingTalk reference. */
+@media (min-width: 1101px) {
+  :root { --rail-width: clamp(72px, 6.1vw, 112px); --sidebar-width: clamp(356px, 32.4vw, 610px); }
+  .app-shell { grid-template-rows: clamp(48px, 4.1vw, 72px) minmax(0, 1fr); }
+  .global-search { height: calc(clamp(48px, 4.1vw, 72px) - 14px); }
+  .global-search > span, .global-search kbd { font-size: clamp(16px, 1.3vw, 23px); }
+  .window-controls i { width: 15px; height: 15px; }
+  .rail-profile { width: clamp(45px, 3.6vw, 64px); height: clamp(45px, 3.6vw, 64px); margin-bottom: 18px; }
+  .rail-main { gap: 7px; }
+  .rail-button { width: 40px; height: 40px; min-height: 40px; }
+  .rail-button .icon { width: 26px; height: 26px; }
+  .office-banner { height: clamp(110px, 8.8vw, 154px); margin: 10px 16px 0; }
+  .banner-copy { padding: 10px 12px; }
+  .banner-copy strong { font-size: clamp(17px, 1.4vw, 24px); letter-spacing: -.6px; white-space: nowrap; }
+  .banner-copy p { font-size: clamp(12px, 1.05vw, 18px); margin-bottom: 13px; }
+  .banner-copy button { height: 29px; font-size: 14px; }
+  .banner-mascots { right: 14px; bottom: 9px; transform: scale(1.15); transform-origin: bottom right; }
+  .sidebar-toolbar { height: 61px; padding: 0 22px; }
+  .list-tabs { height: 34px; }
+  .list-tabs button { height: 28px; min-width: 64px; font-size: 15px; }
+  .chapter-item { min-height: clamp(80px, 6.5vw, 114px); gap: 12px; padding: 12px 16px; }
+  .chapter-avatar { width: clamp(48px, 4.1vw, 72px); height: clamp(48px, 4.1vw, 72px); padding: 4px; border-radius: 12px; font-size: clamp(15px, 1.3vw, 23px); word-break: break-all; }
+  .chapter-copy strong { font-size: clamp(16px, 1.3vw, 23px); }
+  .chapter-copy small { font-size: clamp(14px, 1.15vw, 20px); }
+  .chapter-side time { font-size: clamp(12px, 1.05vw, 18px); max-width: 62px; }
+  .group-badge { height: clamp(19px, 1.55vw, 27px); font-size: clamp(11px, 1vw, 17px); }
+  .chat-header { min-height: clamp(70px, 5.4vw, 95px); padding: 10px 18px; }
+  .chat-avatar { width: 42px; height: 42px; padding: 4px 7px; word-break: break-all; }
+  .chat-title h2 { font-size: clamp(18px, 1.4vw, 25px); }
+  .chat-title p { font-size: clamp(13px, 1.15vw, 20px); }
+  .chat-actions { gap: 7px; padding-left: 8px; }
+  .chat-actions .icon { width: 23px; height: 23px; }
+  .message-avatar { width: 41px; height: 41px; font-size: 14px; }
+  .sender-name { font-size: 14px; }
+  .message-body { max-width: calc(100% - 70px); }
+  .composer-shortcuts button { height: 33px; font-size: 14px; }
+  .composer-box textarea { font-size: 16px; }
+  .composer-tools .icon { width: 22px; height: 22px; }
+}
+@media (max-width: 1100px) {
+  :root { --sidebar-width: 300px; --rail-width: 59px; }
+  .office-banner { margin-right: 10px; margin-left: 10px; }
+  .banner-copy strong { font-size: 13px; letter-spacing: -.3px; }
+  .banner-copy p { font-size: 10px; }
+  .banner-mascots { right: 5px; }
+  .sidebar-toolbar { gap: 8px; padding-right: 12px; padding-left: 12px; }
+  .chapter-item { gap: 9px; padding-right: 9px; padding-left: 9px; }
+  .chapter-avatar { width: 40px; height: 40px; }
+  .chapter-copy strong { font-size: 13px; }
+  .chapter-copy small { font-size: 11px; }
+  .conversation-title { gap: 4px; }
+  .group-badge { height: 16px; padding: 0 4px; font-size: 9px; }
+  .chat-actions { gap: 3px; padding-left: 5px; }
+  .chat-actions .icon-btn { width: 26px; }
+  .chat-actions .icon { width: 19px; height: 19px; }
+  .chat-actions > button:nth-child(2), .chat-actions > button:nth-child(6) { display: none; }
+  .composer-tools { gap: 4px; }
+  .composer-tools .icon-btn { width: 27px; }
+  .composer-tools > button:nth-child(5) { display: none; }
+  .reader-controls { gap: 3px; }
+  .send-note { gap: 7px; padding-left: 12px; padding-right: 10px; }
+}
+@media (max-width: 900px) {
+  :root { --sidebar-width: 276px; --rail-width: 56px; }
+  .global-search { width: 58%; }
+  .topbar-actions { gap: 12px; }
+  .rail { padding-left: 2px; }
+  .office-banner { height: 105px; }
+  .banner-copy strong { max-width: 230px; }
+  .sidebar-toolbar { gap: 7px; }
+  .list-tabs button { min-width: 49px; padding: 0 12px; }
+  .chapter-item { min-height: 70px; gap: 8px; padding-right: 8px; padding-left: 8px; }
+  .chapter-avatar { width: 39px; height: 39px; border-radius: 10px; font-size: 12px; }
+  .chapter-copy { gap: 7px; }
+  .chapter-side time { font-size: 10px; }
+  .chapter-side { min-width: 24px; }
+  .conversation-title .group-badge { display: none; }
+  .chat-header { gap: 8px; min-height: 63px; padding-right: 11px; padding-left: 12px; }
+  .chat-avatar { width: 34px; height: 34px; font-size: 13px; }
+  .chat-title h2 { font-size: 14px; }
+  .chat-title p { font-size: 10px; }
+  .chat-actions { gap: 1px; }
+  .chat-actions > button:nth-child(1), .chat-actions > button:nth-child(3) { display: none; }
+  .messages { padding-right: 15px; padding-left: 13px; }
+  .message-row { gap: 11px; }
+  .message-avatar { width: 33px; height: 33px; font-size: 11px; }
+  .message-body { max-width: calc(100% - 44px); }
+  .message-bubble { padding: 10px 14px; }
+  .reader-footer { padding-right: 11px; padding-left: 11px; }
+  .composer-tools > button:nth-child(2), .composer-tools > button:nth-child(7) { display: none; }
+  .composer-tools { gap: 3px; }
+  .composer-toolbar { gap: 7px; padding-right: 8px; padding-left: 8px; }
+  .keyboard-hint { font-size: 8px; }
+  .welcome-card { margin-left: 44px; padding: 18px; }
+}
+@media (max-width: 760px) {
+  .app-shell { grid-template-columns: minmax(0, 1fr); column-gap: 0; padding: 0; }
+  .topbar { padding: 0 13px; }
+  .window-controls { gap: 7px; }
+  .window-controls i { width: 10px; height: 10px; }
+  .global-search { top: 9px; width: min(53%, 300px); height: 30px; gap: 3px; padding: 0 8px; }
+  .global-search .icon { width: 16px; height: 16px; margin-right: 1px; }
+  .global-search > span { font-size: 12px; }
+  .global-search kbd { display: none; }
+  .topbar-actions { gap: 7px; }
+  .topbar-actions .icon-btn { width: 25px; height: 28px; padding: 3px; }
+  .topbar-actions .icon { width: 19px; height: 19px; }
+  .topbar-actions .top-add .icon { width: 23px; height: 23px; }
+  .rail { display: none; }
+  .conversations { position: fixed; top: 48px; bottom: 0; left: 0; z-index: 10; width: min(340px, 90vw); border-radius: 0 7px 0 0; box-shadow: 10px 0 30px #292c341c; visibility: hidden; pointer-events: none; transform: translateX(-102%); transition: transform .2s ease, visibility .2s; }
+  .sidebar-open .conversations { visibility: visible; pointer-events: auto; transform: translateX(0); }
+  .office-banner { height: 101px; }
+  .banner-copy strong { max-width: none; font-size: 15px; }
+  .sidebar-toolbar { gap: 8px; height: 53px; }
+  .sidebar-toolbar .icon-btn { width: 30px; height: 30px; }
+  .sidebar-toolbar > #importPlus { margin-left: auto; }
+  .chapter-item { min-height: 72px; padding-right: 12px; padding-left: 12px; }
+  .chapter-avatar { width: 42px; height: 42px; font-size: 13px; }
+  .chapter-copy strong { font-size: 14px; }
+  .chapter-copy small { font-size: 12px; }
+  .conversation-title .group-badge { display: inline-flex; }
+  .chapter-side time { font-size: 10px; }
+  .pinned-conversations { padding-bottom: 0; }
+  .reader-main { grid-column: 1; border-radius: 0; }
+  .mobile-only { display: inline-flex; }
+  .chat-header { gap: 8px; min-height: 62px; padding: 8px 10px 8px 7px; }
+  .chat-header > .mobile-only { width: 29px; }
+  .chat-avatar { width: 33px; height: 33px; }
+  .chat-title h2 { font-size: 14px; }
+  .chat-title-line { gap: 5px; }
+  .chat-title-line > .group-badge { display: none; }
+  .chat-title p { font-size: 10px; }
+  .chat-actions .icon-btn { width: 28px; height: 30px; }
+  .chat-actions #searchBtn { display: none; }
+  .chat-actions #addBookmark, .chat-actions #readingSettings { display: inline-flex; }
+  .storage-warning { padding: 8px 15px; font-size: 10px; }
+  .messages { padding: 18px 14px 15px 12px; }
+  .message-row { gap: 11px; margin-bottom: 18px; }
+  .message-avatar { width: 32px; height: 32px; font-size: 11px; }
+  .message-body { max-width: calc(100% - 43px); }
+  .sender-name { margin-bottom: 5px; font-size: 10px; }
+  .message-bubble { padding: 10px 13px; border-radius: 15px; }
+  .chapter-divider, .chapter-intro { font-size: 10px; }
+  .reader-footer { padding: 0 10px max(5px, env(safe-area-inset-bottom)); }
+  .composer-shortcuts { gap: 6px; min-height: 34px; padding-bottom: 5px; }
+  .composer-shortcuts button { height: 27px; gap: 4px; padding: 0 9px; font-size: 11px; }
+  .composer-shortcuts .icon { width: 16px; height: 16px; }
+  .composer-shortcuts button:last-child { width: 28px; }
+  .composer-box { height: 105px; border-radius: 17px; }
+  .composer-box textarea { padding: 10px 13px 4px; border-radius: 17px 17px 0 0; font-size: 13px; }
+  .composer-toolbar { min-height: 35px; padding: 0 7px 5px; }
+  .composer-tools { gap: 4px; }
+  .composer-tools .icon-btn { width: 26px; height: 28px; padding: 3px; }
+  .composer-tools .icon { width: 18px; height: 18px; }
+  .composer-tools > button:nth-child(3) { display: none; }
+  .composer-tools > button:nth-child(6) { display: inline-flex; }
+  .composer-tools .type-tool { font-size: 16px; }
+  .reader-controls { gap: 1px; }
+  .reader-controls > .icon-btn { width: 25px; height: 28px; }
+  .send-note { height: 29px; gap: 7px; margin-left: 3px; padding: 0 9px 0 12px; font-size: 11px; }
+  .send-note > span { padding-left: 7px; }
+  .composer-status { height: 17px; padding-top: 1px; }
+  .reading-progress { gap: 10px; font-size: 8px; }
+  .keyboard-hint { display: none; }
+  .welcome-card { margin-left: 43px; padding: 17px; }
+  .welcome-title { font-size: 17px; }
+  .welcome-description { font-size: 12px; }
+  .modal { max-height: calc(100dvh - 30px); padding: 23px; }
+  .modal-heading h2 { font-size: 18px; }
+  .modal-heading > .icon-btn { width: 36px; height: 36px; }
+  .file-drop { padding: 25px 12px; }
+  .file-drop > strong { font-size: 11px; }
+  .form-row { gap: 10px; }
+  .theme-options { gap: 9px; }
+  .theme-option { padding-right: 7px; padding-left: 7px; }
+  .toast { bottom: 22px; font-size: 11px; }
+  .away-header { height: 58px; gap: 10px; padding: 0 16px; }
+  .away-header .brand-lockup { gap: 8px; }
+  .away-content { padding: 54px 22px 35px; }
+  .away-content h1 { font-size: 23px; }
+  .away-cards { grid-template-columns: 1fr; gap: 11px; max-width: 355px; margin-top: 33px; }
+  .away-cards > div { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 7px 14px; padding: 18px 21px; }
+  .away-cards .icon { grid-column: 1; grid-row: 1 / 3; align-self: center; margin: 0; }
+  .away-cards strong, .away-cards span { grid-column: 2; }
+  .away-date { margin-top: 28px; }
+}
+@media (max-width: 380px) {
+  .global-search { width: 50%; }
+  .topbar { padding-right: 9px; padding-left: 10px; }
+  .topbar-actions { gap: 3px; }
+  .chat-header { gap: 6px; }
+  .chat-title h2 { font-size: 13px; }
+  .messages { padding-right: 11px; padding-left: 10px; }
+  .message-row { gap: 9px; }
+  .message-avatar { width: 30px; height: 30px; }
+  .message-body { max-width: calc(100% - 39px); }
+  .message-bubble { padding: 9px 12px; }
+  .composer-tools { gap: 0; }
+  .composer-tools > button:nth-child(4) { display: none; }
+  .modal { width: calc(100vw - 24px); padding: 20px; }
+  .conversation-title .group-badge { display: none; }
+}
+@media (max-height: 650px) and (min-width: 761px) {
+  .rail-profile { width: 36px; height: 36px; margin-bottom: 8px; }
+  .rail-main { gap: 1px; }
+  .rail-button { height: 31px; min-height: 31px; width: 33px; }
+  .rail-button .icon { width: 21px; height: 21px; }
+  .rail-bottom { gap: 3px; margin-top: 5px; padding-top: 6px; }
+  .office-banner { height: 92px; }
+  .sidebar-toolbar { height: 48px; }
+  .pinned-conversations .chapter-item { min-height: 62px; padding-top: 8px; padding-bottom: 8px; }
+  .composer-box { height: 126px; }
+  .composer-shortcuts { min-height: 35px; padding-bottom: 5px; }
+  .chat-header { min-height: 60px; }
+}
+@media (max-height: 540px) {
+  .rail-main > .rail-button:nth-child(n + 7) { display: none; }
+  .pinned-conversations { display: none; }
+  .composer-box { height: 90px; }
+  .composer-status { height: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation: none !important; transition: none !important; }
+}
+
+</style>
+  <style>
+/* Feishu geometry and colors follow BiliShu v0.6.1, CSS_FS + CSS_CORE_EXTRA.
+   Every rule is scoped to this theme; the accepted DingTalk stylesheet is unchanged. */
+:root[data-theme="feishu"] {
+  --brand: #3370ff;
+  --brand-hover: #245bdb;
+  --brand-soft: #e8f0ff;
+  --ink: #1f2329;
+  --muted: #8f959e;
+  --line: #e8e9eb;
+  --chrome: #d2e0f1;
+  --rail-width: 230px;
+  --sidebar-width: 360px;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
+}
+[data-theme="feishu"] body { background: #fff; }
+[data-theme="feishu"] .app-shell { grid-template-columns: var(--rail-width) var(--sidebar-width) minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); gap: 0; padding: 0; background: #fff; }
+[data-theme="feishu"] .topbar,
+[data-theme="feishu"] .rail { display: none; }
+
+/* Full-height text navigation, with the original source's independent search. */
+[data-theme="feishu"] .feishu-nav { grid-column: 1; grid-row: 1; display: flex; flex-direction: column; min-width: 0; min-height: 0; padding: 26px 12px 14px; border-right: 1px solid #dfe5ec; background: #d2e0f1; color: #1f2329; }
+[data-theme="feishu"] .feishu-rail-head { display: flex; align-items: center; justify-content: space-between; min-height: 54px; flex-shrink: 0; padding: 2px 4px 12px; }
+[data-theme="feishu"] .feishu-profile { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; flex-shrink: 0; overflow: hidden; border-radius: 50%; background: #b7d8c2; color: #fff; font-size: 25px; font-weight: 600; }
+[data-theme="feishu"] .feishu-create { display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; flex-shrink: 0; padding: 0; border: 2px solid #5b6068; border-radius: 50%; background: transparent; color: #454a52; font: 26px/22px Arial, sans-serif; transition: background .15s; }
+[data-theme="feishu"] .feishu-create .icon { width: 18px; height: 18px; stroke-width: 1.8; }
+[data-theme="feishu"] .feishu-create:hover { background: #c7d0df; }
+[data-theme="feishu"] .feishu-search { display: flex; align-items: center; gap: 9px; width: calc(100% - 24px); min-height: 40px; flex-shrink: 0; margin: 2px 12px 14px; padding: 9px 12px; border: 1px solid #bcc5d2; border-radius: 10px; background: rgb(108 126 152 / 16%); box-shadow: inset 0 1px 2px #00000006; color: #24272d; font-family: inherit; font-size: 14px; line-height: 20px; text-align: left; white-space: nowrap; transition: background .15s; }
+[data-theme="feishu"] .feishu-search:hover { background: rgb(108 126 152 / 23%); }
+[data-theme="feishu"] .feishu-search .icon { width: 20px; height: 20px; }
+[data-theme="feishu"] .feishu-search span { overflow: hidden; text-overflow: ellipsis; }
+[data-theme="feishu"] .feishu-nav-items { display: flex; flex: 1; flex-direction: column; gap: 4px; min-height: 0; overflow-x: hidden; overflow-y: auto; scrollbar-width: none; }
+[data-theme="feishu"] .feishu-nav-items::-webkit-scrollbar { display: none; }
+[data-theme="feishu"] .feishu-nav-item { display: flex; align-items: center; justify-content: flex-start; gap: 12px; width: 100%; height: 44px; min-height: 44px; flex-shrink: 0; padding: 0 12px; border-radius: 10px; background: transparent; color: #1f2329; font-family: inherit; font-size: 15px; font-weight: 400; line-height: 1.4; text-align: left; transition: background .15s; }
+[data-theme="feishu"] .feishu-nav-item .icon { width: 20px; height: 20px; color: #646a73; stroke-width: 1.7; }
+[data-theme="feishu"] .feishu-nav-item > span { display: inline; }
+[data-theme="feishu"] .feishu-nav-item:hover { background: rgb(255 255 255 / 55%); }
+[data-theme="feishu"] .feishu-nav-item.active,
+[data-theme="feishu"] .feishu-nav-item[aria-current="page"] { background: #fff; box-shadow: 0 1px 2px #0000000d; font-weight: 600; }
+[data-theme="feishu"] .feishu-nav-item.active .icon,
+[data-theme="feishu"] .feishu-nav-item[aria-current="page"] .icon { color: #3370ff; }
+[data-theme="feishu"] .feishu-nav-bottom { display: flex; flex-direction: column; gap: 4px; flex-shrink: 0; margin-top: auto; padding-top: 8px; }
+
+/* The source uses a flat white list rather than the DingTalk banner and cards. */
+[data-theme="feishu"] .conversations { grid-column: 2; grid-row: 1; border-right: 1px solid #e8e9eb; border-radius: 0; background: #fff; }
+[data-theme="feishu"] .office-banner,
+[data-theme="feishu"] .current-file,
+[data-theme="feishu"] .chapter-search,
+[data-theme="feishu"] .sidebar-footer { display: none; }
+[data-theme="feishu"] .sidebar-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 6px; height: 56px; min-height: 56px; padding: 14px 16px 8px; background: #fff; }
+[data-theme="feishu"] .sidebar-toolbar > .icon-btn:first-child,
+[data-theme="feishu"] #savedTab { display: none; }
+[data-theme="feishu"] .list-tabs { display: inline-flex; align-items: center; gap: 2px; height: 28px; padding: 2px; border-radius: 14px; background: #e7eaf1; }
+[data-theme="feishu"] .list-tabs button { height: 24px; min-width: 0; padding: 0 12px; border-radius: 12px; background: transparent; color: #646a73; font-size: 13px; font-weight: 400; }
+[data-theme="feishu"] .list-tabs button.selected,
+[data-theme="feishu"] .list-tabs button[aria-selected="true"] { background: #fff; color: #1f2329; box-shadow: 0 1px 3px rgb(31 35 41 / 12%); font-weight: 600; }
+[data-theme="feishu"] .list-tabs button:hover { color: #1f2329; }
+[data-theme="feishu"] .list-tabs button > span { display: none; }
+[data-theme="feishu"] .feishu-list-actions { display: flex; align-items: center; gap: 2px; min-width: 0; margin-left: auto; }
+[data-theme="feishu"] .feishu-list-actions .icon-btn { width: 25px; height: 27px; padding: 4px; border-radius: 5px; color: #646a73; }
+[data-theme="feishu"] .feishu-list-actions .icon { width: 17px; height: 17px; }
+[data-theme="feishu"] .sidebar-toolbar > #importPlus { width: 25px; height: 27px; margin-left: 0; padding: 3px; color: #646a73; opacity: 1; }
+[data-theme="feishu"] .sidebar-toolbar > #importPlus .icon { width: 18px; height: 18px; }
+[data-theme="feishu"] .pinned-conversations { padding: 0; border-bottom: 0; background: #fff; }
+[data-theme="feishu"] .chapter-list { padding: 0 0 12px; background: #fff; }
+[data-theme="feishu"] .chapter-item { display: flex; align-items: center; gap: 12px; min-height: 74px; padding: 12px 16px; border: 0; border-radius: 0; background: transparent; }
+[data-theme="feishu"] .chapter-item:hover { background: #f5f6f7; }
+[data-theme="feishu"] .chapter-item.active { background: #e4edfb; }
+[data-theme="feishu"] .chapter-avatar { width: 44px; height: 44px; flex-shrink: 0; overflow: hidden; border-radius: 50%; color: #fff; font-size: 13px; font-weight: 600; line-height: 1.15; }
+[data-theme="feishu"] .chapter-copy { gap: 5px; }
+[data-theme="feishu"] .conversation-title { gap: 5px; }
+[data-theme="feishu"] .chapter-copy strong { color: #1f2329; font-size: 14px; font-weight: 500; line-height: 1.4; }
+[data-theme="feishu"] .chapter-copy small { color: #8f959e; font-size: 13px; line-height: 1.4; }
+[data-theme="feishu"] .group-badge { display: none; }
+[data-theme="feishu"] .chapter-side { gap: 9px; min-width: 28px; padding-top: 3px; color: #8f959e; }
+[data-theme="feishu"] .chapter-side time { font-size: 11px; color: #8f959e; }
+[data-theme="feishu"] .chapter-item.active .chapter-side time { color: #8f959e; }
+[data-theme="feishu"] .chapter-item.saved .chapter-dot { background: #e6ac36; }
+[data-theme="feishu"] .list-pager { padding: 10px 12px; color: #8f959e; }
+
+/* 56px header, round avatars and square-cornered gray message bubbles. */
+[data-theme="feishu"] .reader-main { grid-column: 3; grid-row: 1; border-radius: 0; background: #fff; }
+[data-theme="feishu"] .chat-header { gap: 10px; height: 56px; min-height: 56px; padding: 0 20px; border-bottom: 1px solid #e8e9eb; background: #fff; }
+[data-theme="feishu"] .chat-avatar { width: 38px; height: 38px; padding: 2px 4px; overflow: hidden; border-radius: 50%; font-size: 13px; font-weight: 600; }
+[data-theme="feishu"] .chat-title-line { gap: 7px; }
+[data-theme="feishu"] .chat-title h2 { color: #1f2329; font-size: 16px; font-weight: 600; line-height: 1.4; }
+[data-theme="feishu"] .chat-title p { margin-top: 1px; color: #8f959e; font-size: 12px; line-height: 1.4; }
+[data-theme="feishu"] .chat-actions { gap: 4px; padding-left: 8px; }
+[data-theme="feishu"] .chat-actions .icon-btn { width: 28px; height: 28px; padding: 5px; border-radius: 5px; color: #646a73; }
+[data-theme="feishu"] .chat-actions .icon { width: 18px; height: 18px; }
+[data-theme="feishu"] .chat-actions > button:nth-child(1),
+[data-theme="feishu"] .chat-actions > button:nth-child(2),
+[data-theme="feishu"] .chat-actions > button:nth-child(6) { display: none; }
+[data-theme="feishu"] .chat-tabs { display: none; }
+[data-theme="feishu"] .message-scroll { background: #fff; scrollbar-gutter: stable; }
+[data-theme="feishu"] .messages { max-width: none; padding: 20px 24px; }
+[data-theme="feishu"] .chapter-divider { margin-bottom: 16px; color: #8f959e; font-size: 11px; }
+[data-theme="feishu"] .chapter-intro { margin-bottom: 16px; color: #8f959e; font-size: 11px; }
+[data-theme="feishu"] .message-row { gap: 10px; margin-bottom: 16px; }
+[data-theme="feishu"] .message-avatar { width: 36px; height: 36px; flex-shrink: 0; overflow: hidden; border-radius: 50%; background: #9eb9dc; color: #fff; font-size: 13px; font-weight: 600; }
+[data-theme="feishu"] .message-body { max-width: min(78%, 920px); }
+[data-theme="feishu"] .sender-name { margin-bottom: 4px; color: #8f959e; font-size: 12px; }
+[data-theme="feishu"] .message-bubble { padding: 10px 14px; border: 0; border-radius: 2px 8px 8px 8px; background: #eeefee; color: #1f2329; font-family: var(--reader-font-family); font-size: var(--reader-font-size, 14px); line-height: var(--reader-line-height, 1.6); }
+[data-theme="feishu"] .message-bubble::before { display: none; }
+[data-theme="feishu"] .message-bubble p { margin-bottom: .7em; }
+[data-theme="feishu"] .message-bubble p:last-child { margin-bottom: 0; }
+[data-theme="feishu"] .own-message { flex-direction: row-reverse; }
+[data-theme="feishu"] .own-message .message-avatar,
+[data-theme="feishu"] .own-message .sender-name { display: none; }
+[data-theme="feishu"] .own-message .message-body { align-items: flex-end; }
+[data-theme="feishu"] .own-message .message-bubble { border-radius: 8px 2px 8px 8px; background: #e8f0ff; }
+[data-theme="feishu"] .note-status { color: #8f959e; }
+[data-theme="feishu"] .chapter-end { color: #a1a7af; }
+[data-theme="feishu"] .welcome-card { margin-left: 46px; border-radius: 2px 8px 8px 8px; background: #eeefee; }
+[data-theme="feishu"] .welcome-title { color: #1f2329; }
+[data-theme="feishu"] .welcome-kicker,
+[data-theme="feishu"] .welcome-description { color: #646a73; }
+
+/* The reference composer is a compact bordered card, not a fixed 200px dock. */
+[data-theme="feishu"] .reader-footer { padding: 4px 12px 12px; border: 0; background: #fff; }
+[data-theme="feishu"] .composer-shortcuts { display: none; }
+[data-theme="feishu"] .composer-box { height: auto; min-height: 92px; border: 1px solid #e8e9eb; border-radius: 12px; background: #fff; transition: border-color .15s, box-shadow .15s; }
+[data-theme="feishu"] .composer-box:hover { border-color: #c2d4ff; box-shadow: 0 2px 10px rgb(26 135 255 / 8%); }
+[data-theme="feishu"] .composer-box:focus-within { border-color: #a8c3ff; box-shadow: 0 0 0 1px #e8f0ff; }
+[data-theme="feishu"] .composer-box textarea { display: block; width: 100%; height: 52px; min-height: 44px; max-height: 160px; flex: none; padding: 8px 14px 10px; overflow-y: auto; border: 0; border-radius: 12px 12px 0 0; background: transparent; color: #1f2329; font-size: 14px; line-height: 1.6; resize: none; }
+[data-theme="feishu"] .composer-box textarea::placeholder { color: #8f959e; }
+[data-theme="feishu"] .composer-toolbar { gap: 8px; min-height: 38px; padding: 4px 10px 8px; }
+[data-theme="feishu"] .composer-tools { gap: 0; }
+[data-theme="feishu"] .composer-tools .icon-btn { width: 28px; height: 26px; padding: 4px; border-radius: 5px; color: #646a73; }
+[data-theme="feishu"] .composer-tools .icon { width: 18px; height: 18px; }
+[data-theme="feishu"] .composer-tools .type-tool { font-size: 16px; }
+[data-theme="feishu"] .reader-controls { gap: 3px; }
+[data-theme="feishu"] .reader-controls > .icon-btn { width: 26px; height: 26px; padding: 4px; color: #646a73; }
+[data-theme="feishu"] .send-note { height: 26px; margin-left: 4px; padding: 0 14px; border: 0; border-radius: 5px; background: #3370ff; color: #fff; font-size: 12px; font-weight: 400; }
+[data-theme="feishu"] .send-note > span { display: none; }
+[data-theme="feishu"] .send-note:disabled { background: #c5c9d0; color: #fff; opacity: 1; }
+[data-theme="feishu"] .send-note:hover:not(:disabled) { background: #245bdb; color: #fff; }
+[data-theme="feishu"] .composer-status { height: 18px; padding-top: 3px; }
+[data-theme="feishu"] .reading-progress,
+[data-theme="feishu"] #saveStatus,
+[data-theme="feishu"] .keyboard-hint { color: #a2a8b0; }
+[data-theme="feishu"] .progress-track { background: #f6f7f9; }
+[data-theme="feishu"] .progress-track > span { background: #c7d7fa; }
+[data-theme="feishu"] .icon-btn:hover { background: #f5f6f7; color: #1f2329; }
+[data-theme="feishu"] .icon-btn[aria-pressed="true"] { background: #e8f0ff; color: #3370ff; }
+[data-theme="feishu"] .theme-option.active { border-color: #8db1ff; background: #f6f9ff; }
+
+/* Source minimums are 180px navigation and 280px conversation list. */
+@media (max-width: 1100px) {
+  :root[data-theme="feishu"] { --rail-width: 190px; --sidebar-width: 300px; }
+  [data-theme="feishu"] .feishu-nav { padding-right: 10px; padding-left: 10px; }
+  [data-theme="feishu"] .feishu-search { width: calc(100% - 8px); margin-right: 4px; margin-left: 4px; padding-right: 10px; padding-left: 10px; font-size: 12px; }
+  [data-theme="feishu"] .feishu-nav-item { gap: 10px; padding-right: 10px; padding-left: 10px; font-size: 14px; }
+  [data-theme="feishu"] .sidebar-toolbar { gap: 4px; padding-right: 12px; padding-left: 12px; }
+  [data-theme="feishu"] .feishu-list-actions { gap: 0; }
+  [data-theme="feishu"] .feishu-list-actions .icon-btn { width: 22px; }
+  [data-theme="feishu"] .sidebar-toolbar > #importPlus { width: 22px; }
+  [data-theme="feishu"] .chapter-item { gap: 10px; padding-right: 12px; padding-left: 12px; }
+  [data-theme="feishu"] .chapter-avatar { width: 40px; height: 40px; font-size: 12px; }
+  [data-theme="feishu"] .chapter-copy small { font-size: 12px; }
+  [data-theme="feishu"] .chat-header { gap: 8px; padding-right: 14px; padding-left: 14px; }
+  [data-theme="feishu"] .chat-title h2 { font-size: 15px; }
+  [data-theme="feishu"] .chat-actions { gap: 2px; padding-left: 4px; }
+  [data-theme="feishu"] .chat-actions .icon-btn { width: 26px; }
+  [data-theme="feishu"] .chat-actions > button:nth-child(3) { display: none; }
+  [data-theme="feishu"] .messages { padding-right: 18px; padding-left: 18px; }
+  [data-theme="feishu"] .message-body { max-width: calc(100% - 46px); }
+  [data-theme="feishu"] .composer-tools > button:nth-child(2),
+  [data-theme="feishu"] .composer-tools > button:nth-child(5),
+  [data-theme="feishu"] .composer-tools > button:nth-child(7) { display: none; }
+}
+@media (max-width: 900px) {
+  :root[data-theme="feishu"] { --rail-width: 180px; --sidebar-width: 280px; }
+  [data-theme="feishu"] .feishu-nav { padding-right: 8px; padding-left: 8px; }
+  [data-theme="feishu"] .feishu-search { gap: 7px; font-size: 12px; }
+  [data-theme="feishu"] .sidebar-toolbar { gap: 3px; padding-right: 10px; padding-left: 10px; }
+  [data-theme="feishu"] .list-tabs button { padding-right: 11px; padding-left: 11px; }
+  [data-theme="feishu"] .chapter-item { gap: 10px; padding-right: 10px; padding-left: 12px; }
+  [data-theme="feishu"] .chapter-side { min-width: 24px; }
+  [data-theme="feishu"] .chapter-side time { font-size: 10px; }
+  [data-theme="feishu"] .chat-header { gap: 7px; padding-right: 10px; padding-left: 12px; }
+  [data-theme="feishu"] .chat-avatar { width: 34px; height: 34px; }
+  [data-theme="feishu"] .chat-title h2 { font-size: 14px; }
+  [data-theme="feishu"] .chat-title p { font-size: 10px; }
+  [data-theme="feishu"] .chat-actions #searchBtn { display: none; }
+  [data-theme="feishu"] .messages { padding: 18px 13px; }
+  [data-theme="feishu"] .message-bubble { padding: 10px 12px; }
+  [data-theme="feishu"] .composer-tools > button:nth-child(3) { display: none; }
+  [data-theme="feishu"] .composer-toolbar { gap: 5px; padding-right: 8px; padding-left: 8px; }
+  [data-theme="feishu"] .composer-tools .icon-btn { width: 26px; }
+  [data-theme="feishu"] .send-note { padding-right: 11px; padding-left: 11px; }
+  [data-theme="feishu"] .keyboard-hint { display: none; }
+}
+@media (max-width: 760px) {
+  [data-theme="feishu"] .app-shell { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); }
+  [data-theme="feishu"] .feishu-nav { display: none; }
+  [data-theme="feishu"] .conversations { position: fixed; inset: 0 auto 0 0; z-index: 10; width: min(340px, 91vw); border-radius: 0; box-shadow: 10px 0 30px #1f232920; }
+  [data-theme="feishu"] .sidebar-backdrop { inset: 0; }
+  [data-theme="feishu"] .sidebar-toolbar { height: 58px; min-height: 58px; padding: 14px 12px 10px; }
+  [data-theme="feishu"] .sidebar-toolbar > #closeSidebar { width: 27px; height: 28px; padding: 4px; }
+  [data-theme="feishu"] .feishu-list-actions { gap: 1px; }
+  [data-theme="feishu"] .feishu-list-actions .icon-btn { width: 22px; }
+  [data-theme="feishu"] .chapter-item { min-height: 74px; padding: 12px 16px; }
+  [data-theme="feishu"] .chapter-avatar { width: 42px; height: 42px; }
+  [data-theme="feishu"] .chapter-copy strong { font-size: 14px; }
+  [data-theme="feishu"] .chapter-copy small { font-size: 12px; }
+  [data-theme="feishu"] .reader-main { grid-column: 1; grid-row: 1; }
+  [data-theme="feishu"] .chat-header { height: 56px; min-height: 56px; padding: 0 9px 0 7px; }
+  [data-theme="feishu"] .chat-header > .mobile-only { width: 28px; height: 30px; }
+  [data-theme="feishu"] .chat-avatar { width: 34px; height: 34px; }
+  [data-theme="feishu"] .chat-title h2 { font-size: 14px; }
+  [data-theme="feishu"] .chat-title p { font-size: 10px; }
+  [data-theme="feishu"] .chat-actions { gap: 1px; padding-left: 2px; }
+  [data-theme="feishu"] .chat-actions #addBookmark,
+  [data-theme="feishu"] .chat-actions #readingSettings { display: inline-flex; }
+  [data-theme="feishu"] .chat-actions .icon-btn { width: 27px; height: 29px; }
+  [data-theme="feishu"] .messages { padding: 18px 14px 18px 12px; }
+  [data-theme="feishu"] .message-row { gap: 9px; margin-bottom: 16px; }
+  [data-theme="feishu"] .message-avatar { width: 32px; height: 32px; font-size: 11px; }
+  [data-theme="feishu"] .message-body { max-width: calc(100% - 41px); }
+  [data-theme="feishu"] .own-message .message-body { max-width: 86%; }
+  [data-theme="feishu"] .sender-name { margin-bottom: 4px; font-size: 11px; }
+  [data-theme="feishu"] .message-bubble { padding: 9px 12px; }
+  [data-theme="feishu"] .reader-footer { padding: 4px 10px max(9px, env(safe-area-inset-bottom)); }
+  [data-theme="feishu"] .composer-box { min-height: 88px; }
+  [data-theme="feishu"] .composer-box textarea { height: 48px; min-height: 44px; padding: 8px 12px; font-size: 13px; }
+  [data-theme="feishu"] .composer-toolbar { min-height: 38px; padding: 4px 8px 8px; }
+  [data-theme="feishu"] .composer-tools > button:nth-child(6) { display: inline-flex; }
+  [data-theme="feishu"] .reader-controls { gap: 1px; }
+  [data-theme="feishu"] .send-note { height: 26px; padding-right: 12px; padding-left: 12px; font-size: 12px; }
+  [data-theme="feishu"] .composer-status { height: 16px; }
+  [data-theme="feishu"] .welcome-card { margin-left: 41px; padding: 17px; }
+}
+@media (max-width: 380px) {
+  [data-theme="feishu"] .sidebar-toolbar { gap: 2px; padding-right: 9px; padding-left: 9px; }
+  [data-theme="feishu"] .list-tabs button { padding-right: 10px; padding-left: 10px; }
+  [data-theme="feishu"] .feishu-list-actions .icon-btn { width: 20px; }
+  [data-theme="feishu"] .chapter-item { gap: 9px; padding-right: 12px; padding-left: 12px; }
+  [data-theme="feishu"] .chat-header { gap: 6px; }
+  [data-theme="feishu"] .chat-title h2 { font-size: 13px; }
+  [data-theme="feishu"] .messages { padding-right: 10px; padding-left: 10px; }
+  [data-theme="feishu"] .composer-tools > button:nth-child(4) { display: none; }
+}
+@media (max-height: 650px) and (min-width: 761px) {
+  [data-theme="feishu"] .feishu-nav { padding-top: 16px; padding-bottom: 10px; }
+  [data-theme="feishu"] .feishu-rail-head { min-height: 48px; padding-bottom: 8px; }
+  [data-theme="feishu"] .feishu-search { margin-bottom: 10px; }
+  [data-theme="feishu"] .feishu-nav-items,
+  [data-theme="feishu"] .feishu-nav-bottom { gap: 2px; }
+  [data-theme="feishu"] .feishu-nav-item { height: 39px; min-height: 39px; }
+  [data-theme="feishu"] .feishu-nav-bottom { padding-top: 6px; }
+  [data-theme="feishu"] .chat-header { height: 56px; min-height: 56px; }
+  [data-theme="feishu"] .composer-box { height: auto; min-height: 88px; }
+  [data-theme="feishu"] .composer-box textarea { height: 48px; }
+}
+
+</style>
+  <style>
+/* Book-specific contact names and automatically interleaved personal messages.
+   The existing theme styles continue to own pane, bubble and avatar geometry. */
+.novel-paragraph { display: block; min-width: 0; margin: 0; padding: 0; }
+.novel-paragraph[data-paragraph] { scroll-margin-top: 25px; }
+.reply-slot:empty { display: none; }
+
+.speaker-name { display: block; width: fit-content; max-width: 100%; margin: 0 0 6px; padding: 0; overflow: hidden; border: 0; border-radius: 3px; background: transparent; color: #a5a6a9; font-family: inherit; font-size: 12px; font-weight: 400; line-height: 1.5; text-align: left; white-space: nowrap; text-overflow: ellipsis; transition: color .15s; }
+.speaker-name:hover:not(:disabled) { background: transparent; color: var(--brand, #287aff); text-decoration: underline; text-underline-offset: 3px; }
+.speaker-name:focus-visible { outline: 2px solid var(--brand, #287aff); outline-offset: 3px; }
+.speaker-name:disabled { cursor: default; opacity: 1; }
+.dialogue-message .message-avatar { background: var(--speaker-soft, #deecff); color: var(--speaker-color, #2780ff); }
+.own-message .message-avatar { display: grid; }
+.own-message .sender-name { display: block; text-align: right; }
+.own-message .speaker-name { text-align: right; }
+
+/* Selection and search feedback apply only to the original text, never replies. */
+.reply-selected .message-row:not(.own-message) > .message-body > .message-bubble,
+.message-row.reply-selected:not(.own-message) > .message-body > .message-bubble { outline: 1px solid #b9d1f3; outline-offset: 2px; }
+.novel-paragraph.search-highlight > .message-row:not(.own-message) > .message-body > .message-bubble,
+.novel-paragraph.search-highlight > .message-row:not(.own-message) > .message-body > .message-bubble::before { background: #fff3c2; }
+
+/* One native dialog configures names and personal lines for the current book. */
+#chatSetupDialog { width: min(510px, calc(100vw - 36px)); }
+.chat-setup-section { margin-top: 21px; }
+.chat-setup-section > label:not(.names-import) { display: block; margin-bottom: 9px; color: #687387; font-size: 12px; font-weight: 500; line-height: 1.6; }
+#knownNames, #selfReplies { display: block; width: 100%; min-height: 90px; max-height: 190px; margin: 0; padding: 10px 12px; overflow-x: hidden; overflow-y: auto; border: 1px solid #e2e5ea; border-radius: 6px; background: #fcfcfd; color: #525e71; font-family: inherit; font-size: 12px; line-height: 1.7; resize: vertical; }
+#selfReplies { min-height: 112px; }
+#selfDisplayName { display: block; width: 100%; min-height: 36px; margin: 0; padding: 8px 12px; border: 1px solid #e2e5ea; border-radius: 6px; background: #fcfcfd; color: #525e71; font-family: inherit; font-size: 12px; line-height: 1.6; }
+#knownNames::placeholder, #selfReplies::placeholder, #selfDisplayName::placeholder { color: #a8aeb9; }
+#knownNames:focus-visible, #selfReplies:focus-visible, #selfDisplayName:focus-visible { outline: 2px solid var(--brand, #287aff); outline-offset: 3px; }
+.names-import { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 30px; margin-top: 10px; padding: 5px 10px; overflow: hidden; border: 1px solid #e1e6ee; border-radius: 5px; background: #fff; color: #7a879a; font-size: 11px; line-height: 1.6; cursor: pointer; transition: background .15s, border-color .15s; }
+.names-import label { display: inline-flex; align-items: center; gap: 6px; margin: 0; cursor: pointer; }
+.names-import .icon { width: 14px; height: 14px; }
+.names-import input[type="file"] { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+.names-import:hover { border-color: #bfd3ee; background: #f6f9ff; }
+.names-import:focus-within { outline: 2px solid var(--brand, #287aff); outline-offset: 3px; }
+.chat-setup-actions { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 9px; margin-top: 22px; padding-top: 17px; border-top: 1px solid #edf0f4; }
+.chat-setup-actions > button { min-height: 34px; }
+#chatSetupStatus { margin-top: 13px; color: #7388a4; font-size: 11px; line-height: 1.8; overflow-wrap: anywhere; }
+#chatSetupStatus:empty { display: none; }
+#chatSetupStatus.error, #chatSetupStatus[data-state="error"] { color: #bd6767; }
+#chatSetupStatus.success, #chatSetupStatus[data-state="success"] { color: #638e77; }
+
+[data-theme="feishu"] .speaker-name { margin-bottom: 4px; color: #8f959e; font-size: 12px; }
+[data-theme="feishu"] .speaker-name:hover:not(:disabled) { color: #3370ff; }
+[data-theme="feishu"] .dialogue-message .message-avatar { background: var(--speaker-soft, #e8f0ff); color: var(--speaker-color, #3370ff); }
+[data-theme="feishu"] .own-message .message-avatar { display: grid; background: #e8f0ff; color: #3370ff; }
+[data-theme="feishu"] .own-message .sender-name { display: block; text-align: right; }
+[data-theme="feishu"] .own-message .message-body { max-width: min(78%, calc(100% - 46px)); }
+[data-theme="feishu"] .chat-setup-section > label:not(.names-import) { color: #646a73; }
+[data-theme="feishu"] #knownNames,
+[data-theme="feishu"] #selfReplies,
+[data-theme="feishu"] #selfDisplayName { border-color: #e8e9eb; background: #fff; color: #1f2329; }
+[data-theme="feishu"] .names-import { border-color: #e8e9eb; color: #646a73; }
+[data-theme="feishu"] .names-import:hover { border-color: #bdd0ff; background: #f4f7ff; color: #3370ff; }
+
+@media (min-width: 1101px) {
+  [data-theme="dingtalk"] .speaker-name { font-size: 14px; }
+}
+@media (max-width: 760px) {
+  .speaker-name { margin-bottom: 5px; font-size: 10px; }
+  [data-theme="feishu"] .speaker-name { margin-bottom: 4px; font-size: 11px; }
+  [data-theme="feishu"] .own-message .message-body { max-width: min(86%, calc(100% - 41px)); }
+  .chat-setup-section { margin-top: 18px; }
+  #knownNames { min-height: 82px; }
+  #selfReplies { min-height: 100px; }
+  .chat-setup-actions { gap: 8px; margin-top: 19px; padding-top: 15px; }
+}
+@media (max-width: 380px) {
+  #chatSetupDialog { width: calc(100vw - 24px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .speaker-name, .names-import { transition: none; }
+}
+
+</style>
+</head>
+<body>
+  <svg class="svg-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M20 15a3 3 0 0 1-3 3H8l-5 3V6a3 3 0 0 1 3-3h11a3 3 0 0 1 3 3Z"/><path d="M7 8h9M7 12h6"/></symbol>
+    <symbol id="i-doc" viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9Z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></symbol>
+    <symbol id="i-bookmark" viewBox="0 0 24 24"><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16l-6-4Z"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><path d="M4 7h16M4 17h16"/><circle cx="9" cy="7" r="3"/><circle cx="15" cy="17" r="3"/></symbol>
+    <symbol id="i-left" viewBox="0 0 24 24"><path d="m14 5-7 7 7 7"/></symbol>
+    <symbol id="i-right" viewBox="0 0 24 24"><path d="m10 5 7 7-7 7"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V3m-5 5 5-5 5 5M4 15v5a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-5"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="m12 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6Z"/><path d="m8 12 3 3 5-6"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 6h16M9 6V3h6v3M6 6l1 15h10l1-15M10 10v7M14 10v7"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M3 7h7l2-3h9v16H3Z"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1 1M18 18l1 1M5 19l1-1M18 6l1-1"/></symbol>
+
+    <symbol id="i-video" viewBox="0 0 24 24"><rect x="2" y="6" width="13" height="12" rx="3"/><path d="m15 10 6-4v12l-6-4"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 9a6 6 0 0 1 12 0v6l3 3H3l3-3ZM10 21h4"/></symbol>
+    <symbol id="i-speaker" viewBox="0 0 24 24"><path d="M4 9h4l6-5v16l-6-5H4ZM19 8l3-2M19 12h3M19 16l3 2"/></symbol>
+    <symbol id="i-person" viewBox="0 0 24 24"><circle cx="10" cy="7" r="4"/><path d="M3 21v-2a7 7 0 0 1 11-6M19 13v8M15 17h8"/></symbol>
+    <symbol id="i-more" viewBox="0 0 24 24"><circle cx="4" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="20" cy="12" r="1"/></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24"><path d="m9 3 1-2h4l1 2 3 2 2 1v4l-1 2 1 2v4l-3 1-2 2h-5l-2-2-3-1v-4l1-2-1-2V6l2-1Z"/><circle cx="12" cy="11" r="3"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><path d="m5 3 4 5-3 3c2 3 4 5 7 7l3-3 5 4c-2 4-5 4-9 2S3 14 2 9s0-5 3-6Z"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 2v6M17 2v6M9 12h6l-4 6"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="m3 6 9 7 9-7"/></symbol>
+    <symbol id="i-check-square" viewBox="0 0 24 24"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7M8 10l4 4L22 3"/></symbol>
+    <symbol id="i-smile" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 15q4 5 8 0M8 8v1M16 8v1"/></symbol>
+    <symbol id="i-thumb" viewBox="0 0 24 24"><path d="M8 10 12 2c3 0 2 5 2 7h6c2 0 1 11-1 12H8ZM3 10h5v11H3Z"/></symbol>
+    <symbol id="i-camera" viewBox="0 0 24 24"><path d="M2 7h5l2-4h6l2 4h5v14H2Z"/><circle cx="12" cy="13" r="4"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M19 9c0 6-7 12-7 12S5 15 5 9a7 7 0 0 1 14 0Z"/><circle cx="12" cy="9" r="3"/></symbol>
+    <symbol id="i-screen" viewBox="0 0 24 24"><rect x="3" y="2" width="18" height="16" rx="3"/><path d="m7 22 5-7 5 7Z"/></symbol>
+    <symbol id="i-scissors" viewBox="0 0 24 24"><circle cx="6" cy="17" r="4"/><circle cx="18" cy="17" r="4"/><path d="m4 2 12 12M20 2 8 14"/></symbol>
+    <symbol id="i-at" viewBox="0 0 24 24"><circle cx="11" cy="12" r="4"/><path d="M15 8v7c0 4 7 2 7-3a10 10 0 1 0-6 9"/></symbol>
+  </defs></svg>
+
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="window-controls" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="brand-lockup"><div class="brand-mark" id="brandMark">钉</div><span id="brandName">钉钉</span></div>
+      <button class="global-search" id="globalSearch" aria-label="搜索当前文档"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg><span>搜索或提问</span><kbd>(⌘ F)</kbd></button>
+      <div class="topbar-actions"><button id="awayBtn" class="icon-btn" title="暂离，隐藏正文（Esc）" aria-label="暂离，隐藏正文（Esc）"><svg class="icon" aria-hidden="true"><use href="#i-screen"/></svg></button><button class="icon-btn top-add" data-action="import" title="导入 TXT" aria-label="导入 TXT"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></button></div>
+    </header>
+    <nav class="rail" aria-label="主导航">
+      <div class="rail-profile" title="个人工作空间" aria-label="个人工作空间"><span>🌿</span><i></i></div>
+      <div class="rail-main">
+        <button class="rail-button" data-action="away" title="工作台" aria-label="工作台"><svg class="icon" aria-hidden="true"><use href="#i-grid"/></svg></button>
+        <button id="messagesNav" class="rail-button active" title="消息与章节" aria-label="消息与章节"><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg><span>消息</span></button>
+        <button id="libraryBtn" class="rail-button" title="文档库" aria-label="文档库"><svg class="icon" aria-hidden="true"><use href="#i-doc"/></svg><span>文档</span></button>
+        <button class="rail-button" data-action="search" title="搜索正文" aria-label="搜索正文"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg></button><button class="rail-button" data-action="settings" title="应用设置" aria-label="应用设置"><svg class="icon" aria-hidden="true"><use href="#i-grid"/></svg></button><button class="rail-button" data-action="info" title="文档信息" aria-label="文档信息"><svg class="icon" aria-hidden="true"><use href="#i-person"/></svg></button><button class="rail-button" data-action="away" title="暂离工作台" aria-label="暂离工作台"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg></button><button class="rail-button" data-action="info" title="当前文档信息" aria-label="当前文档信息"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg></button>
+        <button id="bookmarksBtn" class="rail-button" title="收藏与待办" aria-label="收藏与待办"><svg class="icon" aria-hidden="true"><use href="#i-check-square"/></svg><span>收藏</span></button>
+        <button id="importNav" class="rail-button" title="导入 TXT 小说" aria-label="导入 TXT 小说"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg><span>导入</span></button>
+      </div>
+      <div class="rail-bottom"><button id="themeBtn" class="rail-button" title="切换到飞书外观" aria-label="切换外观"><span class="theme-mark" id="themeMark">飞</span><span>外观</span></button><button id="settingsBtn" class="rail-button" title="阅读设置" aria-label="阅读设置"><svg class="icon" aria-hidden="true"><use href="#i-gear"/></svg><span>设置</span></button></div>
+    </nav>
+    <nav id="feishuNav" class="feishu-nav" data-feishu-only hidden aria-label="飞书主导航">
+      <div class="feishu-rail-head"><div class="feishu-profile" title="个人工作空间"><span>🌿</span><i></i></div><button class="feishu-create" data-action="import" title="导入 TXT 小说" aria-label="导入 TXT 小说"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></button></div>
+      <button class="feishu-search" data-action="search" aria-label="搜索当前文档"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg><span>搜索(Ctrl+K)</span></button>
+      <div class="feishu-nav-items">
+        <button class="feishu-nav-item" id="feishuMessagesNav" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg><span>消息</span></button><button class="feishu-nav-item" data-action="info"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg><span>日历</span></button><button class="feishu-nav-item" data-action="away"><svg class="icon" aria-hidden="true"><use href="#i-grid"/></svg><span>工作台</span></button><button class="feishu-nav-item" data-action="library"><svg class="icon" aria-hidden="true"><use href="#i-doc"/></svg><span>云文档</span></button><button class="feishu-nav-item" data-action="library"><svg class="icon" aria-hidden="true"><use href="#i-file"/></svg><span>知识库</span></button><button class="feishu-nav-item" data-action="bookmarks"><svg class="icon" aria-hidden="true"><use href="#i-check-square"/></svg><span>任务</span></button><button class="feishu-nav-item" data-action="info"><svg class="icon" aria-hidden="true"><use href="#i-person"/></svg><span>联系人</span></button><button class="feishu-nav-item" data-action="library"><svg class="icon" aria-hidden="true"><use href="#i-grid"/></svg><span>项目</span></button>
+      </div>
+      <div class="feishu-nav-bottom"><button class="feishu-nav-item" data-action="settings"><svg class="icon" aria-hidden="true"><use href="#i-sun"/></svg><span>阅读设置</span></button><button class="feishu-nav-item" id="feishuThemeBtn"><svg class="icon" aria-hidden="true"><use href="#i-grid"/></svg><span>切换外观</span></button><button class="feishu-nav-item" data-action="settings"><svg class="icon" aria-hidden="true"><use href="#i-more"/></svg><span>更多</span></button></div>
+    </nav>
+    <aside class="conversations" id="sidebar" aria-label="章节目录">
+      <div class="office-banner"><div class="banner-copy"><strong>千问办公 | 本周行业大事，<em>AI 替你盘</em></strong><p>自动整理热点，解读趋势影响</p><button data-action="import">导入资料 <span>→</span></button></div><div class="banner-mascots" aria-hidden="true"><i class="mascot"><b></b><b></b></i><i class="mascot"><b></b><b></b></i></div></div>
+      <div class="sidebar-toolbar"><button class="icon-btn" data-action="library" aria-label="打开文档库" title="文档库"><svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg></button><div class="list-tabs" role="tablist" aria-label="目录筛选"><button id="allTab" role="tab" aria-selected="true" class="selected">消息 <span id="chapterCount">3</span></button><button id="savedTab" role="tab" aria-selected="false">收藏 <span id="bookmarkCount">0</span></button><button id="feishuUnreadTab" role="tab" aria-selected="false" data-feishu-only hidden>未读</button></div><div class="feishu-list-actions" data-feishu-only hidden><button class="icon-btn" id="feishuMaskBtn" aria-label="切换工作资料标题" title="切换工作资料标题" aria-pressed="true"><svg class="icon" aria-hidden="true"><use href="#i-shield"/></svg></button><button class="icon-btn" data-action="info" aria-label="文档信息" title="文档信息"><svg class="icon" aria-hidden="true"><use href="#i-doc"/></svg></button><button class="icon-btn" data-action="settings" aria-label="阅读设置" title="阅读设置"><svg class="icon" aria-hidden="true"><use href="#i-settings"/></svg></button></div><button class="icon-btn" id="importPlus" title="导入 TXT 小说" aria-label="导入 TXT 小说"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></button><button class="icon-btn mobile-only" id="closeSidebar" aria-label="关闭目录"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button></div>
+      <button class="current-file" id="currentFileBtn" title="打开文档库"><span id="sidebarBookTitle">项目资料</span><span id="sidebarBookMeta">本地文档</span></button>
+      <label class="chapter-search"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg><input id="chapterSearch" type="search" placeholder="搜索章节" aria-label="搜索章节" autocomplete="off"></label>
+      <div class="pinned-conversations">
+        <button class="chapter-item" data-action="info" title="当前文档信息"><span class="chapter-avatar avatar-green">工作<br>通知</span><span class="chapter-copy"><span class="conversation-title"><strong>工作通知</strong><span class="group-badge">内部群</span></span><small>资料已就绪，点击查看文档信息</small></span><span class="chapter-side"><time>置顶</time></span></button>
+        <button class="chapter-item" data-action="import" title="导入 TXT 小说"><span class="chapter-avatar avatar-blue">文件<br>传输</span><span class="chapter-copy"><span class="conversation-title"><strong>文件传输助手</strong></span><small>[文件] 点击导入本地资料</small></span><span class="chapter-side"><time>置顶</time></span></button>
+        <button class="chapter-item" data-action="library" title="打开文档库"><span class="chapter-avatar avatar-orange">项目<br>文档</span><span class="chapter-copy"><span class="conversation-title"><strong>项目文档</strong><span class="group-badge">内部群</span></span><small>查看全部文档与最近阅读位置</small></span><span class="chapter-side"><time>置顶</time></span></button>
+      </div>
+      <div class="chapter-list" id="chapterList" role="tabpanel"></div>
+      <div class="sidebar-footer"><span>个人工作空间</span></div>
+    </aside>
+    <main class="reader-main" id="readerMain">
+      <header class="chat-header"><button class="icon-btn mobile-only" id="openSidebar" aria-label="打开章节目录"><svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg></button><span class="chat-avatar" id="chatAvatar">资料</span><div class="chat-title"><div class="chat-title-line"><h2 id="chatTitle">项目讨论群</h2><span class="group-badge">内部群</span></div><p id="chatSubtitle">归属于 个人工作空间</p></div><div class="chat-actions"><button class="icon-btn" data-action="away" title="暂离工作台" aria-label="暂离工作台"><svg class="icon" aria-hidden="true"><use href="#i-video"/></svg></button><button class="icon-btn" data-action="info" title="文档信息" aria-label="文档信息"><svg class="icon" aria-hidden="true"><use href="#i-speaker"/></svg></button><button class="icon-btn" data-action="library" title="文档库" aria-label="文档库"><svg class="icon" aria-hidden="true"><use href="#i-file"/></svg></button><button class="icon-btn" id="searchBtn" aria-label="搜索正文" title="搜索正文（⌘ F）"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg></button><button class="icon-btn" id="addBookmark" aria-label="收藏当前阅读位置" title="收藏当前阅读位置" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-bookmark"/></svg></button><button class="icon-btn" data-action="import" title="导入资料" aria-label="导入资料"><svg class="icon" aria-hidden="true"><use href="#i-more"/></svg></button><button class="icon-btn" id="readingSettings" aria-label="阅读设置" title="阅读设置"><svg class="icon" aria-hidden="true"><use href="#i-gear"/></svg></button><button id="chatSetupBtn" class="icon-btn" aria-label="聊天人物与回复" title="聊天人物与回复"><svg class="icon"><use href="#i-person"/></svg></button></div></header>
+      <div class="chat-tabs"><button id="fileInfoBtn" class="chat-tab">文档信息</button><span id="chapterPosition" class="chapter-position">第 1 / 3 节</span></div>
+      <div class="storage-warning" id="storageWarning" role="status" hidden></div>
+      <section class="message-scroll" id="messageScroll" tabindex="0" aria-label="小说正文"><div class="messages" id="messages"></div></section>
+      <footer class="reader-footer">
+        <div class="composer-shortcuts"><button data-action="bookmarks"><svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg><span>群签到</span></button><button data-action="settings"><svg class="icon" aria-hidden="true"><use href="#i-camera"/></svg><span>水印拍照</span></button><button data-action="library" aria-label="打开文档库"><svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg></button></div>
+        <div class="composer-box"><textarea id="composerInput" placeholder="请输入消息" aria-label="聊天消息" rows="3"></textarea><div class="composer-toolbar"><div class="composer-tools"><button class="icon-btn" data-action="bookmarks" title="收藏与便签" aria-label="收藏与便签"><svg class="icon" aria-hidden="true"><use href="#i-smile"/></svg></button><button class="icon-btn" data-action="bookmarks" title="查看收藏" aria-label="查看收藏"><svg class="icon" aria-hidden="true"><use href="#i-thumb"/></svg></button><button class="icon-btn" data-action="search" title="搜索正文" aria-label="搜索正文"><svg class="icon" aria-hidden="true"><use href="#i-at"/></svg></button><button class="icon-btn type-tool" data-action="settings" aria-label="字体设置" title="字体设置">Aa</button><button class="icon-btn" data-action="info" title="文档信息" aria-label="文档信息"><svg class="icon" aria-hidden="true"><use href="#i-scissors"/></svg></button><button class="icon-btn" data-action="import" title="导入 TXT" aria-label="导入 TXT"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg></button><button class="icon-btn" data-action="import" title="添加资料" aria-label="添加资料"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></button></div><div class="reader-controls"><button id="prevChapter" class="icon-btn" title="上一章（←）" aria-label="上一章"><svg class="icon" aria-hidden="true"><use href="#i-left"/></svg></button><button id="nextChapter" class="icon-btn" title="下一章（→）" aria-label="下一章"><svg class="icon" aria-hidden="true"><use href="#i-right"/></svg></button><button id="sendNote" class="send-note" title="发送到当前会话（仅本机保存）">发送 <span>⌄</span></button></div></div></div>
+        <div class="composer-status"><div class="reading-progress"><span id="progressText">阅读进度 0%</span><span id="saveStatus" role="status">已就绪</span></div><span class="keyboard-hint">← → 翻章 · Esc 暂离</span></div><div class="progress-track" role="progressbar" aria-label="阅读进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressTrack"><span id="progressFill"></span></div>
+      </footer>
+    </main>
+  </div>
+  <button id="sidebarBackdrop" class="sidebar-backdrop" aria-label="关闭目录" hidden></button>
+  <div id="dropOverlay" class="drop-overlay" hidden><div><svg class="icon"><use href="#i-upload"/></svg><strong>松开，导入 TXT 文档</strong><span>文件只保存在你的浏览器中</span></div></div>
+
+  <dialog id="importDialog" class="modal"><div class="modal-heading"><div><span class="eyebrow">本地资料库</span><h2>导入你的小说</h2></div><button class="icon-btn" data-close aria-label="关闭导入窗口"><svg class="icon"><use href="#i-close"/></svg></button></div><p class="modal-description">选择 TXT 文件，正文会以聊天消息的形式呈现。</p><label class="file-drop" id="fileDrop"><span class="upload-badge"><svg class="icon"><use href="#i-upload"/></svg></span><strong>点击选择，或将文件拖到这里</strong><span>TXT 格式 · 单个文件最大 20 MB</span><input id="fileInput" type="file" accept=".txt,text/plain" aria-label="选择 TXT 文件"></label><div class="form-row"><label for="encodingSelect">文件编码</label><select id="encodingSelect"><option value="auto">自动识别（推荐）</option><option value="utf-8">UTF-8</option><option value="gb18030">GBK / GB18030</option><option value="utf-16le">UTF-16 LE</option><option value="utf-16be">UTF-16 BE</option></select></div><p class="subtle-note">若正文乱码，可切换编码重新导入。重新导入会保留旧副本，可从文档库删除。</p><details class="paste-section"><summary>也可以粘贴文字</summary><input id="pasteTitle" class="text-input" placeholder="文档名称" aria-label="粘贴文档名称" maxlength="100"><textarea id="pasteContent" placeholder="粘贴小说正文…" aria-label="粘贴小说正文"></textarea><button id="pasteImport" class="primary-btn">导入文字</button></details><div id="importStatus" class="import-status" role="status" aria-live="polite"></div><div class="modal-note"><svg class="icon"><use href="#i-shield"/></svg>无需账号，文件不会上传到服务器</div></dialog>
+
+  <dialog id="libraryDialog" class="modal library-modal"><div class="modal-heading"><div><span class="eyebrow">你的本地资料</span><h2>文档库</h2></div><button class="icon-btn" data-close aria-label="关闭文档库"><svg class="icon"><use href="#i-close"/></svg></button></div><p class="modal-description">从上次停下的地方继续。</p><div id="libraryList" class="library-list"></div><button id="libraryImport" class="primary-btn full-width"><svg class="icon"><use href="#i-plus"/></svg>导入 TXT 文档</button><p class="subtle-note">请保留原始 TXT。清理浏览器数据可能删除文档与进度；不同浏览器、文件路径的存储可能不互通。</p></dialog>
+
+  <dialog id="settingsDialog" class="modal settings-modal"><div class="modal-heading"><div><span class="eyebrow">让阅读更舒服</span><h2>阅读设置</h2></div><button class="icon-btn" data-close aria-label="关闭阅读设置"><svg class="icon"><use href="#i-close"/></svg></button></div><button id="settingsChatSetup" class="secondary-btn full-width" style="margin-top:16px">聊天人物与回复</button><div class="settings-section"><span class="setting-label">工作台外观</span><div class="theme-options"><button class="theme-option" data-theme-choice="dingtalk"><span class="theme-preview ding-preview">钉</span><strong>钉钉</strong><small>Mac 风格 · 灰白会话</small></button><button class="theme-option" data-theme-choice="feishu"><span class="theme-preview feishu-preview">飞</span><strong>飞书</strong><small>BiliShu · 飞书布局</small></button></div></div><div class="setting-row"><label for="fontSize">正文字号 <output id="fontSizeLabel">18 px</output></label><input id="fontSize" type="range" min="13" max="24" value="18"></div><div class="setting-row"><label for="lineHeight">行间距 <output id="lineHeightLabel">1.7</output></label><input id="lineHeight" type="range" min="1.5" max="2.5" step="0.1" value="1.7"></div><div class="form-row"><label for="fontFamily">正文字体</label><select id="fontFamily"><option value="sans">系统字体</option><option value="serif">宋体 / 衬线字体</option></select></div><label class="toggle-row"><span><strong>工作资料标题</strong><small>将书名与章节名显示为普通工作资料</small></span><input id="maskTitles" type="checkbox" role="switch"></label><p class="subtle-note">按 Esc 可暂时隐藏正文；再次按 Esc 或点击“返回”恢复。仅改变本页面的显示。</p><div class="modal-note">摸鱼神器 · 本地版 · 非钉钉或飞书官方产品</div></dialog>
+
+  <dialog id="chatSetupDialog" class="modal">
+    <div class="modal-heading"><div><span class="eyebrow">当前文档的聊天呈现</span><h2>聊天人物与回复</h2></div><button class="icon-btn" data-close aria-label="关闭聊天设置"><svg class="icon"><use href="#i-close"/></svg></button></div>
+    <p class="modal-description">小说片段轮流以这些姓名显示；你的预设回复直接穿插在右侧聊天记录中。</p>
+    <section class="chat-setup-section"><label for="knownNames">聊天姓名 · 最多 50 人</label><textarea id="knownNames" aria-label="聊天姓名" rows="4" placeholder="陈晨
+林悦
+周航"></textarea><div class="names-import"><label class="secondary-btn">导入姓名 TXT<input id="namesFile" type="file" accept=".txt,text/plain" aria-label="导入姓名 TXT"></label><small>每行一个，或用逗号、顿号分隔</small></div></section>
+    <div class="form-row"><label for="selfDisplayName">我的显示名称</label><input id="selfDisplayName" class="text-input" aria-label="我的显示名称" maxlength="20" value="我"></div>
+    <section class="chat-setup-section"><label for="selfReplies">我的预设回复 · 每行一句</label><textarea id="selfReplies" aria-label="我的预设回复" rows="4" placeholder="收到。
+我不理解这是什么意思。
+稍等一下。"></textarea></section>
+    <label class="toggle-row"><span><strong>穿插我的回复</strong><small>在小说消息之间显示为右侧气泡</small></span><input id="autoReply" type="checkbox" role="switch" checked></label>
+    <div class="form-row"><label for="replyEvery">回复间隔</label><select id="replyEvery"><option value="2">每 2 条消息</option><option value="3" selected>每 3 条消息</option><option value="5">每 5 条消息</option><option value="8">每 8 条消息</option></select></div>
+    <p class="subtle-note">设置只作用于当前文档。原文顺序保持不变，姓名和回复不会写进原始小说。</p><p id="chatSetupStatus" class="import-status" role="status"></p><div class="chat-setup-actions"><button id="saveChatSetup" class="primary-btn">保存并应用</button></div>
+  </dialog>
+
+  <dialog id="searchDialog" class="modal search-modal"><div class="modal-heading"><h2>搜索正文</h2><button class="icon-btn" data-close aria-label="关闭正文搜索"><svg class="icon"><use href="#i-close"/></svg></button></div><label class="full-search"><svg class="icon"><use href="#i-search"/></svg><input id="textSearch" type="search" placeholder="输入人物、情节或关键词" aria-label="搜索小说全文" autocomplete="off"></label><p id="searchSummary" class="subtle-note">在当前文档的全部章节中查找。</p><div id="searchResults" class="search-results"></div></dialog>
+
+  <dialog id="infoDialog" class="modal"><div class="modal-heading"><h2>文档信息</h2><button class="icon-btn" data-close aria-label="关闭文档信息"><svg class="icon"><use href="#i-close"/></svg></button></div><dl id="fileInfo" class="file-info"></dl><div class="modal-note">正文不会发送到钉钉、飞书或其他服务。</div></dialog>
+
+  <section id="awayScreen" class="away-screen" aria-label="暂离工作台" hidden><header class="away-header"><div class="brand-lockup"><div class="brand-mark" id="awayBrandMark">钉</div><strong id="awayBrandName">钉钉</strong><span class="topbar-divider"></span><span>工作台</span></div><button id="resumeBtn" class="secondary-btn"><svg class="icon"><use href="#i-left"/></svg>返回</button></header><div class="away-content"><span class="away-illustration"><svg class="icon"><use href="#i-grid"/></svg></span><span class="eyebrow">PERSONAL WORKSPACE</span><h1>专注每一件小事</h1><p>今天的工作，从这里开始。</p><div class="away-cards"><div><svg class="icon"><use href="#i-doc"/></svg><strong>项目资料</strong><span>文档已同步</span></div><div><svg class="icon"><use href="#i-check"/></svg><strong>待办事项</strong><span>暂无待处理事项</span></div><div><svg class="icon"><use href="#i-chat"/></svg><strong>团队协作</strong><span>暂无新消息</span></div></div><span class="away-date" id="awayDate"></span></div></section>
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  <noscript><div class="noscript">此本地阅读器需要浏览器启用 JavaScript。</div></noscript>
+  <script>
+(function (global) {
+  'use strict';
+
+  const MAX_BYTES = 20 * 1024 * 1024;
+  const MAX_CHARACTERS = 10000000;
+  const MAX_PARAGRAPHS = 100000;
+  const MAX_CHAPTERS = 20000;
+  const PARAGRAPH_LENGTH = 1200;
+  const FRAGMENT_LENGTH = 6000;
+  const CHAPTER_LENGTH = 12000;
+
+  function makeId() {
+    if (global.crypto && typeof global.crypto.randomUUID === 'function') {
+      return global.crypto.randomUUID();
+    }
+    if (global.crypto && typeof global.crypto.getRandomValues === 'function') {
+      const bytes = new Uint8Array(16);
+      global.crypto.getRandomValues(bytes);
+      bytes[6] = (bytes[6] & 15) | 64;
+      bytes[8] = (bytes[8] & 63) | 128;
+      const hex = Array.from(bytes, function (n) { return n.toString(16).padStart(2, '0'); }).join('');
+      return hex.slice(0, 8) + '-' + hex.slice(8, 12) + '-' + hex.slice(12, 16) + '-' + hex.slice(16, 20) + '-' + hex.slice(20);
+    }
+    return 'book-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
+  }
+
+  function isHeading(line) {
+    if (line.length > 80 || /[。！？!?；;]/.test(line)) return false;
+    const chinese = line.match(/^第[零〇一二三四五六七八九十百千万亿两\d０-９]{1,16}[章回节卷](.*)$/);
+    if (chinese) {
+      const tail = chinese[1];
+      // A sentence referring to a chapter is not itself a chapter heading.
+      if (/^(?:的|中|里|时|时候|之后|之前|讲述|提到|说道|写道|已经|就是|是指)/.test(tail)) return false;
+      return true;
+    }
+    if (/^(?:序章|序言|序幕|楔子|引子|后记|尾声|终章)(?:$|[\s:：、.．\-—（(]).*/.test(line)) return true;
+    if (/^番外(?:$|[\s:：、.．\-—（(零〇一二三四五六七八九十百千万\d]).*/.test(line)) return true;
+    return /^chapter\s+(?:\d{1,6}|[ivxlcdm]{1,12})(?:$|[\s:：.．\-—]).*/i.test(line);
+  }
+
+  function splitParagraph(line) {
+    const parts = [];
+    let start = 0;
+    while (line.length - start > PARAGRAPH_LENGTH) {
+      let end = start + PARAGRAPH_LENGTH;
+      const lower = start + 750;
+      for (let i = end - 1; i >= lower; i -= 1) {
+        if (/[。！？!?；;，,、\s]/.test(line.charAt(i))) {
+          end = i + 1;
+          break;
+        }
+      }
+      // Do not cut an emoji / supplementary character between its surrogate halves.
+      const last = line.charCodeAt(end - 1);
+      if (last >= 0xD800 && last <= 0xDBFF) end -= 1;
+      parts.push(line.slice(start, end));
+      start = end;
+    }
+    if (start < line.length) parts.push(line.slice(start));
+    return parts;
+  }
+
+  function parseText(rawText, fileName, encoding) {
+    if (typeof rawText !== 'string') throw new Error('未读到文字内容，请重新选择 TXT 文件。');
+    if (rawText.length > MAX_CHARACTERS) throw new Error('这本书超过 1000 万字符，请拆分成较小的 TXT 文件后导入。');
+    const text = rawText.replace(/^\uFEFF/, '').replace(/\r\n?/g, '\n');
+    if (!text.trim()) throw new Error('这个 TXT 文件是空的，请选择有正文的文件。');
+    if (!text.replace(/[\s\u0000]/g, '')) throw new Error('文件只有空字符，无法作为小说阅读。请确认文件是有效的 TXT 文本。');
+
+    const blocks = [];
+    let headingCount = 0;
+    let start = 0;
+    while (start < text.length) {
+      const newline = text.indexOf('\n', start);
+      const end = newline === -1 ? text.length : newline;
+      const line = text.slice(start, end).trim();
+      start = end + 1;
+      if (!line) continue;
+      if (isHeading(line)) {
+        headingCount += 1;
+        if (headingCount > MAX_CHAPTERS) throw new Error('文件章节数量过多，请拆分为几个 TXT 文件后导入。');
+        blocks.push({ text: line, heading: true });
+      } else {
+        const parts = splitParagraph(line);
+        for (let i = 0; i < parts.length; i += 1) {
+          blocks.push({ text: parts[i], heading: false });
+          if (blocks.length > MAX_PARAGRAPHS) throw new Error('文件段落数量过多，请拆分为几个 TXT 文件后导入。');
+        }
+      }
+      if (blocks.length > MAX_PARAGRAPHS) throw new Error('文件段落数量过多，请拆分为几个 TXT 文件后导入。');
+    }
+
+    const chapters = [];
+    let current = null;
+    let originalTitle = '开篇';
+    let continuation = 0;
+    function addChapter(title, titleCharacters) {
+      if (chapters.length >= MAX_CHAPTERS) throw new Error('文件章节数量过多，请拆分为几个 TXT 文件后导入。');
+      current = { title: title, paragraphs: [], charCount: titleCharacters || 0 };
+      chapters.push(current);
+    }
+    for (let i = 0; i < blocks.length; i += 1) {
+      const block = blocks[i];
+      if (headingCount && block.heading) {
+        originalTitle = block.text;
+        continuation = 0;
+        addChapter(block.text, block.text.length);
+        continue;
+      }
+      if (!current) addChapter(headingCount ? '开篇' : '阅读片段 1', 0);
+      if (!headingCount && current.charCount >= FRAGMENT_LENGTH) {
+        addChapter('阅读片段 ' + (chapters.length + 1), 0);
+      }
+      if (headingCount && current.paragraphs.length && current.charCount + block.text.length > CHAPTER_LENGTH) {
+        continuation += 1;
+        // Generated continuation titles do not inflate the original book's character count.
+        addChapter(originalTitle + '（续 ' + continuation + '）', 0);
+      }
+      current.paragraphs.push(block.text);
+      current.charCount += block.text.length;
+    }
+    if (!chapters.length) throw new Error('未找到可阅读的正文，请确认文件内容。');
+
+    const name = typeof fileName === 'string' && fileName.trim() ? fileName : '未命名.txt';
+    const title = name.replace(/^.*[\\/]/, '').replace(/\.txt$/i, '').trim() || '未命名';
+    const now = Date.now();
+    return {
+      id: makeId(),
+      title: title,
+      fileName: name,
+      encoding: encoding || 'UTF-8',
+      chapters: chapters,
+      charCount: chapters.reduce(function (sum, chapter) { return sum + chapter.charCount; }, 0),
+      createdAt: now,
+      updatedAt: now,
+      progress: { chapter: 0, paragraph: 0, offset: 0 },
+      bookmarks: []
+    };
+  }
+
+  async function parseFile(file, encoding) {
+    if (!file || typeof file.arrayBuffer !== 'function') throw new Error('请选择一个 TXT 文件。');
+    if (!/\.txt$/i.test(file.name || '')) throw new Error('目前只支持 .txt 小说，请选择 TXT 文件。');
+    if (file.size > MAX_BYTES) throw new Error('文件超过 20 MB，请拆分成较小的 TXT 文件后导入。');
+    if (file.size === 0) throw new Error('这个 TXT 文件是空的，请选择有正文的文件。');
+    let buffer;
+    try {
+      buffer = await file.arrayBuffer();
+    } catch (error) {
+      throw new Error('无法读取这个文件，请重新选择文件后再试。');
+    }
+    if (buffer.byteLength > MAX_BYTES) throw new Error('文件超过 20 MB，请拆分成较小的 TXT 文件后导入。');
+    if (typeof global.TextDecoder !== 'function') throw new Error('当前浏览器不支持文本解码，请使用新版 Chrome、Edge 或 Safari。');
+    const bytes = new Uint8Array(buffer);
+    const requested = (encoding || 'auto').toLowerCase().replace(/_/g, '-');
+    let decoded;
+    let detected;
+    try {
+      if (requested !== 'auto') {
+        if (!['utf-8', 'utf8', 'gb18030', 'utf-16le', 'utf-16be'].includes(requested)) {
+          throw new Error('unsupported-encoding');
+        }
+        detected = requested === 'utf8' ? 'UTF-8' : requested.toUpperCase();
+        decoded = new global.TextDecoder(detected, { fatal: true }).decode(bytes);
+      } else if (bytes[0] === 0xFF && bytes[1] === 0xFE) {
+        detected = 'UTF-16LE';
+        decoded = new global.TextDecoder('utf-16le', { fatal: true }).decode(bytes);
+      } else if (bytes[0] === 0xFE && bytes[1] === 0xFF) {
+        detected = 'UTF-16BE';
+        decoded = new global.TextDecoder('utf-16be', { fatal: true }).decode(bytes);
+      } else {
+        try {
+          decoded = new global.TextDecoder('utf-8', { fatal: true }).decode(bytes);
+          detected = 'UTF-8';
+        } catch (utf8Error) {
+          decoded = new global.TextDecoder('gb18030', { fatal: true }).decode(bytes);
+          detected = 'GB18030';
+        }
+      }
+    } catch (error) {
+      if (error.message === 'unsupported-encoding') throw new Error('不支持该编码，请选择自动识别、UTF-8、GB18030、UTF-16LE 或 UTF-16BE。');
+      throw new Error('无法按所选编码读取文件。请尝试自动识别或 GB18030，或将文件另存为 UTF-8 后导入。');
+    }
+    return parseText(decoded, file.name, detected);
+  }
+
+  const DATABASE_NAME = 'im-novel-reader';
+  const STORE_NAMES = ['books', 'metadata', 'states'];
+  let databasePromise = null;
+
+  function storageError(error, operation) {
+    const name = error && error.name;
+    let message;
+    if (name === 'QuotaExceededError') {
+      message = '本地存储空间不足，保存失败。请删除不需要的书籍或释放浏览器存储空间后重试。';
+    } else if (name === 'SecurityError' || name === 'NotAllowedError') {
+      message = '浏览器禁止了本地存储，无法保存书库。请允许此页面使用本地存储，或换用普通浏览窗口。';
+    } else if (name === 'InvalidStateError' || name === 'NotFoundError' || name === 'VersionError') {
+      message = '本地书库暂时无法使用，请关闭其他阅读器页面后重新打开。';
+    } else {
+      message = (operation || '访问本地书库') + '失败。请检查浏览器是否允许本地存储，或关闭其他阅读器页面后重试。';
+    }
+    const result = new Error(message);
+    result.cause = error;
+    return result;
+  }
+
+  function openDatabase() {
+    if (databasePromise) return databasePromise;
+    databasePromise = new Promise(function (resolve, reject) {
+      let request;
+      let settled = false;
+      let timer;
+      function fail(error) {
+        if (settled) return;
+        settled = true;
+        global.clearTimeout(timer);
+        reject(error);
+      }
+      try {
+        if (!global.indexedDB) {
+          fail(new Error('当前浏览器未开放本地书库存储，书籍和进度无法保存在本机。请换用普通浏览窗口或新版浏览器。'));
+          return;
+        }
+        request = global.indexedDB.open(DATABASE_NAME, 1);
+      } catch (error) {
+        fail(storageError(error, '打开本地书库'));
+        return;
+      }
+      timer = global.setTimeout(function () {
+        fail(new Error('打开本地书库超时，请关闭其他阅读器页面后重新打开。'));
+      }, 10000);
+      request.onupgradeneeded = function () {
+        const db = request.result;
+        STORE_NAMES.forEach(function (name) {
+          if (!db.objectStoreNames.contains(name)) db.createObjectStore(name, { keyPath: 'id' });
+        });
+      };
+      request.onerror = function () { fail(storageError(request.error, '打开本地书库')); };
+      request.onblocked = function () {
+        fail(new Error('本地书库被另一个阅读器页面占用，请关闭其他页面后重试。'));
+      };
+      request.onsuccess = function () {
+        const db = request.result;
+        if (settled) {
+          db.close();
+          return;
+        }
+        if (STORE_NAMES.some(function (name) { return !db.objectStoreNames.contains(name); })) {
+          db.close();
+          fail(new Error('本地书库结构不兼容，无法读取。请使用最初导入这些书籍的阅读器版本。'));
+          return;
+        }
+        settled = true;
+        global.clearTimeout(timer);
+        db.onversionchange = function () {
+          db.close();
+          databasePromise = null;
+        };
+        db.onclose = function () { databasePromise = null; };
+        resolve(db);
+      };
+    }).catch(function (error) {
+      databasePromise = null;
+      throw error;
+    });
+    return databasePromise;
+  }
+
+  async function transact(stores, mode, operation, work) {
+    const db = await openDatabase();
+    return new Promise(function (resolve, reject) {
+      let transaction;
+      let result;
+      let failure;
+      try {
+        transaction = db.transaction(stores, mode);
+        transaction.oncomplete = function () { resolve(typeof result === 'function' ? result() : result); };
+        transaction.onerror = function (event) { failure = failure || (event.target && event.target.error) || transaction.error; };
+        transaction.onabort = function () {
+          reject(failure && failure.readerMessage ? failure : storageError(failure || transaction.error, operation));
+        };
+        result = work(transaction, function (message) {
+          failure = new Error(message);
+          failure.readerMessage = true;
+          transaction.abort();
+        });
+      } catch (error) {
+        failure = error;
+        if (transaction) {
+          try { transaction.abort(); } catch (abortError) { /* It may already have finished. */ }
+        }
+        reject(storageError(error, operation));
+      }
+    });
+  }
+
+  function normalizedProgress(value) {
+    const input = value || {};
+    return {
+      chapter: Number.isFinite(input.chapter) ? Math.max(0, Math.floor(input.chapter)) : 0,
+      paragraph: Number.isFinite(input.paragraph) ? Math.max(0, Math.floor(input.paragraph)) : 0,
+      offset: Number.isFinite(input.offset) ? Math.max(0, input.offset) : 0
+    };
+  }
+
+  function bookMetadata(book, progress, updatedAt) {
+    return {
+      id: book.id,
+      title: book.title,
+      fileName: book.fileName,
+      encoding: book.encoding,
+      chapterCount: book.chapters.length,
+      charCount: book.charCount,
+      bookmarksCount: Array.isArray(book.bookmarks) ? book.bookmarks.length : 0,
+      createdAt: book.createdAt,
+      updatedAt: updatedAt,
+      progress: progress
+    };
+  }
+
+  const ReaderDB = {
+    list: function () {
+      return transact(['metadata'], 'readonly', '读取书库', function (transaction) {
+        const rows = [];
+        const request = transaction.objectStore('metadata').openCursor();
+        request.onsuccess = function () {
+          const cursor = request.result;
+          if (cursor) {
+            rows.push(cursor.value);
+            cursor.continue();
+          }
+        };
+        return function () { return rows.sort(function (a, b) { return b.updatedAt - a.updatedAt; }); };
+      });
+    },
+    get: function (id) {
+      return transact(['books', 'states'], 'readonly', '读取书籍', function (transaction) {
+        const body = transaction.objectStore('books').get(id);
+        const state = transaction.objectStore('states').get(id);
+        return function () {
+          if (!body.result) return null;
+          const book = body.result;
+          const saved = state.result || {};
+          book.progress = normalizedProgress(saved.progress || book.progress);
+          book.bookmarks = Array.isArray(saved.bookmarks) ? saved.bookmarks : (book.bookmarks || []);
+          book.updatedAt = saved.updatedAt || book.updatedAt;
+          return book;
+        };
+      });
+    },
+    put: function (book) {
+      if (!book || typeof book.id !== 'string' || !Array.isArray(book.chapters)) {
+        return Promise.reject(new Error('书籍内容不完整，无法保存。请重新导入 TXT 文件。'));
+      }
+      const progress = normalizedProgress(book.progress);
+      const updatedAt = Number.isFinite(book.updatedAt) ? book.updatedAt : Date.now();
+      const body = {
+        id: book.id,
+        title: book.title,
+        fileName: book.fileName,
+        encoding: book.encoding,
+        chapters: book.chapters,
+        charCount: book.charCount,
+        createdAt: book.createdAt,
+        updatedAt: updatedAt
+      };
+      return transact(STORE_NAMES, 'readwrite', '保存书籍', function (transaction) {
+        transaction.objectStore('books').put(body);
+        transaction.objectStore('states').put({
+          id: book.id,
+          progress: progress,
+          bookmarks: Array.isArray(book.bookmarks) ? book.bookmarks : [],
+          updatedAt: updatedAt
+        });
+        transaction.objectStore('metadata').put(bookMetadata(book, progress, updatedAt));
+        return book.id;
+      });
+    },
+    delete: function (id) {
+      return transact(STORE_NAMES, 'readwrite', '删除书籍', function (transaction) {
+        STORE_NAMES.forEach(function (name) { transaction.objectStore(name).delete(id); });
+      });
+    },
+    updateState: function (id, patch) {
+      const changes = patch || {};
+      return transact(['metadata', 'states'], 'readwrite', '保存阅读进度', function (transaction, abort) {
+        const metadataStore = transaction.objectStore('metadata');
+        const statesStore = transaction.objectStore('states');
+        const metadataRequest = metadataStore.get(id);
+        const stateRequest = statesStore.get(id);
+        let ready = 0;
+        function merge() {
+          ready += 1;
+          if (ready !== 2) return;
+          if (!metadataRequest.result) {
+            abort('这本书已不在本地书库中，无法保存进度。请重新导入。');
+            return;
+          }
+          const metadata = metadataRequest.result;
+          const state = stateRequest.result || { id: id, progress: metadata.progress, bookmarks: [] };
+          if (Object.prototype.hasOwnProperty.call(changes, 'progress')) state.progress = normalizedProgress(changes.progress);
+          if (Object.prototype.hasOwnProperty.call(changes, 'bookmarks')) {
+            if (!Array.isArray(changes.bookmarks)) {
+              abort('书签数据不完整，未保存本次更改。');
+              return;
+            }
+            state.bookmarks = changes.bookmarks;
+          }
+          state.updatedAt = Number.isFinite(changes.updatedAt) ? changes.updatedAt : Date.now();
+          metadata.updatedAt = state.updatedAt;
+          metadata.progress = normalizedProgress(state.progress);
+          metadata.bookmarksCount = Array.isArray(state.bookmarks) ? state.bookmarks.length : 0;
+          try {
+            statesStore.put(state);
+            metadataStore.put(metadata);
+          } catch (error) {
+            abort('阅读进度或书签数据无法保存，本次更改尚未写入本机。');
+          }
+        }
+        metadataRequest.onsuccess = merge;
+        stateRequest.onsuccess = merge;
+      });
+    }
+  };
+
+  global.ReaderCore = Object.freeze({ parseFile: parseFile, parseText: parseText });
+  global.ReaderDB = Object.freeze(ReaderDB);
+})(window);
+
+</script>
+  <script>
+(function (global) {
+  'use strict';
+
+  const MAX_NAMES = 50;
+  const MAX_NAME_LENGTH = 20;
+  const MIN_PART_LENGTH = 180;
+  const MAX_PART_LENGTH = 260;
+  const COLORS = ['#3978C6', '#378B77', '#8A65B2', '#B17642', '#B95775', '#4B899F', '#738746', '#926E5D', '#5E71AD', '#A3638F'];
+
+  function parseNames(text) {
+    const names = [];
+    const seen = new Set();
+    const source = typeof text === 'string' ? text : '';
+    const entries = source.split(/[\r\n,，、;；]+/);
+    for (let i = 0; i < entries.length && names.length < MAX_NAMES; i += 1) {
+      const clean = entries[i].replace(/[\u0000-\u001F\u007F]/g, '').trim();
+      const name = Array.from(clean).slice(0, MAX_NAME_LENGTH).join('').trim();
+      if (!name || seen.has(name)) continue;
+      seen.add(name);
+      names.push(name);
+    }
+    return names;
+  }
+
+  function splitEnd(text, start) {
+    const limit = Math.min(text.length, start + MAX_PART_LENGTH);
+    if (limit === text.length) return limit;
+    let end = limit;
+    let found = false;
+    // Prefer a sentence ending, including its closing quotation mark when it fits.
+    for (let i = limit - 1; i >= start + MIN_PART_LENGTH - 1; i -= 1) {
+      if (/[。！？!?；;\n]/.test(text.charAt(i))) {
+        end = i + 1;
+        while (end < limit && /[”’」』"')）\]】]/.test(text.charAt(end))) end += 1;
+        found = true;
+        break;
+      }
+    }
+    if (!found) {
+      for (let i = limit - 1; i >= start + MIN_PART_LENGTH - 1; i -= 1) {
+        if (/[，,、\s]/.test(text.charAt(i))) { end = i + 1; break; }
+      }
+    }
+    // A hard split is necessary for very long sentences; preserve surrogate pairs.
+    const last = text.charCodeAt(end - 1);
+    if (last >= 0xD800 && last <= 0xDBFF) end -= 1;
+    return end;
+  }
+
+  function plan(paragraphs, names, options) {
+    if (!Array.isArray(paragraphs)) throw new TypeError('聊天排版需要段落数组。');
+    const settings = options && typeof options === 'object' ? options : {};
+    const namesText = Array.isArray(names) ? names.filter(function (name) { return typeof name === 'string'; }).join('\n') : names;
+    const speakers = parseNames(namesText);
+    if (!speakers.length) speakers.push('同事');
+    const replies = Array.isArray(settings.selfReplies) ? settings.selfReplies.filter(function (reply) {
+      return typeof reply === 'string' && reply.trim();
+    }).map(function (reply) { return reply.trim(); }) : [];
+    const interval = Number(settings.replyEvery);
+    const replyEvery = Number.isFinite(interval) && interval >= 1 ? Math.max(1, Math.floor(interval)) : 3;
+    const offset = Number(settings.startIndex);
+    const startIndex = Number.isSafeInteger(offset) && offset >= 0 ? offset : 0;
+    const autoReply = settings.autoReply !== false;
+    let messageIndex = startIndex;
+
+    return paragraphs.map(function (text, paragraph) {
+      if (typeof text !== 'string') throw new TypeError('聊天排版只接受文字段落。');
+      const parts = [];
+      const replyAfter = [];
+      let start = 0;
+      while (start < text.length) {
+        const end = splitEnd(text, start);
+        parts.push({ text: text.slice(start, end), speaker: speakers[messageIndex % speakers.length], kind: 'dialogue', start: start });
+        messageIndex += 1;
+        if (autoReply && replies.length && messageIndex % replyEvery === 0) {
+          const replyIndex = (Math.floor(messageIndex / replyEvery) - 1) % replies.length;
+          replyAfter.push({ text: replies[replyIndex], afterStart: start });
+        }
+        start = end;
+      }
+      // Replies are separate from original parts so exporting/rejoining parts keeps the novel unchanged.
+      return { paragraph: paragraph, parts: parts, replyAfter: replyAfter };
+    });
+  }
+
+  function discoveredSpeakers(result) {
+    const names = new Set();
+    if (!Array.isArray(result)) return [];
+    result.forEach(function (paragraph) {
+      if (!paragraph || !Array.isArray(paragraph.parts)) return;
+      paragraph.parts.forEach(function (part) {
+        if (part && typeof part.speaker === 'string' && part.speaker) names.add(part.speaker);
+      });
+    });
+    return Array.from(names);
+  }
+
+  function colorFor(name) {
+    if (name === '旁白') return '#7A8495';
+    if (name === '对话') return '#788B9F';
+    const value = typeof name === 'string' ? name : '';
+    let hash = 2166136261;
+    for (let i = 0; i < value.length; i += 1) {
+      hash ^= value.charCodeAt(i);
+      hash = Math.imul(hash, 16777619);
+    }
+    return COLORS[(hash >>> 0) % COLORS.length];
+  }
+
+  function initials(name) {
+    const value = typeof name === 'string' ? name.trim() : '';
+    const chinese = value.match(/[\u3400-\u9fff]/g);
+    if (chinese && chinese.length) return chinese.slice(0, 2).join('');
+    const words = value.split(/\s+/).filter(Boolean);
+    if (words.length > 1) return (Array.from(words[0])[0] + Array.from(words[1])[0]).toUpperCase();
+    return Array.from(value).slice(0, 2).join('').toUpperCase() || '聊';
+  }
+
+  global.ReaderDialogue = Object.freeze({ plan: plan, parseNames: parseNames, discoveredSpeakers: discoveredSpeakers, colorFor: colorFor, initials: initials });
+})(window);
+
+</script>
+  <script>
+(() => {
+  'use strict';
+  const $ = (id) => document.getElementById(id);
+  const PREFS_KEY = 'xunyue.preferences.v1';
+  const PROGRESS_PREFIX = 'xunyue.progress.';
+  const NOTES_PREFIX = 'xunyue.notes.';
+  const CHAT_PREFIX = 'xunyue.chat-display.';
+  const defaultChat = { names: ['陈晨', '林悦', '周航'], ownName: '我', selfReplies: ['收到。', '我不理解这是什么意思。', '稍等一下。', '好的，我看看。'], autoReply: true, replyEvery: 3 };
+  const workGroups = ['项目讨论群', '技术交流群', '产品研发组', '需求评审群', '版本发布群', '资料同步群'];
+  const defaults = { theme: 'dingtalk', fontSize: 18, lineHeight: 1.7, fontFamily: 'sans', maskTitles: true, lastBook: null };
+  let savedPreferences = {};
+  try { savedPreferences = JSON.parse(localStorage.getItem(PREFS_KEY) || '{}') || {}; } catch (_) { /* Optional preferences must not prevent reading. */ }
+  const needsAppearanceMigration = savedPreferences.appearanceVersion !== 2;
+  const settings = { ...defaults, ...savedPreferences };
+  settings.theme = settings.theme === 'feishu' ? 'feishu' : 'dingtalk';
+  settings.fontSize = Math.max(13, Math.min(24, Number(settings.fontSize) || 18));
+  settings.lineHeight = Math.max(1.5, Math.min(2.5, Number(settings.lineHeight) || 1.7));
+  settings.fontFamily = settings.fontFamily === 'serif' ? 'serif' : 'sans';
+  settings.maskTitles = needsAppearanceMigration ? true : (typeof savedPreferences.maskTitles === 'boolean' ? savedPreferences.maskTitles : true);
+  settings.appearanceVersion = 2;
+  const state = { ready: false, book: null, persisted: false, chapter: 0, listMode: 'all', listPage: 0, query: '', loading: false, away: false, restoring: false, searchGeneration: 0 };
+  state.chat = { ...defaultChat };
+  state.replyTarget = null;
+  let saveTimer, toastTimer, searchTimer, scrollFrame, lastFocus, dialogOpener, dropDepth = 0, renderGeneration = 0;
+  const writeQueue = new Map();
+  const sampleText = `第一章 雨中的来信
+下午三点，城市下起了雨。
+林舟把伞收在旧书店门口。铜铃轻轻响了一声，书架间的灯随之亮起，像一列缓缓驶来的火车。
+“今天来得比平时早。”老板从一本地图后探出头。
+“提前下班。”他说，却没有解释为什么。他只是想在回家之前，找一个可以安静坐一会儿的地方。
+靠窗的位置还空着。桌上放着一封信，没有邮票，也没有收件人的名字，信封正面只写了一行字：给下一个在这里避雨的人。
+林舟看向老板。老人推了推眼镜，像是早就知道他想问什么。
+“放在这儿很久了。每个人都以为是给别人的。”
+雨水沿着窗玻璃划出一道道细线。他在椅子上坐下，小心地拆开了信封。
+里面没有信纸，只有一张泛黄的车票。日期是明天，终点是一座他从未听说过的小镇。
+车票背面写着：如果你也忘了自己曾经想去哪里，就来这里看看。
+
+第二章 没有终点的地图
+第二天，林舟带上了那张车票。
+站台的时钟停在八点十七分。列车还没来，一位提着藤箱的老太太在长椅上坐着，脚边蜷着一只橘猫。
+“去南溪？”她问。
+林舟点了点头，把票翻过来给她看。
+老太太笑了：“很多年以前，我也收到过一样的票。”
+“那里有什么？”
+“一条河，一座桥，还有一些没有来得及做的事情。”她看向轨道尽头，“不过每个人看到的都不一样。”
+列车驶进站台时没有鸣笛。车窗映着雨后的天空，像一排刚刚洗净的玻璃杯。
+他上车，坐在靠窗的位置，把手机调成了静音。
+这一次，他没有急着打开任何消息。
+
+第三章 日光落在书页上
+小镇比他想象的更安静。
+河边有一家没有招牌的书店，门口的铜铃和城市里那一家一模一样。
+林舟推门进去。窗边的桌子上放着一本画册，第一页画着一艘纸船，旁边写着他小时候的名字。
+他终于记起，自己曾经想画一本关于旅行的书。
+那时他把每一天都当作新的一页，直到后来日子变得忙碌，他渐渐把空白误认成了结束。
+店里没人。他找来一支铅笔，在画册的第二页画下了眼前的窗。
+阳光从窗外照进来，落在尚未完成的线条上。
+原来有些旅途，不是为了走得更远，而是为了把自己找回来。
+临走前，他也留下一封信，写给下一个在这里停下来的人。
+雨已经停了。`;
+
+  function el(tag, className, text) {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text !== undefined) node.textContent = text;
+    return node;
+  }
+  function icon(name) {
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('class', 'icon'); svg.setAttribute('aria-hidden', 'true');
+    const use = document.createElementNS(svg.namespaceURI, 'use'); use.setAttribute('href', '#i-' + name); svg.append(use);
+    return svg;
+  }
+  function button(label, className, handler) {
+    const node = el('button', className, label); node.type = 'button'; node.addEventListener('click', handler); return node;
+  }
+  function notice(message, error = false) {
+    clearTimeout(toastTimer); $('toast').textContent = message; $('toast').classList.toggle('error', error); $('toast').hidden = false;
+    toastTimer = setTimeout(() => { $('toast').hidden = true; }, error ? 6500 : 3000);
+  }
+  function warnStorage(message) { $('storageWarning').textContent = message; $('storageWarning').hidden = false; }
+  function savePreferences() {
+    try { localStorage.setItem(PREFS_KEY, JSON.stringify(settings)); }
+    catch (_) { $('saveStatus').textContent = '设置仅本次有效'; }
+  }
+  function bookTitle() { return settings.maskTitles ? '项目资料' : state.book.title; }
+  function chapterTitle(index) {
+    if (!settings.maskTitles) return state.book.chapters[index].title;
+    const group = workGroups[index % workGroups.length], cycle = Math.floor(index / workGroups.length);
+    return group + (cycle ? ' ' + (cycle + 1) : '');
+  }
+  function wordCount(count) { return count >= 10000 ? (count / 10000).toFixed(1) + ' 万字' : count.toLocaleString('zh-CN') + ' 字'; }
+  function applySettings() {
+    const root = document.documentElement;
+    root.dataset.theme = settings.theme;
+    root.style.setProperty('--reader-font-size', settings.fontSize + 'px');
+    root.style.setProperty('--reader-line-height', String(settings.lineHeight));
+    root.style.setProperty('--reader-font-family', settings.fontFamily === 'serif' ? '"Songti SC", "STSong", "Noto Serif CJK SC", serif' : '-apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif');
+    const ding = settings.theme === 'dingtalk';
+    document.querySelectorAll('[data-feishu-only]').forEach((node) => { node.hidden = ding; });
+    $('savedTab').hidden = !ding;
+    if (ding && state.listMode === 'unread') { state.listMode = 'all'; state.listPage = Math.floor(state.chapter / 100); }
+    for (const id of ['brandMark', 'awayBrandMark']) $(id).textContent = ding ? '钉' : '飞';
+    for (const id of ['brandName', 'awayBrandName']) $(id).textContent = ding ? '钉钉' : '飞书';
+    $('themeMark').textContent = ding ? '飞' : '钉';
+    $('themeBtn').title = '切换到' + (ding ? '飞书' : '钉钉') + '外观';
+    if ($('feishuThemeBtn')) $('feishuThemeBtn').title = $('themeBtn').title;
+    document.title = ding ? '钉钉' : '飞书';
+    $('fontSize').value = settings.fontSize; $('fontSizeLabel').value = settings.fontSize + ' px';
+    $('lineHeight').value = settings.lineHeight; $('lineHeightLabel').value = settings.lineHeight.toFixed(1);
+    $('fontFamily').value = settings.fontFamily; $('maskTitles').checked = settings.maskTitles;
+    if ($('feishuMaskBtn')) {
+      $('feishuMaskBtn').setAttribute('aria-pressed', String(settings.maskTitles));
+      $('feishuMaskBtn').title = settings.maskTitles ? '显示真实章节标题' : '使用工作群标题';
+      $('feishuMaskBtn').setAttribute('aria-label', $('feishuMaskBtn').title);
+    }
+    document.querySelectorAll('[data-theme-choice]').forEach((node) => {
+      node.classList.toggle('active', node.dataset.themeChoice === settings.theme);
+      node.setAttribute('aria-pressed', String(node.dataset.themeChoice === settings.theme));
+    });
+    if (state.book) { updateHeader(); renderChapters(); }
+  }
+  function switchTheme(theme = settings.theme === 'dingtalk' ? 'feishu' : 'dingtalk') {
+    capturePosition(); settings.theme = theme; applySettings(); savePreferences();
+    if (state.book) restorePosition(state.book.progress);
+  }
+  function setMaskTitles(masked) {
+    capturePosition(); settings.maskTitles = masked; applySettings(); savePreferences();
+    if (state.book) renderMessages();
+  }
+  function showDialog(id) {
+    if (state.away) return;
+    dialogOpener = document.activeElement;
+    document.querySelectorAll('dialog[open]').forEach((dialog) => dialog.close());
+    $(id).showModal();
+  }
+  function closeDialog(dialog) { dialog.close(); if (dialogOpener && dialogOpener.isConnected) dialogOpener.focus(); }
+  function toggleSidebar(open) {
+    document.documentElement.classList.toggle('sidebar-open', open);
+    $('sidebarBackdrop').hidden = !open;
+  }
+  function openImport() {
+    if (state.loading) return;
+    $('importStatus').textContent = ''; $('fileInput').value = ''; showDialog('importDialog');
+  }
+  function updateHeader() {
+    $('sidebarBookTitle').textContent = bookTitle();
+    $('sidebarBookMeta').textContent = state.book.chapters.length + ' 个章节 · ' + wordCount(state.book.charCount);
+    $('chatTitle').textContent = chapterTitle(state.chapter);
+    $('chatSubtitle').textContent = '归属于 个人工作空间';
+    if ($('chatAvatar')) $('chatAvatar').textContent = chapterTitle(state.chapter).slice(0, 4);
+    $('chapterPosition').textContent = '第 ' + (state.chapter + 1) + ' / ' + state.book.chapters.length + ' 节';
+    $('chapterCount').textContent = state.book.chapters.length;
+    $('bookmarkCount').textContent = state.book.bookmarks.length;
+    $('prevChapter').disabled = state.chapter <= 0;
+    $('nextChapter').disabled = state.chapter >= state.book.chapters.length - 1;
+    updateBookmarkButton();
+  }
+  function updateBookmarkButton() {
+    if (!state.book) return;
+    const p = state.book.progress;
+    const saved = state.book.bookmarks.some((b) => b.chapter === state.chapter && b.paragraph === p.paragraph);
+    $('addBookmark').setAttribute('aria-pressed', String(saved));
+    $('addBookmark').classList.toggle('active', saved);
+    $('addBookmark').title = saved ? '取消此处书签' : '收藏当前阅读位置';
+    $('addBookmark').setAttribute('aria-label', $('addBookmark').title);
+  }
+  function renderChapters() {
+    const list = $('chapterList');
+    const query = state.query.trim().toLocaleLowerCase();
+    let items = state.listMode === 'saved'
+      ? state.book.bookmarks.slice().sort((a, b) => b.createdAt - a.createdAt).map((b) => ({ index: b.chapter, bookmark: b }))
+      : state.book.chapters.map((_, index) => ({ index }));
+    if (state.listMode === 'unread') items = items.filter(({ index }) => index > state.book.progress.chapter);
+    if (query) items = items.filter(({ index, bookmark }) => (state.book.chapters[index].title + ' ' + (bookmark?.excerpt || '')).toLocaleLowerCase().includes(query));
+    const pages = Math.max(1, Math.ceil(items.length / 100));
+    state.listPage = Math.min(state.listPage, pages - 1);
+    const fragment = document.createDocumentFragment();
+    if (!items.length) fragment.append(el('p', 'empty-list', query ? '没有找到匹配章节' : state.listMode === 'unread' ? '后续章节已全部读完' : '还没有书签\n点击正文右上角的收藏图标，记录当前的位置。'));
+    for (const item of items.slice(state.listPage * 100, (state.listPage + 1) * 100)) {
+      const { index, bookmark } = item;
+      const node = button('', 'chapter-item' + (index === state.chapter ? ' active' : ''), () => {
+        openChapter(index, bookmark || { paragraph: 0, offset: 0 }); toggleSidebar(false);
+      });
+      node.setAttribute('aria-current', index === state.chapter ? 'true' : 'false');
+      node.title = chapterTitle(index);
+      const avatar = el('span', 'chapter-avatar', chapterTitle(index).slice(0, 4));
+      avatar.style.setProperty('--avatar-color', ['#3787ed', '#67b36c', '#e99748', '#64a7c6', '#8b7bd2', '#cd8c5f'][index % 6]);
+      const copy = el('span', 'chapter-copy');
+      const title = el('span', 'conversation-title');
+      title.append(el('strong', '', chapterTitle(index)), el('span', 'group-badge', '内部群')); copy.append(title);
+      let preview = settings.maskTitles ? '文档助手：[文件] 项目资料' : (state.book.chapters[index].paragraphs[0] || '文档助手：[文件] ' + bookTitle());
+      if (bookmark) preview = settings.maskTitles ? '收藏位置 · 第 ' + (bookmark.paragraph + 1) + ' 段' : (bookmark.excerpt || '');
+      copy.append(el('small', '', preview.slice(0, 80)));
+      const side = el('span', 'chapter-side'); side.append(el('time', '', '第 ' + (index + 1) + ' 节'));
+      if (state.book.bookmarks.some((b) => b.chapter === index)) { const mark = icon('bookmark'); mark.classList.add('chapter-bookmark'); side.append(mark); node.classList.add('saved'); }
+      node.append(avatar, copy, side); fragment.append(node);
+    }
+    if (pages > 1) {
+      const pager = el('div', 'list-pager');
+      const prev = button('上一组', 'quiet-btn', () => { state.listPage--; renderChapters(); list.scrollTop = 0; }); prev.disabled = state.listPage === 0;
+      const next = button('下一组', 'quiet-btn', () => { state.listPage++; renderChapters(); list.scrollTop = 0; }); next.disabled = state.listPage >= pages - 1;
+      pager.append(prev, el('span', '', `${state.listPage + 1} / ${pages}`), next); fragment.append(pager);
+    }
+    list.replaceChildren(fragment);
+    $('allTab').classList.toggle('selected', state.listMode === 'all'); $('allTab').setAttribute('aria-selected', String(state.listMode === 'all'));
+    $('savedTab').classList.toggle('selected', state.listMode === 'saved'); $('savedTab').setAttribute('aria-selected', String(state.listMode === 'saved'));
+    if ($('feishuUnreadTab')) {
+      $('feishuUnreadTab').classList.toggle('selected', state.listMode === 'unread');
+      $('feishuUnreadTab').setAttribute('aria-selected', String(state.listMode === 'unread'));
+    }
+    $('bookmarkCount').textContent = state.book.bookmarks.length;
+  }
+  function normalizeChatConfig(raw = {}) {
+    const names = ReaderDialogue.parseNames(Array.isArray(raw.names) ? raw.names.join('\n') : '');
+    const replies = Array.isArray(raw.selfReplies) ? raw.selfReplies.filter((text) => typeof text === 'string').map((text) => text.trim().slice(0, 120)).filter(Boolean).slice(0, 20) : defaultChat.selfReplies.slice();
+    return {
+      names: names.length ? names : defaultChat.names.slice(),
+      ownName: typeof raw.ownName === 'string' && raw.ownName.trim() ? raw.ownName.trim().slice(0, 20) : '我',
+      selfReplies: replies,
+      autoReply: typeof raw.autoReply === 'boolean' ? raw.autoReply : true,
+      replyEvery: [2, 3, 5, 8].includes(Number(raw.replyEvery)) ? Number(raw.replyEvery) : 3
+    };
+  }
+  function loadChatConfig(id) {
+    try { return normalizeChatConfig(JSON.parse(localStorage.getItem(CHAT_PREFIX + id) || '{}') || {}); }
+    catch (_) { return normalizeChatConfig(); }
+  }
+  function openChatSetup() {
+    if (!state.book) return;
+    const config = state.chat;
+    $('knownNames').value = config.names.join('\n');
+    $('selfDisplayName').value = config.ownName;
+    $('selfReplies').value = config.selfReplies.join('\n');
+    $('autoReply').checked = config.autoReply;
+    $('replyEvery').value = String(config.replyEvery);
+    $('namesFile').value = ''; $('chatSetupStatus').textContent = '';
+    $('chatSetupDialog').dataset.book = state.book.id;
+    showDialog('chatSetupDialog');
+  }
+  function saveChatSetup() {
+    if (!state.book || $('chatSetupDialog').dataset.book !== state.book.id) return;
+    const names = ReaderDialogue.parseNames($('knownNames').value);
+    const selfReplies = $('selfReplies').value.split(/\r?\n/).map((text) => text.trim()).filter(Boolean);
+    if (!names.length) { $('chatSetupStatus').textContent = '请至少填写一个聊天姓名。'; return; }
+    if (selfReplies.length > 20 || selfReplies.some((text) => text.length > 120)) { $('chatSetupStatus').textContent = '最多 20 句预设回复，每句最多 120 字。'; return; }
+    if ($('autoReply').checked && !selfReplies.length) { $('chatSetupStatus').textContent = '请填写至少一句回复，或关闭“穿插我的回复”。'; return; }
+    const next = normalizeChatConfig({ names, selfReplies, ownName: $('selfDisplayName').value, autoReply: $('autoReply').checked, replyEvery: Number($('replyEvery').value) });
+    try { localStorage.setItem(CHAT_PREFIX + state.book.id, JSON.stringify(next)); }
+    catch (_) { $('chatSetupStatus').textContent = '设置未保存，请检查浏览器本地存储是否可用。输入内容已保留。'; return; }
+    capturePosition(); state.chat = next; renderMessages(); scheduleSave();
+    closeDialog($('chatSetupDialog')); notice('聊天姓名与预设回复已保存');
+  }
+  async function importNames(file) {
+    if (!file || !state.book) return;
+    const bookId = state.book.id;
+    if (file.size > 64 * 1024) { $('chatSetupStatus').textContent = '姓名文件请控制在 64 KB 以内，最多使用 50 个姓名。'; return; }
+    const save = $('saveChatSetup'); save.disabled = true;
+    $('chatSetupStatus').textContent = '正在读取姓名…';
+    try {
+      const parsed = await ReaderCore.parseFile(file, 'auto');
+      if (state.book.id !== bookId || !$('chatSetupDialog').open) return;
+      const names = ReaderDialogue.parseNames(parsed.chapters.flatMap((chapter) => chapter.paragraphs).join('\n'));
+      if (!names.length) throw new Error('没有读到姓名，请检查文件内容。');
+      $('knownNames').value = names.join('\n');
+      $('chatSetupStatus').textContent = `已载入 ${names.length} 个姓名，确认后点“保存并应用”。`;
+    } catch (error) { $('chatSetupStatus').textContent = error.message || '无法读取姓名文件。'; }
+    finally { save.disabled = false; $('namesFile').value = ''; }
+  }
+  function ownMessage(text, time, generated = false) {
+    const row = el('article', 'message-row own-message' + (generated ? ' generated-reply' : ' local-reply'));
+    row.append(el('span', 'message-avatar', ReaderDialogue.initials(state.chat.ownName)));
+    const body = el('div', 'message-body'); body.append(el('span', 'sender-name', state.chat.ownName));
+    const bubble = el('div', 'message-bubble'); bubble.append(el('p', 'note-text', text)); body.append(bubble);
+    if (time) body.append(el('small', 'note-status', time));
+    row.append(body); return row;
+  }
+  function renderMessages() {
+    const generation = ++renderGeneration;
+    state.restoring = true; state.replyTarget = null;
+    const container = $('messages'), chapter = state.book.chapters[state.chapter];
+    const fragment = document.createDocumentFragment();
+    const timestamp = new Date(state.book.createdAt || Date.now());
+    fragment.append(el('div', 'chapter-divider', timestamp.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })));
+    const plan = ReaderDialogue.plan(chapter.paragraphs, state.chat.names, state.chat);
+    for (const paragraph of plan) {
+      const wrapper = el('div', 'novel-paragraph'); wrapper.dataset.paragraph = String(paragraph.paragraph);
+      for (const part of paragraph.parts) {
+        const row = el('article', 'message-row dialogue-message novel-message');
+        row.dataset.part = String(part.start);
+        const color = ReaderDialogue.colorFor(part.speaker);
+        row.style.setProperty('--speaker-color', color); row.style.setProperty('--speaker-soft', color + '20');
+        row.append(el('span', 'message-avatar', ReaderDialogue.initials(part.speaker)));
+        const body = el('div', 'message-body');
+        const sender = button(part.speaker, 'sender-name speaker-name', (event) => { event.stopPropagation(); openChatSetup(); });
+        sender.title = '设置聊天姓名与回复';
+        const bubble = el('div', 'message-bubble'); bubble.append(el('p', '', part.text));
+        body.append(sender, bubble); row.append(body); wrapper.append(row);
+        for (const reply of paragraph.replyAfter || []) {
+          if (reply.afterStart === part.start) wrapper.append(ownMessage(reply.text, '', true));
+        }
+        const replies = el('div', 'reply-slot'); replies.dataset.replySlot = String(part.start); wrapper.append(replies);
+      }
+      fragment.append(wrapper);
+    }
+    if (!chapter.paragraphs.length) fragment.append(el('p', 'empty-list', '本节为卷标题，正文从下一章开始。'));
+    fragment.append(el('div', 'chapter-end', state.chapter === state.book.chapters.length - 1 ? '— 已到文档末尾 —' : '— 本章结束 · 点击下一章继续 —'));
+    const notes = el('div', 'chapter-notes'); notes.id = 'chapterNotes'; fragment.append(notes);
+    container.replaceChildren(fragment); updateHeader(); renderChapterNotes();
+    const composer = $('composerInput'), context = state.book.id + '.' + state.chapter;
+    if (composer.dataset.context !== context) { composer.value = ''; composer.dataset.context = context; }
+    updateComposer();
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      if (generation !== renderGeneration) return;
+      restorePosition(state.book.progress);
+      state.restoring = false; updateReadingProgress();
+    }));
+  }
+  function readChapterNotes() {
+    const notes = JSON.parse(localStorage.getItem(NOTES_PREFIX + state.book.id + '.' + state.chapter) || '[]');
+    if (!Array.isArray(notes) || notes.some((note) => !note || typeof note.text !== 'string')) throw new Error('本章消息数据无法读取');
+    return notes;
+  }
+  function renderChapterNotes(focusId) {
+    const container = $('chapterNotes');
+    if (!container) return;
+    $('messages').querySelectorAll('.reply-slot').forEach((slot) => slot.replaceChildren());
+    container.replaceChildren();
+    let notes, focused;
+    try { notes = readChapterNotes(); }
+    catch (_) { container.append(el('p', 'note-status', '本章个人消息暂时无法读取')); return; }
+    for (const note of notes) {
+      const time = Number.isFinite(note.createdAt) ? new Date(note.createdAt).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' }) : '';
+      const row = ownMessage(note.text, time);
+      let destination = container;
+      if (Number.isInteger(note.afterParagraph) && note.afterParagraph >= 0) {
+        const wrapper = $('messages').querySelector(`[data-paragraph="${note.afterParagraph}"]`);
+        if (wrapper) {
+          const slots = Array.from(wrapper.querySelectorAll('.reply-slot'));
+          destination = slots.filter((slot) => Number(slot.dataset.replySlot) <= (Number(note.afterPart) || 0)).pop() || slots[0] || container;
+        }
+      }
+      destination.append(row); if (note.id === focusId) focused = row;
+    }
+    return focused;
+  }
+  function updateComposer() {
+    $('sendNote').disabled = !state.book || !$('composerInput').value.trim();
+  }
+  function replyAnchor() {
+    if (state.replyTarget) return state.replyTarget;
+    const bounds = $('messageScroll').getBoundingClientRect();
+    const rows = Array.from($('messages').querySelectorAll('.novel-message'));
+    let chosen = rows[0];
+    for (const row of rows) {
+      const rect = row.getBoundingClientRect();
+      if (rect.top >= bounds.bottom) break;
+      if (rect.bottom <= bounds.bottom || !chosen || chosen.getBoundingClientRect().bottom <= bounds.top) chosen = row;
+    }
+    return chosen ? { paragraph: Number(chosen.closest('[data-paragraph]').dataset.paragraph), part: Number(chosen.dataset.part) } : null;
+  }
+  function sendNote() {
+    const input = $('composerInput');
+    if (!state.ready || !state.book || state.away) return;
+    const text = input.value.trim();
+    if (!text) return;
+    if (text.length > 4000) { notice('一条消息最多 4000 字，请分条保存。', true); return; }
+    const anchor = replyAnchor();
+    const note = { id: Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 9), text, createdAt: Date.now(), afterParagraph: anchor?.paragraph, afterPart: anchor?.part };
+    try {
+      const notes = readChapterNotes();
+      if (notes.length >= 200) { notice('本章已保存 200 条个人消息，请使用其他章节记录。', true); return; }
+      notes.push(note);
+      localStorage.setItem(NOTES_PREFIX + state.book.id + '.' + state.chapter, JSON.stringify(notes));
+    } catch (_) { notice('消息未保存，请检查本地存储。输入内容已保留。', true); return; }
+    input.value = ''; updateComposer();
+    const row = renderChapterNotes(note.id); row?.scrollIntoView({ block: 'nearest' });
+    input.focus(); notice('消息已保存在本机');
+  }
+  function restorePosition(position) {
+    const scroller = $('messageScroll');
+    const index = Math.max(0, Math.min(Number(position?.paragraph) || 0, state.book.chapters[state.chapter].paragraphs.length - 1));
+    const node = $('messages').querySelector(`[data-paragraph="${index}"]`);
+    if (index === 0 && !position?.offset) { scroller.scrollTop = 0; return; }
+    if (node) {
+      const rect = node.getBoundingClientRect();
+      // Replies and theme changes can shorten a paragraph; never restore past it.
+      const offset = Math.max(0, Math.min(Number(position.offset) || 0, Math.max(0, rect.height - 1)));
+      scroller.scrollTop += rect.top - scroller.getBoundingClientRect().top + offset - 20;
+    } else scroller.scrollTop = 0;
+  }
+  function capturePosition() {
+    if (!state.book || state.restoring || state.away) return;
+    const scroller = $('messageScroll');
+    const boundary = scroller.getBoundingClientRect().top + 20;
+    const paragraphs = $('messages').querySelectorAll('[data-paragraph]');
+    let low = 0, high = paragraphs.length - 1, found = 0;
+    while (low <= high) {
+      const mid = (low + high) >> 1;
+      if (paragraphs[mid].getBoundingClientRect().top <= boundary) { found = mid; low = mid + 1; }
+      else high = mid - 1;
+    }
+    const target = paragraphs[found];
+    state.book.progress = { chapter: state.chapter, paragraph: target ? Number(target.dataset.paragraph) : 0, offset: target ? boundary - target.getBoundingClientRect().top : 0 };
+    if (scroller.scrollTop < 1) state.book.progress = { chapter: state.chapter, paragraph: 0, offset: 0 };
+    updateReadingProgress(); updateBookmarkButton();
+  }
+  function updateReadingProgress() {
+    if (!state.book) return;
+    const book = state.book, scroller = $('messageScroll');
+    const before = book.chapters.slice(0, state.chapter).reduce((sum, chapter) => sum + chapter.charCount, 0);
+    const chapter = book.chapters[state.chapter], paragraph = book.progress.paragraph;
+    let read = chapter.paragraphs.slice(0, paragraph).reduce((sum, text) => sum + text.length, 0);
+    if (scroller.scrollHeight - scroller.scrollTop - scroller.clientHeight < 8) read = chapter.charCount;
+    const percent = book.charCount ? Math.min(100, (before + read) / book.charCount * 100) : 0;
+    $('progressText').textContent = (settings.maskTitles ? '文档进度 ' : '阅读进度 ') + percent.toFixed(1) + '%';
+    $('progressFill').style.width = percent + '%'; $('progressTrack').setAttribute('aria-valuenow', percent.toFixed(1));
+  }
+  function persistState() {
+    clearTimeout(saveTimer);
+    if (!state.book || state.book.id === 'sample' || !state.persisted) return Promise.resolve(false);
+    const book = state.book;
+    const snapshot = { progress: { ...book.progress }, bookmarks: book.bookmarks.map((b) => ({ ...b })), updatedAt: Date.now() };
+    // Tiny synchronous mirror keeps the latest position across a quick tab close.
+    try { localStorage.setItem(PROGRESS_PREFIX + book.id, JSON.stringify({ progress: snapshot.progress, updatedAt: snapshot.updatedAt })); } catch (_) { /* IndexedDB remains the primary store. */ }
+    const previous = writeQueue.get(book.id) || Promise.resolve();
+    const task = previous.catch(() => {}).then(() => ReaderDB.updateState(book.id, snapshot)).then(() => {
+      if (state.book.id === book.id) $('saveStatus').textContent = '进度已保存'; return true;
+    }).catch((error) => {
+      if (state.book.id === book.id) { $('saveStatus').textContent = '保存失败'; warnStorage('无法保存进度：' + error.message + '。请保留原始文件。'); } return false;
+    });
+    writeQueue.set(book.id, task); task.finally(() => { if (writeQueue.get(book.id) === task) writeQueue.delete(book.id); });
+    return task;
+  }
+  function scheduleSave() { clearTimeout(saveTimer); saveTimer = setTimeout(persistState, 500); }
+  function openChapter(index, position = { paragraph: 0, offset: 0 }) {
+    if (!state.book || index < 0 || index >= state.book.chapters.length || state.away) return;
+    capturePosition(); persistState();
+    state.chapter = index;
+    state.book.progress = { chapter: index, paragraph: Math.max(0, Number(position.paragraph) || 0), offset: Number(position.offset) || 0 };
+    if (state.listMode === 'all' && !state.query) state.listPage = Math.floor(index / 100);
+    renderChapters(); renderMessages(); scheduleSave();
+  }
+  async function activateBook(book, persisted) {
+    capturePosition(); await persistState();
+    clearTimeout(searchTimer); ++state.searchGeneration;
+    $('textSearch').value = ''; $('searchResults').replaceChildren();
+    $('searchSummary').textContent = '在当前文档的全部章节中查找。';
+    state.book = book; state.persisted = persisted; state.chat = loadChatConfig(book.id); state.replyTarget = null;
+    book.bookmarks = Array.isArray(book.bookmarks) ? book.bookmarks : [];
+    book.progress = book.progress || { chapter: 0, paragraph: 0, offset: 0 };
+    if (persisted) {
+      try {
+        const mirror = JSON.parse(localStorage.getItem(PROGRESS_PREFIX + book.id) || 'null');
+        if (mirror?.updatedAt > book.updatedAt && mirror.progress) book.progress = mirror.progress;
+      } catch (_) { /* Ignore stale or malformed optional mirror. */ }
+      settings.lastBook = book.id; savePreferences();
+    }
+    state.chapter = Math.max(0, Math.min(Number(book.progress.chapter) || 0, book.chapters.length - 1));
+    book.progress.chapter = state.chapter;
+    state.query = ''; state.listMode = 'all'; state.listPage = Math.floor(state.chapter / 100); $('chapterSearch').value = '';
+    $('saveStatus').textContent = book.id === 'sample' ? '示例文档' : persisted ? '进度已保存' : '仅本次会话';
+    renderChapters(); renderMessages(); toggleSidebar(false);
+  }
+  async function importBook(book) {
+    let persisted = false;
+    // Never overwrite an old copy without a concrete choice in the library.
+    try { await ReaderDB.put(book); persisted = true; $('storageWarning').hidden = true; }
+    catch (error) { warnStorage('文档已打开，但无法持久保存：' + error.message + '。关闭页面前请保留原始 TXT。'); }
+    await activateBook(book, persisted);
+    $('importDialog').close(); $('libraryDialog').close();
+    notice(persisted ? `已导入 ${book.chapters.length} 个章节，阅读进度会自动保存` : '已临时打开，文档未保存到浏览器', !persisted);
+  }
+  function setImportBusy(busy, message = '') {
+    state.loading = busy; document.body.classList.toggle('importing', busy);
+    $('fileInput').disabled = busy; $('pasteImport').disabled = busy; $('encodingSelect').disabled = busy;
+    $('importStatus').textContent = message;
+    $('fileDrop').setAttribute('aria-busy', String(busy));
+  }
+  async function importFile(file) {
+    if (!file || state.loading) return;
+    if (!$('importDialog').open) showDialog('importDialog');
+    setImportBusy(true, '正在读取、识别章节并保存，请稍候…');
+    try { const book = await ReaderCore.parseFile(file, $('encodingSelect').value); await importBook(book); }
+    catch (error) { $('importStatus').textContent = error.message || '导入失败，请检查文件。'; $('importStatus').classList.add('error'); }
+    finally { setImportBusy(false, $('importDialog').open ? $('importStatus').textContent : ''); $('fileInput').value = ''; }
+  }
+  async function openLibrary() {
+    showDialog('libraryDialog'); const list = $('libraryList'); list.replaceChildren(el('p', 'empty-list', '正在读取本地文档…'));
+    try {
+      const books = await ReaderDB.list();
+      list.replaceChildren();
+      if (!books.length) list.append(el('p', 'empty-list', '这里还没有文档\n导入第一本 TXT，就可以开始阅读。'));
+      for (const book of books.sort((a, b) => b.updatedAt - a.updatedAt)) {
+        const row = el('div', 'library-item'); const open = button('', 'library-open', async () => {
+          open.disabled = true;
+          try { const full = await ReaderDB.get(book.id); if (!full) throw new Error('文档已被删除'); await activateBook(full, true); $('libraryDialog').close(); }
+          catch (error) { notice(error.message, true); } finally { open.disabled = false; }
+        });
+        const badge = el('span', 'file-icon'); badge.append(icon('doc'));
+        const copy = el('span', 'library-copy'); copy.append(el('strong', '', book.title), el('small', '', `${book.chapterCount} 章 · ${wordCount(book.charCount)} · 读到第 ${(book.progress?.chapter || 0) + 1} 章`));
+        open.append(badge, copy);
+        const remove = button('', 'icon-btn library-delete', async () => {
+          if (!confirm(`从此浏览器删除《${book.title}》及其进度、书签、个人消息和聊天设置？\n原始 TXT 文件不会被删除。`)) return;
+          remove.disabled = true;
+          try {
+            if (state.book.id === book.id) { clearTimeout(saveTimer); await persistState(); }
+            await (writeQueue.get(book.id) || Promise.resolve()); await ReaderDB.delete(book.id);
+            let localCleanupFailed = false;
+            try {
+              localStorage.removeItem(PROGRESS_PREFIX + book.id);
+              localStorage.removeItem(CHAT_PREFIX + book.id);
+              const notesPrefix = NOTES_PREFIX + book.id + '.';
+              for (let index = localStorage.length - 1; index >= 0; index--) {
+                const key = localStorage.key(index);
+                if (key && key.startsWith(notesPrefix)) localStorage.removeItem(key);
+              }
+            } catch (_) { localCleanupFailed = true; }
+            if (state.book.id === book.id) { state.persisted = false; settings.lastBook = null; savePreferences(); await activateBook(makeSample(), false); }
+            await openLibrary(); notice(localCleanupFailed ? '文档已删除，但本地便签清理失败，请检查浏览器存储权限。' : '已从本地文档库删除', localCleanupFailed);
+          } catch (error) { notice(error.message, true); remove.disabled = false; }
+        });
+        remove.append(icon('trash')); remove.setAttribute('aria-label', '删除《' + book.title + '》'); remove.title = '删除本地副本';
+        row.append(open, remove); list.append(row);
+      }
+    } catch (error) { list.replaceChildren(el('p', 'empty-list', '无法读取文档库：' + error.message)); }
+  }
+  async function toggleBookmark() {
+    capturePosition(); const p = state.book.progress;
+    const index = state.book.bookmarks.findIndex((b) => b.chapter === state.chapter && b.paragraph === p.paragraph);
+    if (index >= 0) state.book.bookmarks.splice(index, 1);
+    else state.book.bookmarks.push({ id: String(Date.now()) + '-' + Math.random().toString(36).slice(2), chapter: state.chapter, paragraph: p.paragraph, offset: p.offset, excerpt: (state.book.chapters[state.chapter].paragraphs[p.paragraph] || state.book.chapters[state.chapter].title).slice(0, 70), createdAt: Date.now() });
+    updateBookmarkButton(); renderChapters();
+    const saved = await persistState();
+    notice(index >= 0 ? '已取消此处书签' : saved ? '已收藏当前阅读位置' : '已添加书签（仅本次会话）');
+  }
+  function openSearch() { showDialog('searchDialog'); $('textSearch').focus(); }
+  function openBookmarks() { state.listMode = 'saved'; state.listPage = 0; renderChapters(); toggleSidebar(true); }
+  function openMessages() { state.listMode = 'all'; state.listPage = Math.floor(state.chapter / 100); renderChapters(); toggleSidebar(true); }
+  async function searchBook() {
+    const generation = ++state.searchGeneration; const query = $('textSearch').value.trim(); const container = $('searchResults');
+    container.replaceChildren();
+    if (!query) { $('searchSummary').textContent = '在当前文档的全部章节中查找。'; return; }
+    $('searchSummary').textContent = '正在查找…';
+    const book = state.book, folded = query.toLocaleLowerCase(), hits = []; let visited = 0, capped = false;
+    outer: for (let chapter = 0; chapter < book.chapters.length; chapter++) {
+      for (let paragraph = 0; paragraph < book.chapters[chapter].paragraphs.length; paragraph++) {
+        const text = book.chapters[chapter].paragraphs[paragraph], at = text.toLocaleLowerCase().indexOf(folded);
+        if (at >= 0) { hits.push({ chapter, paragraph, text, at }); if (hits.length >= 100) { capped = true; break outer; } }
+        if (++visited % 2000 === 0) { await new Promise((resolve) => setTimeout(resolve, 0)); if (generation !== state.searchGeneration || book !== state.book) return; }
+      }
+    }
+    if (generation !== state.searchGeneration || book !== state.book) return;
+    $('searchSummary').textContent = hits.length ? `找到 ${capped ? '至少 ' : ''}${hits.length} 个匹配段落${capped ? '，显示前 100 条' : ''}` : '没有找到匹配内容，试试更短的关键词。';
+    const fragment = document.createDocumentFragment();
+    for (const hit of hits) {
+      const result = button('', 'search-result', () => {
+        if (book !== state.book) { searchBook(); return; }
+        closeDialog($('searchDialog')); openChapter(hit.chapter, { paragraph: hit.paragraph, offset: 0 });
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          const paragraph = $('messages').querySelector(`[data-paragraph="${hit.paragraph}"]`);
+          if (paragraph) { paragraph.classList.add('search-highlight'); setTimeout(() => paragraph.classList.remove('search-highlight'), 2200); }
+        }));
+      });
+      result.append(el('span', 'result-chapter', chapterTitle(hit.chapter)));
+      const snippet = el('span', 'result-excerpt'), start = Math.max(0, hit.at - 28), end = Math.min(hit.text.length, hit.at + query.length + 65);
+      snippet.append(document.createTextNode((start ? '…' : '') + hit.text.slice(start, hit.at)), el('mark', '', hit.text.slice(hit.at, hit.at + query.length)), document.createTextNode(hit.text.slice(hit.at + query.length, end) + (end < hit.text.length ? '…' : '')));
+      result.append(snippet); fragment.append(result);
+    }
+    container.replaceChildren(fragment);
+  }
+  function showFileInfo() {
+    const info = $('fileInfo'); info.replaceChildren();
+    for (const [key, value] of [['名称', state.book.title], ['文件', state.book.fileName], ['当前章节', state.book.chapters[state.chapter].title], ['编码', state.book.encoding], ['章节', String(state.book.chapters.length)], ['字数', wordCount(state.book.charCount)], ['存储', state.book.id === 'sample' ? '内置原创示例' : state.persisted ? '本机浏览器' : '仅本次会话']]) info.append(el('dt', '', key), el('dd', '', value));
+    showDialog('infoDialog');
+  }
+  function toggleAway(force) {
+    const away = typeof force === 'boolean' ? force : !state.away;
+    if (away === state.away) return;
+    if (away) {
+      capturePosition(); persistState(); lastFocus = document.activeElement;
+      document.querySelectorAll('dialog[open]').forEach((dialog) => dialog.close()); toggleSidebar(false);
+      $('dropOverlay').hidden = true; dropDepth = 0; $('toast').hidden = true;
+      $('awayDate').textContent = new Date().toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' });
+    }
+    state.away = away; $('awayScreen').hidden = !away;
+    document.querySelector('.app-shell').inert = away;
+    if (away) $('resumeBtn').focus(); else if (lastFocus?.isConnected && !lastFocus.closest('dialog:not([open])')) lastFocus.focus(); else $('messageScroll').focus();
+  }
+  function makeSample() {
+    const book = ReaderCore.parseText(sampleText, '雨停之前 · 原创示例.txt'); book.id = 'sample'; book.title = '雨停之前 · 原创示例'; return book;
+  }
+
+  for (const id of ['importNav', 'importPlus']) $(id).addEventListener('click', openImport);
+  for (const id of ['libraryBtn', 'currentFileBtn']) $(id).addEventListener('click', openLibrary);
+  $('libraryImport').addEventListener('click', openImport);
+  for (const id of ['settingsBtn', 'readingSettings']) $(id).addEventListener('click', () => showDialog('settingsDialog'));
+  for (const id of ['globalSearch', 'searchBtn']) $(id).addEventListener('click', openSearch);
+  $('fileInfoBtn').addEventListener('click', showFileInfo);
+  $('themeBtn').addEventListener('click', () => switchTheme());
+  $('feishuThemeBtn')?.addEventListener('click', () => switchTheme());
+  document.querySelectorAll('[data-theme-choice]').forEach((node) => node.addEventListener('click', () => switchTheme(node.dataset.themeChoice)));
+  for (const id of ['fontSize', 'lineHeight', 'fontFamily']) $(id).addEventListener('input', () => {
+    capturePosition(); const position = { ...state.book.progress };
+    settings[id] = id === 'fontFamily' ? $(id).value : Number($(id).value); applySettings(); savePreferences(); restorePosition(position);
+  });
+  $('maskTitles').addEventListener('change', () => setMaskTitles($('maskTitles').checked));
+  $('feishuMaskBtn')?.addEventListener('click', () => setMaskTitles(!settings.maskTitles));
+  $('allTab').addEventListener('click', () => { state.listMode = 'all'; state.listPage = Math.floor(state.chapter / 100); renderChapters(); });
+  $('savedTab').addEventListener('click', () => { state.listMode = 'saved'; state.listPage = 0; renderChapters(); });
+  $('feishuUnreadTab')?.addEventListener('click', () => { state.listMode = 'unread'; state.listPage = 0; renderChapters(); });
+  $('bookmarksBtn').addEventListener('click', openBookmarks);
+  $('messagesNav').addEventListener('click', openMessages);
+  $('feishuMessagesNav')?.addEventListener('click', openMessages);
+  $('chapterSearch').addEventListener('input', () => { state.query = $('chapterSearch').value; state.listPage = 0; renderChapters(); });
+  $('prevChapter').addEventListener('click', () => openChapter(state.chapter - 1));
+  $('nextChapter').addEventListener('click', () => openChapter(state.chapter + 1));
+  $('addBookmark').addEventListener('click', toggleBookmark);
+  $('openSidebar').addEventListener('click', () => toggleSidebar(true));
+  for (const id of ['closeSidebar', 'sidebarBackdrop']) $(id).addEventListener('click', () => toggleSidebar(false));
+  $('awayBtn').addEventListener('click', () => toggleAway(true)); $('resumeBtn').addEventListener('click', () => toggleAway(false));
+  const shortcutActions = { import: openImport, library: openLibrary, bookmarks: openBookmarks, settings: () => showDialog('settingsDialog'), search: openSearch, info: showFileInfo, away: () => toggleAway(true) };
+  const boundShortcutIds = new Set(['importNav', 'importPlus', 'libraryBtn', 'currentFileBtn', 'libraryImport', 'settingsBtn', 'readingSettings', 'globalSearch', 'searchBtn', 'fileInfoBtn', 'bookmarksBtn', 'awayBtn']);
+  document.querySelectorAll('[data-action]').forEach((node) => {
+    if (boundShortcutIds.has(node.id)) return;
+    const action = shortcutActions[node.dataset.action];
+    if (action) node.addEventListener('click', () => { if (state.ready && !state.away) action(); });
+  });
+  $('composerInput')?.addEventListener('input', updateComposer);
+  $('composerInput')?.addEventListener('keydown', (event) => {
+    // IME confirmation must not send a message (including WebKit's 229 event).
+    if (event.isComposing || event.keyCode === 229 || event.key !== 'Enter' || event.shiftKey) return;
+    event.preventDefault();
+    if (!event.repeat) sendNote();
+  });
+  $('sendNote')?.addEventListener('click', sendNote);
+  for (const id of ['chatSetupBtn', 'settingsChatSetup']) $(id).addEventListener('click', openChatSetup);
+  $('saveChatSetup').addEventListener('click', saveChatSetup);
+  $('namesFile').addEventListener('change', () => importNames($('namesFile').files[0]));
+  $('messages').addEventListener('click', (event) => {
+    const row = event.target.closest('.novel-message');
+    if (!row || !window.getSelection()?.isCollapsed) return;
+    $('messages').querySelectorAll('.reply-selected').forEach((node) => node.classList.remove('reply-selected'));
+    row.classList.add('reply-selected');
+    state.replyTarget = { paragraph: Number(row.closest('[data-paragraph]').dataset.paragraph), part: Number(row.dataset.part) };
+  });
+  $('fileInput').addEventListener('change', () => { $('importStatus').classList.remove('error'); importFile($('fileInput').files[0]); });
+  $('pasteImport').addEventListener('click', async () => {
+    if (state.loading) return;
+    setImportBusy(true, '正在识别章节并保存…'); $('importStatus').classList.remove('error');
+    try { const book = ReaderCore.parseText($('pasteContent').value, ($('pasteTitle').value.trim() || '未命名文档') + '.txt'); await importBook(book); $('pasteContent').value = ''; $('pasteTitle').value = ''; }
+    catch (error) { $('importStatus').textContent = error.message; $('importStatus').classList.add('error'); }
+    finally { setImportBusy(false, $('importDialog').open ? $('importStatus').textContent : ''); }
+  });
+  $('textSearch').addEventListener('input', () => { clearTimeout(searchTimer); ++state.searchGeneration; searchTimer = setTimeout(searchBook, 180); });
+  document.querySelectorAll('dialog').forEach((dialog) => {
+    dialog.querySelectorAll('[data-close]').forEach((node) => node.addEventListener('click', () => closeDialog(dialog)));
+    dialog.addEventListener('click', (event) => { if (event.target === dialog) { const r = dialog.getBoundingClientRect(); if (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) closeDialog(dialog); } });
+    dialog.addEventListener('close', () => { if (dialog.id === 'searchDialog') ++state.searchGeneration; });
+  });
+  $('messageScroll').addEventListener('scroll', () => {
+    if (state.restoring || state.away) return;
+    cancelAnimationFrame(scrollFrame); scrollFrame = requestAnimationFrame(() => { capturePosition(); scheduleSave(); });
+  }, { passive: true });
+  document.addEventListener('keydown', (event) => {
+    if (event.isComposing || !state.ready) return;
+    const input = event.target.closest('input,textarea,select,[contenteditable="true"]');
+    const dialog = document.querySelector('dialog[open]');
+    if ((event.metaKey || event.ctrlKey) && ['k', 'f'].includes(event.key.toLowerCase())) { event.preventDefault(); if (!state.away) openSearch(); return; }
+    if (event.key === 'Escape') {
+      if (dialog) return;
+      event.preventDefault(); if (document.documentElement.classList.contains('sidebar-open')) toggleSidebar(false); else toggleAway(); return;
+    }
+    if (input || dialog || state.away || event.altKey || event.ctrlKey || event.metaKey) return;
+    if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') { event.preventDefault(); openChapter(state.chapter + (event.key === 'ArrowRight' ? 1 : -1)); }
+  });
+  function hasFiles(event) { return Array.from(event.dataTransfer?.types || []).includes('Files'); }
+  document.addEventListener('dragenter', (event) => { if (!hasFiles(event) || state.away || state.loading || !state.ready) return; event.preventDefault(); dropDepth++; $('dropOverlay').hidden = false; });
+  document.addEventListener('dragover', (event) => { if (!hasFiles(event)) return; event.preventDefault(); event.dataTransfer.dropEffect = state.away || state.loading || !state.ready ? 'none' : 'copy'; });
+  document.addEventListener('dragleave', (event) => { if (!hasFiles(event)) return; if (--dropDepth <= 0) { dropDepth = 0; $('dropOverlay').hidden = true; } });
+  document.addEventListener('drop', (event) => {
+    if (!hasFiles(event)) return; event.preventDefault(); dropDepth = 0; $('dropOverlay').hidden = true;
+    if (state.away || state.loading || !state.ready) return;
+    const files = event.dataTransfer.files; if (files.length !== 1) { notice('请一次导入一个 TXT 文件', true); return; }
+    $('importStatus').classList.remove('error'); importFile(files[0]);
+  });
+  window.addEventListener('blur', () => { dropDepth = 0; $('dropOverlay').hidden = true; capturePosition(); persistState(); });
+  window.addEventListener('pagehide', () => { capturePosition(); persistState(); });
+  document.addEventListener('visibilitychange', () => { if (document.hidden) { capturePosition(); persistState(); } });
+
+  async function boot() {
+    applySettings();
+    if (needsAppearanceMigration) savePreferences();
+    if (!window.ReaderCore || !window.ReaderDB) { warnStorage('程序文件不完整，请使用“摸鱼神器.html”完整版本。'); return; }
+    let book = null;
+    if (settings.lastBook) {
+      try { book = await ReaderDB.get(settings.lastBook); }
+      catch (error) { warnStorage('无法读取上次的文档：' + error.message); }
+    }
+    await activateBook(book || makeSample(), !!book);
+    if (!settings.lastBook) {
+      try { await ReaderDB.list(); } catch (error) { warnStorage('浏览器暂不支持本地持久保存：' + error.message + '。仍可临时阅读，请保留原始 TXT。'); }
+    }
+  }
+  document.querySelector('.app-shell').inert = true;
+  boot().catch((error) => warnStorage('启动失败：' + error.message + '。请重新打开完整 HTML 文件。'))
+    .finally(() => { state.ready = !!state.book; document.querySelector('.app-shell').inert = state.away; });
+})();
+
+</script>
+</body>
+</html>
